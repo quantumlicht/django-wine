@@ -1,20 +1,6 @@
 from django.db import models
-APPROVED = 'Approved'
-REJECTED = 'Rejected'
-PENDING = 'Pending'
-
-WINE_TYPES = (
-    ('White', 'White'),
-    ('Red', 'Red'),
-    ('Rose', 'Rose'),
-    ('Sparkling', 'Sparkling'),
-)
-
-STATUSES = (
-    (APPROVED, 'Approved'),
-    (REJECTED, 'Rejected'),
-    (PENDING, 'Pending'),
-)
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 SCALE = (
     ('1', 1),
@@ -23,7 +9,60 @@ SCALE = (
     ('4', 4),
     ('5', 5),
 )
+# ==================================================
+#  VALIDATOR CLASSES
+# ==================================================
+validate_non_numeric = RegexValidator(regex='[^0-9]*',
+                                      message='Expression contains numeric values',
+                                      code='no_numeric_expected'
+                                      )
 
+# ==================================================
+#  ABSTRACT CLASSES
+# ==================================================
+
+
+class WineType(models.Model):
+
+    class Meta:
+        abstract = True
+
+    WINE_TYPES = (
+        ('White', 'White'),
+        ('Red', 'Red'),
+        ('Rose', 'Rose'),
+        ('Sparkling', 'Sparkling'),
+
+    )
+    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
+
+
+class Approvable(models.Model):
+    APPROVED = 'Approved'
+    REJECTED = 'Rejected'
+    PENDING = 'Pending'
+
+    class Meta:
+        abstract = True
+
+    STATUSES = (
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected'),
+        (PENDING, 'Pending'),
+    )
+    status = models.CharField(max_length=60, choices=STATUSES, default=PENDING)
+
+    def is_approved(self):
+        return self.status == self.APPROVED
+
+    is_approved.admin_order_field = 'status'
+    is_approved.boolean = True
+    is_approved.short_description = 'Approved ?'
+
+
+# ==================================================
+#  MODEL CLASSES
+# ==================================================
 
 class Acidity(models.Model):
     acidity = models.CharField(max_length=60)
@@ -32,60 +71,24 @@ class Acidity(models.Model):
         return self.acidity
 
 
-class Aroma(models.Model):
+class Aroma(WineType):
     aroma = models.CharField(max_length=60)
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
 
     def __unicode__(self):
         return '%s (%s)' % (self.aroma, self.wineType)
 
 
-class Cepage(models.Model):
-    APPROVED = 'Approved'
-    REJECTED = 'Rejected'
-    PENDING = 'Pending'
-
-    STATUSES = (
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected'),
-        (PENDING, 'Pending'),
-    )
-
-    cepage = models.CharField(max_length=60)
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
-    status = models.CharField(max_length=60, choices=STATUSES, default=PENDING)
-
-    def is_approved(self):
-
-        return self.status == 'Approved'
-    is_approved.admin_order_field = 'status'
-    is_approved.boolean = True
-    is_approved.short_description = 'Approved ?'
+class Cepage(Approvable, WineType):
+    cepage = models.CharField(max_length=60,
+                              validators=[validate_non_numeric])
 
     def __unicode__(self):
         return self.cepage
 
 
-class Tag(models.Model):
-    APPROVED = 'Approved'
-    REJECTED = 'Rejected'
-    PENDING = 'Pending'
-
-    STATUSES = (
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected'),
-        (PENDING, 'Pending'),
-    )
-
-    tag = models.CharField(max_length=60)
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
-    status = models.CharField(max_length=60, choices=STATUSES, default=PENDING)
-
-    def is_approved(self):
-        return self.status == REJECTED
-
-    is_approved.boolean = True
-    is_approved.short_description = 'Approved ?'
+class Tag(Approvable, WineType):
+    tag = models.CharField(max_length=60,
+                           validators=[validate_non_numeric])
 
     def __unicode__(self):
         return '%s (%s)' % (self.tag, self.wineType)
@@ -94,17 +97,22 @@ class Tag(models.Model):
 class Taste(models.Model):
     taste = models.CharField(max_length=60)
 
+    def __unicode__(self):
+        return self.taste
+
 
 class Tanin(models.Model):
     tanin = models.CharField(max_length=60)
 
+    def __unicode__(self):
+        return self.tanin
 
-class Teint(models.Model):
+
+class Teint(WineType):
     teint = models.CharField(max_length=60)
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
 
 
-class Wine(models.Model):
+class Wine(WineType):
     name = models.CharField(max_length=100)
     producer = models.CharField(max_length=100)
     year = models.IntegerField()
@@ -118,7 +126,6 @@ class Wine(models.Model):
     nose_intensity = models.IntegerField(choices=SCALE)
     mouth_intensity = models.IntegerField(choices=SCALE)
     persistance = models.IntegerField(choices=SCALE)
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
     rating = models.FloatField()
 
     teint = models.ForeignKey(Teint)
