@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'project.blog',
+    'project.corewine',
 )
 
 # A sample logging configuration. The only tangible logging
