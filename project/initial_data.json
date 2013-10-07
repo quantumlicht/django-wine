@@ -1,0 +1,140 @@
+[
+  {
+    "model": "corewine.acidity",
+    "pk": 1,
+    "fields": {
+      "order": "1",
+      "acidity": "Mou"
+    }
+  },
+  {
+    "model": "corewine.acidity",
+    "pk": 2,
+    "fields": {
+      "order": "2",
+      "acidity": "Frais"
+    }
+  },
+  {
+    "model": "corewine.acidity",
+    "pk": 3,
+    "fields": {
+      "order": "3",
+      "acidity": "Vif"
+    }
+  },
+  {
+    "model": "corewine.acidity",
+    "pk": 4,
+    "fields": {
+      "order": "4",
+      "acidity": "Nerveux"
+    }
+  },
+  {
+    "model": "corewine.acidity",
+    "pk": 5,
+    "fields": {
+      "order": "5",
+      "acidity": "Mordant"
+    }
+  },
+  {
+    "model": "corewine.acidity",
+    "pk": 6,
+    "fields": {
+      "order": "6",
+      "acidity": "Excessif"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 1,
+    "fields": {
+      "wineType": "White",
+      "order": "1",
+      "teint": "Reflets Vert"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 2,
+    "fields": {
+      "wineType": "White",
+      "order": "2",
+      "teint": "Jaune Pâle"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 3,
+    "fields": {
+      "wineType": "White",
+      "order": "3",
+      "teint": "Doré"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 4,
+    "fields": {
+      "wineType": "White",
+      "order": "4",
+      "teint": "Jaune Paille"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 5,
+    "fields": {
+      "wineType": "White",
+      "order": "5",
+      "teint": "Orangé"
+    }
+  },
+   {
+    "model": "corewine.teint",
+    "pk": 6,
+    "fields": {
+      "wineType": "Red",
+      "order": "1",
+      "teint": "Brique"
+    }
+  },
+   {
+    "model": "corewine.teint",
+    "pk": 7,
+    "fields": {
+      "wineType": "Red",
+      "order": "2",
+      "teint": "Cerise"
+    }
+  },
+   {
+    "model": "corewine.teint",
+    "pk": 8,
+    "fields": {
+      "wineType": "Red",
+      "order": "3",
+      "teint": "Rubis"
+    }
+  },
+   {
+    "model": "corewine.teint",
+    "pk": 9,
+    "fields": {
+      "wineType": "Red",
+      "order": "4",
+      "teint": "Grenat"
+    }
+  },
+  {
+    "model": "corewine.teint",
+    "pk": 10,
+    "fields": {
+      "wineType": "Red",
+      "order": "5",
+      "teint": "Pourpre"
+    }
+  }
+]
