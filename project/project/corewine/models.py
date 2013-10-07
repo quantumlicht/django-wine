@@ -12,7 +12,7 @@ SCALE = (
 # ==================================================
 #  VALIDATOR CLASSES
 # ==================================================
-validate_non_numeric = RegexValidator(regex='[^0-9]*',
+validate_non_numeric = RegexValidator(regex='^[a-zA-Z]*$',
                                       message='Expression contains numeric values',
                                       code='no_numeric_expected'
                                       )
@@ -20,6 +20,13 @@ validate_non_numeric = RegexValidator(regex='[^0-9]*',
 # ==================================================
 #  ABSTRACT CLASSES
 # ==================================================
+
+
+class Orderable(models.Model):
+    order = models.IntegerField()
+
+    class Meta:
+        abstract = True
 
 
 class WineType(models.Model):
@@ -61,21 +68,55 @@ class Approvable(models.Model):
 
 
 # ==================================================
-#  MODEL CLASSES
+#  PRIVATE MODEL CLASSES (EXPOSED TO ADMIN ONLY)
 # ==================================================
 
-class Acidity(models.Model):
-    acidity = models.CharField(max_length=60)
+class Acidity(Orderable):
+    acidity = models.CharField(max_length=60,
+                               unique=True
+                               )
 
     def __unicode__(self):
         return self.acidity
 
 
-class Aroma(WineType):
-    aroma = models.CharField(max_length=60)
+class Aroma(Orderable):
+    aroma = models.CharField(max_length=60,
+                             unique=True
+                             )
 
     def __unicode__(self):
-        return '%s (%s)' % (self.aroma, self.wineType)
+        return self.aroma
+
+
+class Tanin(Orderable):
+    tanin = models.CharField(max_length=60,
+                             unique=True
+                             )
+
+    def __unicode__(self):
+        return self.tanin
+
+
+class Teint(WineType, Orderable):
+    teint = models.CharField(max_length=60,
+                             unique=True
+    
+                             )
+    def __unicode__(self):
+        return self.teint
+
+
+class Taste(Orderable):
+    taste = models.CharField(max_length=60,
+                             unique=True
+                             )
+
+    def __unicode__(self):
+        return self.taste
+# ==================================================
+#  PUBLIC MODEL CLASSES (EXPOSED TO FORMS)
+# ==================================================
 
 
 class Cepage(Approvable, WineType):
@@ -88,32 +129,19 @@ class Cepage(Approvable, WineType):
 
 class Tag(Approvable, WineType):
     tag = models.CharField(max_length=60,
-                           validators=[validate_non_numeric])
+                           validators=[validate_non_numeric],
+                           unique=True
+                           )
+    description = models.CharField(max_length=300)
 
     def __unicode__(self):
         return '%s (%s)' % (self.tag, self.wineType)
 
 
-class Taste(models.Model):
-    taste = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return self.taste
-
-
-class Tanin(models.Model):
-    tanin = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return self.tanin
-
-
-class Teint(WineType):
-    teint = models.CharField(max_length=60)
-
-
 class Wine(WineType):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,
+                            unique=True
+                            )
     producer = models.CharField(max_length=100)
     year = models.IntegerField()
     appelation = models.CharField(max_length=100)
@@ -121,7 +149,7 @@ class Wine(WineType):
     region = models.CharField(max_length=100)
     alcool = models.FloatField()
     date = models.DateTimeField('Tasting Date')
-    code_saq = models.IntegerField()
+    code_saq = models.IntegerField(unique=True)
     price = models.FloatField()
     nose_intensity = models.IntegerField(choices=SCALE)
     mouth_intensity = models.IntegerField(choices=SCALE)
