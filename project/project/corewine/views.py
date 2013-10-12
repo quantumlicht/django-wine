@@ -3,9 +3,8 @@ from django.http import HttpResponse
 
 
 def index(request):
-	
-	return render(request, 'index.html')
+	return render(request, 'corewine/index.html')
 
 
-def publish_tasting(request):
-    return HttpResponse("You are publishing a tasting")
+def tasting(request):
+    return render(request, 'corewine/tasting.html')

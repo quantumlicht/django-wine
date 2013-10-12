@@ -5,6 +5,5 @@ from project.corewine import views
 # TODO: make sure urls are locale specific
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
-                       url(r'^tasting/$', views.publish_tasting, name='publish_tasting'),
-
+                       url(r'^tasting/$', views.tasting, name='tasting'),
                        )
