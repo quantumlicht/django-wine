@@ -24,7 +24,17 @@ class TeintAdmin(admin.ModelAdmin):
     list_display = ['teint', 'wineType', 'order']
     list_filter = ['wineType']    
 
+class TasteAdmin(admin.ModelAdmin):
+    """Manage the Taste fields"""
+    fields = ('taste', 'order')
+    list_display = ['taste', 'order']
+    list_filter = ['taste']    
+
+
 class WineAdmin(admin.ModelAdmin):
+    list_display = ['name', 'wineType', 'producer', 'appelation', 'list_cepage', 'region', 'country', 'year','code_saq', 'price', 'alcool','rating']
+    list_filter = ['producer','wineType', 'year', 'country', 'cepage', 'region','appelation']
+    search_fields = ['name','producer','appelation','cepage','region','code_saq']
     fieldsets = (
         ('Fiche', {
             'fields': (
@@ -33,7 +43,8 @@ class WineAdmin(admin.ModelAdmin):
                 ('region', 'country'),
                 'cepage',
                 'date',
-                ('code_saq', 'alcool', 'price')
+                ('code_saq', 'alcool', 'price'),
+                'rating',
             )
         }),
         ('Eye', {
@@ -47,6 +58,11 @@ class WineAdmin(admin.ModelAdmin):
         })
     )
 
+class TaninAdmin(admin.ModelAdmin):
+    list_display = ['tanin','order']
+    list_filter = ['tanin']
+
+
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ['tag', 'wineType', 'is_approved']
@@ -59,8 +75,10 @@ class CepageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Wine, WineAdmin)
+admin.site.register(Tanin,TaninAdmin)
 admin.site.register(Cepage, CepageAdmin)
 admin.site.register(Aroma, AromaAdmin)
 admin.site.register(Acidity, AcidityAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Taste, TasteAdmin)
 admin.site.register(Teint, TeintAdmin)

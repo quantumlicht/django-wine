@@ -3,18 +3,22 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 SCALE = (
-    ('1', 1),
-    ('2', 2),
-    ('3', 3),
-    ('4', 4),
-    ('5', 5),
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
 )
 # ==================================================
 #  VALIDATOR CLASSES
 # ==================================================
-validate_non_numeric = RegexValidator(regex='^[a-zA-Z]*$',
+validate_non_numeric = RegexValidator(regex='^[a-zA-Z\s-]*$',
                                       message='Expression contains numeric values',
                                       code='no_numeric_expected'
+                                      )
+validate_numeric_only = RegexValidator(regex='^[0-9\s-]*$',
+                                      message='Expression contains letters',
+                                      code='numeric_only_expected'
                                       )
 
 # ==================================================
@@ -149,7 +153,10 @@ class Wine(WineType):
     region = models.CharField(max_length=100)
     alcool = models.FloatField()
     date = models.DateTimeField('Tasting Date')
-    code_saq = models.IntegerField(unique=True)
+    code_saq = models.CharField(unique=True,
+                                 max_length=255,
+                                validators=[validate_numeric_only]
+        )
     price = models.FloatField()
     nose_intensity = models.IntegerField(choices=SCALE)
     mouth_intensity = models.IntegerField(choices=SCALE)
@@ -163,3 +170,12 @@ class Wine(WineType):
     tanin = models.ForeignKey(Tanin)
     cepage = models.ManyToManyField(Cepage)
     tag = models.ManyToManyField(Tag)
+
+
+    def list_cepage(obj):
+        list_cepage = ', '.join([x.__unicode__() for x in obj.cepage.all() if x.is_approved()])
+        return list_cepage
+
+    list_cepage.admin_order_field = 'name'
+    list_cepage.boolean = False
+    list_cepage.short_description = 'Cepages'
