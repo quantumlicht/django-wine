@@ -1,9 +1,8 @@
-from django import forms
+from django.forms import ModelForm
+from project.corewine.models import Wine
 
-class ContactForm(forms.Form):
-    name = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea)
 
-    def send_email(self):
-        # send email using the self.cleaned_data dictionary
-        pass
+class WineForm(ModelForm):
+	class Meta:
+		model = Wine
+

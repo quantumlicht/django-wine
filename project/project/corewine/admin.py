@@ -32,8 +32,9 @@ class TasteAdmin(admin.ModelAdmin):
 
 
 class WineAdmin(admin.ModelAdmin):
+    # date_hierarchy = 'last_modified'
     list_display = ['name', 'wineType', 'producer', 'appelation', 'list_cepage', 'region', 'country', 'year','code_saq', 'price', 'alcool','rating']
-    list_filter = ['producer','wineType', 'year', 'country', 'cepage', 'region','appelation']
+    list_filter = ['producer','wineType', 'country', 'cepage', 'region','appelation']
     search_fields = ['name','producer','appelation','cepage','region','code_saq']
     fieldsets = (
         ('Fiche', {
@@ -59,13 +60,13 @@ class WineAdmin(admin.ModelAdmin):
     )
 
 class TaninAdmin(admin.ModelAdmin):
-    list_display = ['tanin','order']
+    list_display = ['tanin','order',]
     list_filter = ['tanin']
 
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['tag', 'wineType', 'is_approved']
+    list_display = ['tag', 'wineType', 'is_approved', 'last_modified']
     list_filter = ['status']
 
 

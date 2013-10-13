@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.utils import timezone
 
 SCALE = (
     (1, 1),
@@ -9,6 +10,9 @@ SCALE = (
     (4, 4),
     (5, 5),
 )
+
+YEARS  = ((x,x) for x in xrange(1900,timezone.now().year+1))
+
 # ==================================================
 #  VALIDATOR CLASSES
 # ==================================================
@@ -24,7 +28,11 @@ validate_numeric_only = RegexValidator(regex='^[0-9\s-]*$',
 # ==================================================
 #  ABSTRACT CLASSES
 # ==================================================
+class Timestamp(models.Model):
+    last_modified = models.DateTimeField('Last modified', auto_now_add=True, auto_now=True, default=timezone.now())
 
+    class Meta:
+        abstract = True
 
 class Orderable(models.Model):
     order = models.IntegerField()
@@ -123,7 +131,7 @@ class Taste(Orderable):
 # ==================================================
 
 
-class Cepage(Approvable, WineType):
+class Cepage(Approvable, WineType, Timestamp):
     cepage = models.CharField(max_length=60,
                               validators=[validate_non_numeric])
 
@@ -131,7 +139,7 @@ class Cepage(Approvable, WineType):
         return self.cepage
 
 
-class Tag(Approvable, WineType):
+class Tag(Approvable, WineType ,Timestamp):
     tag = models.CharField(max_length=60,
                            validators=[validate_non_numeric],
                            unique=True
@@ -142,17 +150,17 @@ class Tag(Approvable, WineType):
         return '%s (%s)' % (self.tag, self.wineType)
 
 
-class Wine(WineType):
+class Wine(WineType, Timestamp):
     name = models.CharField(max_length=100,
                             unique=True
                             )
     producer = models.CharField(max_length=100)
-    year = models.IntegerField()
+    year = models.IntegerField(choices=YEARS)
     appelation = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     alcool = models.FloatField()
-    date = models.DateTimeField('Tasting Date')
+    date = models.DateField('Tasting Date')
     code_saq = models.CharField(unique=True,
                                  max_length=255,
                                 validators=[validate_numeric_only]
