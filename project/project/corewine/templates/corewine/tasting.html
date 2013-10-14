@@ -1,3 +1,6 @@
 <h1>Tasting</h1>
-
-{{ wine_form.as_p }}
+<form action="{% url 'corewine:tasting' %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>

@@ -1,21 +1,21 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from project.corewine.forms import WineForm
-
+from project.corewine.models import Wine
+from django.views.generic.edit import FormView
 
 
 def index(request):
-	return render(request, 'corewine/index.html')
+    return render(request, 'corewine/index.html')
 
 
-def tasting(request):
-    # template_name = 'tasting.html'
-    wine_form = WineForm
-    # success_url = '/thanks/'
+class TastingView(FormView):
+    template_name = 'corewine/tasting.html'
+    form_class = WineForm
+    success_url = '/wine'
 
-    return render_to_response('corewine/tasting.html', {'wine_form' : wine_form})
-
-   
-
-
+    def form_valid(self, form):
+        form.save()
+        form.send_email()
+        return super(TastingView, self).form_valid(form)

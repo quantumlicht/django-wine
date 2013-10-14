@@ -1,0 +1,18 @@
+{% load staticfiles  %}
+{% load less %}
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}{% less 'styles.less' %}">
+	{# <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}{% less 'style.css' %}"> #}
+	{# <script src="{% static 'less-1.4.1.min.js' %}"></script> #}
+	{% block  title %}<title>Title</title>{% endblock title %}
+</head>
+<body>
+   <p>coucou</p>
+   test
+</body>
+</html>

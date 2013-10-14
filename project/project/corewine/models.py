@@ -3,15 +3,9 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
 
-SCALE = (
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-)
+SCALE = [ (0.5*x, str(0.5*x)) for x in xrange(1,11) ]
 
-YEARS  = ((x,x) for x in xrange(1900,timezone.now().year+1))
+YEARS  = [(x,x) for x in xrange(timezone.now().year, 1899, -1)]
 
 # ==================================================
 #  VALIDATOR CLASSES
@@ -84,6 +78,9 @@ class Approvable(models.Model):
 # ==================================================
 
 class Acidity(Orderable):
+    class Meta:
+        verbose_name_plural = 'Acidities'
+
     acidity = models.CharField(max_length=60,
                                unique=True
                                )
@@ -162,14 +159,16 @@ class Wine(WineType, Timestamp):
     alcool = models.FloatField()
     date = models.DateField('Tasting Date')
     code_saq = models.CharField(unique=True,
-                                 max_length=255,
+                                max_length=255,
                                 validators=[validate_numeric_only]
-        )
+                                )
+
     price = models.FloatField()
-    nose_intensity = models.IntegerField(choices=SCALE)
-    mouth_intensity = models.IntegerField(choices=SCALE)
-    persistance = models.IntegerField(choices=SCALE)
-    rating = models.FloatField()
+
+    mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
+    nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
+    persistance = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
+    rating = models.DecimalField(choices=SCALE, max_digits=3, decimal_places=1)
 
     teint = models.ForeignKey(Teint)
     aroma = models.ForeignKey(Aroma)
@@ -177,7 +176,7 @@ class Wine(WineType, Timestamp):
     acidity = models.ForeignKey(Acidity)
     tanin = models.ForeignKey(Tanin)
     cepage = models.ManyToManyField(Cepage)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag,blank=True, null=True)
 
 
     def list_cepage(obj):
