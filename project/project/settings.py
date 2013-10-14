@@ -1,11 +1,10 @@
-# Django settings for project project.
 import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Philippe Guay', 'guay.philippe@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -57,13 +56,15 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(SITE_ROOT, 'site_static')
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
-LESS_MTIME_DELAY = 1000
+
+LESS_MTIME_DELAY = 500
 LESS_USE_CACHE = False
-# List of finder classes that know how to find static files in
-# various locations.
+
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -74,7 +75,6 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '5aexxxz2e=ypq1ieyd^qd(aw%c#_pta8)@#ty!+j+rxvq-@cle'
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -98,9 +98,6 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates')
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (

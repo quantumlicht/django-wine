@@ -1,4 +1,4 @@
 {% extends 'base.html' %}
-<p>
-	index.html
-</p>
+{% block main %}
+a link to <a href="{% url 'corewine:index' %}">wine</a>
+{% endblock main %}

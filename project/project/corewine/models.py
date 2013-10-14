@@ -144,7 +144,7 @@ class Tag(Approvable, WineType ,Timestamp):
     description = models.CharField(max_length=300)
 
     def __unicode__(self):
-        return '%s (%s)' % (self.tag, self.wineType)
+        return self.tag
 
 
 class Wine(WineType, Timestamp):
