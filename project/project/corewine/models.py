@@ -23,7 +23,7 @@ validate_numeric_only = RegexValidator(regex='^[0-9\s-]*$',
 #  ABSTRACT CLASSES
 # ==================================================
 class Timestamp(models.Model):
-    last_modified = models.DateTimeField('Last modified', auto_now_add=True, auto_now=True, default=timezone.now())
+    last_modified = models.DateTimeField('Last Modified', auto_now_add=True, auto_now=True, default=timezone.now())
 
     class Meta:
         abstract = True
@@ -51,9 +51,9 @@ class WineType(models.Model):
 
 
 class Approvable(models.Model):
-    APPROVED = 'Approved'
-    REJECTED = 'Rejected'
-    PENDING = 'Pending'
+    APPROVED = 'a'
+    REJECTED = 'r'
+    PENDING = 'p'
 
     class Meta:
         abstract = True
@@ -149,34 +149,36 @@ class Tag(Approvable, WineType ,Timestamp):
 
 class Wine(WineType, Timestamp):
     name = models.CharField(max_length=100,
-                            unique=True
+                            unique=True,
+                            verbose_name='Name'
                             )
-    producer = models.CharField(max_length=100)
-    year = models.IntegerField(choices=YEARS)
-    appelation = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    region = models.CharField(max_length=100)
-    alcool = models.FloatField()
+    producer = models.CharField(max_length=100, verbose_name='Producer')
+    year = models.IntegerField(choices=YEARS, verbose_name='Year' )
+    appelation = models.CharField(max_length=100, verbose_name='Appelation')
+    country = models.CharField(max_length=100, verbose_name='Country')
+    region = models.CharField(max_length=100, verbose_name='Region')
+    alcool = models.FloatField(verbose_name='Alcool')
     date = models.DateField('Tasting Date')
     code_saq = models.CharField(unique=True,
                                 max_length=255,
+                                verbose_name='SAQ Code',
                                 validators=[validate_numeric_only]
                                 )
 
     price = models.FloatField()
 
-    mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
-    nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
-    persistance = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1)
-    rating = models.DecimalField(choices=SCALE, max_digits=3, decimal_places=1)
+    mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name='Mouth Intensity')
+    nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name='Nose Intensity')
+    persistance = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name='Persistance')
+    rating = models.DecimalField(choices=SCALE, max_digits=3, decimal_places=1, verbose_name='Rating')
 
-    teint = models.ForeignKey(Teint)
-    aroma = models.ForeignKey(Aroma)
-    taste = models.ForeignKey(Taste)
-    acidity = models.ForeignKey(Acidity)
-    tanin = models.ForeignKey(Tanin)
-    cepage = models.ManyToManyField(Cepage)
-    tag = models.ManyToManyField(Tag,blank=True, null=True)
+    teint = models.ForeignKey(Teint, verbose_name='Teint')
+    aroma = models.ForeignKey(Aroma, verbose_name='Aroma')
+    taste = models.ForeignKey(Taste, verbose_name='Taste')
+    acidity = models.ForeignKey(Acidity, verbose_name='Acidity')
+    tanin = models.ForeignKey(Tanin, verbose_name='Tanin')
+    cepage = models.ManyToManyField(Cepage, verbose_name='Cepage')
+    tag = models.ManyToManyField(Tag,blank=True, null=True, verbose_name='Tags')
 
 
     def list_cepage(obj):

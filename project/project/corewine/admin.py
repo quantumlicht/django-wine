@@ -2,6 +2,31 @@ from django.contrib import admin
 from project.corewine.models import *
 
 
+# ==================================================
+#  ADMIN ACTIONS
+# ==================================================
+
+def make_approved(modeladmin, request, queryset):
+    queryset.update(status='a')
+make_approved.short_description = "Mark selected as approved"
+
+
+def make_rejected(modeladmin, request, queryset):
+    queryset.update(status='r')
+make_rejected.short_description = "Mark selected as rejected"
+
+# ==================================================
+#  STYLING CLASSES
+# ==================================================
+
+class CepageInline(admin.TabularInline):
+    model = Wine.cepage.through
+
+
+# ==================================================
+#  ADMIN CLASSES
+# ==================================================
+
 class AcidityAdmin(admin.ModelAdmin):
     """Manage the Acidity fields """
     fields = ('acidity', 'order')
@@ -14,15 +39,12 @@ class AromaAdmin(admin.ModelAdmin):
     list_display = ['aroma', 'order']
 
 
-class CepageInline(admin.TabularInline):
-    model = Wine.cepage.through
-
-
 class TeintAdmin(admin.ModelAdmin):
     """Manage the Teint fields"""
     fields = ('teint', 'wineType', 'order')
     list_display = ['teint', 'wineType', 'order']
     list_filter = ['wineType']    
+
 
 class TasteAdmin(admin.ModelAdmin):
     """Manage the Taste fields"""
@@ -59,21 +81,26 @@ class WineAdmin(admin.ModelAdmin):
         })
     )
 
+
 class TaninAdmin(admin.ModelAdmin):
     list_display = ['tanin','order',]
     list_filter = ['tanin']
 
 
-
 class TagAdmin(admin.ModelAdmin):
     list_display = ['tag', 'wineType', 'is_approved', 'last_modified']
     list_filter = ['status']
+    actions=[make_rejected, make_approved]
 
 
 class CepageAdmin(admin.ModelAdmin):
     list_display = ['cepage', 'wineType', 'is_approved']
     list_filter = ['status']
+    actions=[make_rejected, make_approved]
 
+# ==================================================
+#  ADMIN REGISTRATION
+# ==================================================
 
 admin.site.register(Wine, WineAdmin)
 admin.site.register(Tanin,TaninAdmin)
