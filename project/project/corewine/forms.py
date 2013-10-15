@@ -5,58 +5,43 @@ from project.corewine.admin import WineAdmin
 from django.contrib.admin.widgets import AdminDateWidget
 import json
 
-def listit(t):
-    dictlist = []
-    for elem in list(t):
-        if isinstance(elem, list):
-            return listit(elem)
-        elif(isinstance(elem, tuple)):
-            return listit(elem)
-        else:
-            return listit(elem)
-        # elif(isinstance(elem, dict)):
-        #     for key, value in elem.iteritems():
-        #         temp = [key,list(value)]
-        #         dictlist.append(temp)
-        #     return dictlist   
-    # return list(map(listit, t)) if isinstance(t, (list, tuple)) else t
 
 class WineForm(ModelForm):
-    fieldset = WineAdmin.fieldsets
 
-
-    # field_data = str(listit(WineAdmin.fieldsets))
-
-    field_list = Wine._meta.fields + Wine._meta.many_to_many
-    field_data = json.dumps([{"name":x.attname, "type": x.get_internal_type(), "verbose": x.verbose_name } for x in field_list])
-    hidden_field = CharField(max_length=64, widget=HiddenInput(attrs={'data':field_data}))
-    
     class Meta:
         model = Wine
-        # widgets = {}
-        # fields= '__all__'
+    
+    fieldsets = list(WineAdmin.fieldsets)
+    field_list = Wine._meta.fields + Wine._meta.many_to_many
 
-        # def getWidgetType(field):
-        #     fieldtype = field.get_internal_type()
-        #     if  fieldtype == 'ManyToManyField':
-        #         return SelectMultiple(attrs={'class': 'form-control'})
+    EXCLUDED_FIELDS_LIST = ['rating']
 
-        #     elif field == 'DateField':
-        #         return extras.SelectDateWidget
-            
-        #     elif fieldtype == 'CharField':
-        #         return TextInput(attrs={'class': 'form-control'})
+    # prepare field metadata
+    fields_data = {}
+    for item in field_list:
+        fields_data[item.attname] = {"type": item.get_internal_type(), "verbose": item.verbose_name}
+    
 
-        #     elif fieldtype in ['IntegerField', 'FloatField', 'DecimalField']:
-        #         if field.choices:
-        #             return Select(attrs={'class': 'form-control'})
-        #         else:
-        #             return TextInput(attrs={'class': 'form-control'})
-            
-        #     elif fieldtype == 'ForeignKey':    
-        #         return RadioSelect(attrs={'class': 'form-control'}, choices=field.choices)
+    # parse WineAdmin fieldsets structure to extract the list of fields for each fieldset and link the metadata to it.
+    # WARNING: it currently does not support having tuples as fields items. In other words, there should only be 3 nested levels to the fieldsets tuple.
+    json_dict = {}
+    for fieldset in list(fieldsets):
+        fieldset_name = fieldset[0]
+        fieldset_fields = list(fieldset[1]['fields'])
+        
+        tmp_dict = {}
+        for item in fieldset_fields:
+            if item in fields_data.keys() and not item in EXCLUDED_FIELDS_LIST:
+                tmp_dict[item] = fields_data[item]
+                        
+        json_dict[fieldset_name] = tmp_dict
 
-                
-        # for field in field_list:
-        #     widgets[field.attname] = getWidgetType(field)
+    # remove empty keys
+    json_dict = dict((k, v) for k, v in json_dict.iteritems() if v)        
 
+    # prepare as json to be use by javascript in the page
+    fields_data = json.dumps(json_dict)
+    
+    # this field will contain all the fields we want to show, as well as useful metadata
+    hidden_field = CharField(max_length=64, widget=HiddenInput(attrs={'data':fields_data}))
+    

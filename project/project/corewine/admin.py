@@ -61,12 +61,12 @@ class WineAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Fiche', {
             'fields': (
-                ('name', 'producer', 'year'),
+                'name', 'producer', 'year',
                 'appelation',
-                ('region', 'country'),
+                'region', 'country',
                 'cepage',
                 'date',
-                ('code_saq', 'alcool', 'price'),
+                'code_saq', 'alcool', 'price',
                 'rating',
             )
         }),

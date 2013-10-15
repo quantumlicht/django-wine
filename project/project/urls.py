@@ -5,7 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'project.views.index', name='index'),
+    url(r'^$', 'project.views.landing', name='landing'),
     url(r'^wine/', include('project.corewine.urls', namespace="corewine")),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

@@ -17,5 +17,4 @@ class TastingView(FormView):
 
     def form_valid(self, form):
         form.save()
-        form.send_email()
         return super(TastingView, self).form_valid(form)
