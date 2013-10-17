@@ -54,11 +54,11 @@ SITE_ROOT = os.path.dirname(PROJECT_ROOT)
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(SITE_ROOT, 'site_static')
+STATIC_ROOT = os.path.join(SITE_ROOT, '../site_static')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
+    os.path.join(PROJECT_ROOT, '../static'),
 )
 
 LESS_MTIME_DELAY = 500
@@ -97,7 +97,7 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates')
+    os.path.join(PROJECT_ROOT, '../templates'),
 )
 
 INSTALLED_APPS = (
@@ -110,8 +110,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'project.blog',
-    'project.corewine',
+    'blog',
+    'corewine',
     'south',
     'less',
 )

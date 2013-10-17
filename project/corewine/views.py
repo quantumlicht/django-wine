@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from project.corewine.forms import WineForm
-from project.corewine.models import Wine
 from django.views.generic.edit import FormView
+
+from .forms import WineForm
+from .models import Wine
 
 
 def index(request):

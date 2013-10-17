@@ -1,5 +1,5 @@
 from django.contrib import admin
-from project.corewine.models import *
+from .models import *
 
 
 # ==================================================

@@ -6,7 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from project.corewine.models import *
+from .models import *
 
 
 class TagTester(TestCase):

@@ -1,8 +1,7 @@
+import json
 from django.forms import ModelForm
 from django.forms import HiddenInput
-from project.corewine.models import Wine
-# from project.corewine.admin import WineAdmin
-import json
+from .models import Wine
 
 
 class WineForm(ModelForm):

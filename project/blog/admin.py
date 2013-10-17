@@ -1,5 +1,5 @@
 from django.contrib import admin
-from project.blog.models import BlogEntry, Comment
+from .models import BlogEntry, Comment
 
 
 class CommentInline(admin.TabularInline):

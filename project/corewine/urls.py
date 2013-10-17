@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from project.corewine.views import index, TastingView
+from .views import index, TastingView
 
 # TODO: make sure urls are locale specific
 urlpatterns = patterns('',
