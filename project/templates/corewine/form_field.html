@@ -1,52 +1,18 @@
 {% load corewine_tags %}
-
-{% if field.field.widget|class_name == 'Select' %}
 <div class="form-group {% if field.errors %}has-error{% endif %}">
-    <label
-        class="control-label {% if field.field.required %}bold{% endif %}"
-        for="{{ field.auto_id }}">
-        {{ field.label|safe }}
-        {{ field.required }}
-    </label>
-    <div class="controls">
-        {{ field }}
-        {% if field.errors %}
-            {{ field.errors }}
-        {% endif %}
+    <div class="col-lg-4">
+        <label
+            class="control-label {% if field.field.required %}bold{% endif %}"
+            for="{{ field.auto_id }}">
+            {{ field.label|safe }}
+            {{ field.required }}
+        </label>
+        <div class="controls">
+            {{ field }}
+            {% if field.errors %}
+                {{ field.errors }}
+            {% endif %}
+        </div>
     </div>
+        
 </div>
-{% endif %}
-{% if field.field.widget|class_name == 'TextInput' %}
-<div class="form-group {% if field.errors %}has-error{% endif %}">
-    <label
-        class="control-label {% if field.field.required %}bold{% endif %}"
-        for="{{ field.auto_id }}">
-        {{ field.label|safe }}
-        {{ field.required }}
-    </label>
-    <div class="controls">
-        {{ field }}
-        {{ field.field.widget|class_name }}
-        {% if field.errors %}
-            {{ field.errors }}
-        {% endif %}
-    </div>
-</div>
-{% endif %}
-{% if field.field.widget|class_name == 'SelectMultiple' %}
-<div class="form-group {% if field.errors %}has-error{% endif %}">
-    <label
-        class="control-label {% if field.field.required %}bold{% endif %}"
-        for="{{ field.auto_id }}">
-        {{ field.label|safe }}
-        {{ field.required }}
-    </label>
-    <div class="controls">
-        {{ field }}
-        {{ field.field.widget|class_name }}
-        {% if field.errors %}
-            {{ field.errors }}
-        {% endif %}
-    </div>
-</div>
-{% endif %}

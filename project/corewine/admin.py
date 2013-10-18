@@ -31,19 +31,21 @@ class AcidityAdmin(admin.ModelAdmin):
     """Manage the Acidity fields """
     fields = ('acidity', 'order')
     list_display = ['acidity', 'order']
+    ordering = ['order']
 
 
 class AromaAdmin(admin.ModelAdmin):
     """ Manage the Aroma fields """
     fields = ('aroma', 'order')
     list_display = ['aroma', 'order']
-
+    ordering = ['order']
 
 class TeintAdmin(admin.ModelAdmin):
     """Manage the Teint fields"""
     fields = ('teint', 'wineType', 'order')
     list_display = ['teint', 'wineType', 'order']
     list_filter = ['wineType']    
+    ordering = ['wineType', 'order']
 
 
 class TasteAdmin(admin.ModelAdmin):
@@ -51,6 +53,7 @@ class TasteAdmin(admin.ModelAdmin):
     fields = ('taste', 'order')
     list_display = ['taste', 'order']
     list_filter = ['taste']    
+    ordering = ['order']
 
 
 class WineAdmin(admin.ModelAdmin):
@@ -61,13 +64,10 @@ class WineAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Fiche', {
             'fields': (
-                'name', 'producer', 'year',
-                'appelation',
-                'region', 'country',
+                ('name', 'producer', 'year'),
+                ('appelation','region', 'country'),
                 'cepage',
-                'date',
-                'code_saq', 'alcool', 'price',
-                'rating',
+                ('date','code_saq', 'alcool', 'price', 'rating'),
             )
         }),
         ('Eye', {
@@ -85,16 +85,17 @@ class WineAdmin(admin.ModelAdmin):
 class TaninAdmin(admin.ModelAdmin):
     list_display = ['tanin','order',]
     list_filter = ['tanin']
+    ordering = ['order']
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['tag', 'wineType', 'is_approved', 'last_modified']
+    list_display = ['tag', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status']
     actions=[make_rejected, make_approved]
 
 
 class CepageAdmin(admin.ModelAdmin):
-    list_display = ['cepage', 'wineType', 'is_approved']
+    list_display = ['cepage', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status']
     actions=[make_rejected, make_approved]
 

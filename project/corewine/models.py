@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 SCALE = [ (0.5*x, str(0.5*x)) for x in xrange(1,11) ]
 
@@ -23,10 +24,12 @@ validate_numeric_only = RegexValidator(regex='^[0-9\s-]*$',
 #  ABSTRACT CLASSES
 # ==================================================
 class Timestamp(models.Model):
-    last_modified = models.DateTimeField('Last Modified', auto_now_add=True, auto_now=True, default=timezone.now())
-
+    last_modified = models.DateTimeField('Last Modified', auto_now=True, default=timezone.now())
+    created = models.DateTimeField('Creation Date',  auto_now_add=True, default=timezone.now())
+    
     class Meta:
         abstract = True
+
 
 class Orderable(models.Model):
     order = models.IntegerField()
@@ -47,7 +50,7 @@ class WineType(models.Model):
         ('Sparkling', 'Sparkling'),
 
     )
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES)
+    wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name='Wine Type')
 
 
 class Approvable(models.Model):
@@ -176,7 +179,7 @@ class Wine(WineType, Timestamp):
     aroma = models.ForeignKey(Aroma, verbose_name='Aroma')
     taste = models.ForeignKey(Taste, verbose_name='Taste')
     acidity = models.ForeignKey(Acidity, verbose_name='Acidity')
-    tanin = models.ForeignKey(Tanin, verbose_name='Tanin')
+    tanin = models.ForeignKey(Tanin, verbose_name='Tanin', blank=True)
     cepage = models.ManyToManyField(Cepage, verbose_name='Cepage')
     tag = models.ManyToManyField(Tag,blank=True, null=True, verbose_name='Tags')
 

@@ -101,19 +101,22 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.humanize',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.auth',
     'blog',
+    'braces',
+    'django.contrib.contenttypes',
     'corewine',
-    'south',
+    'django.contrib.formtools',
+    'django.contrib.humanize',
     'less',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'south',
+    'rest_framework',
+    'django.contrib.staticfiles',
 )
 
 # A sample logging configuration. The only tangible logging
