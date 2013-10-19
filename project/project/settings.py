@@ -57,6 +57,9 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(SITE_ROOT, '../site_static')
 STATIC_URL = '/static/'
 
+LOCALE_PATHS = (
+    os.path.join(PROJECT_ROOT, 'locale'),
+)
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '../static'),
 )
@@ -64,6 +67,10 @@ STATICFILES_DIRS = (
 LESS_MTIME_DELAY = 500
 LESS_USE_CACHE = False
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.i18n'
+)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -82,8 +89,9 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

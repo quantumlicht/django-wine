@@ -1,6 +1,5 @@
 import json
-from django.forms import ModelForm
-from django.forms import HiddenInput
+from django.forms import ModelForm, ValidationError
 from .models import Wine
 
 
@@ -9,6 +8,14 @@ class WineForm(ModelForm):
     class Meta:
         model = Wine
     
+    def clean(self):
+        
+        cleaned_data = super(WineForm, self).clean()
+
+        if cleaned_data.get('wineType')=='Red':
+            raise ValidationError('Red wines need to have tanin described.')
+
+        return cleaned_data
     # fieldsets = list(WineAdmin.fieldsets)
     # field_list = Wine._meta.fields + Wine._meta.many_to_many
 

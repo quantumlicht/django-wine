@@ -10,7 +10,9 @@
         <div class="controls">
             {{ field }}
             {% if field.errors %}
+            <span class="help-block">
                 {{ field.errors }}
+            </span>
             {% endif %}
         </div>
     </div>

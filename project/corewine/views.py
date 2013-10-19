@@ -2,11 +2,10 @@ from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 from .forms import WineForm
-from .models import Wine, Cepage
+from .models import Wine, Cepage, Teint, Tag
 
 from rest_framework.generics import (
-	ListCreateAPIView,
-	RetrieveUpdateDestroyAPIView
+	ListAPIView
 )
 
 
@@ -24,8 +23,20 @@ class TastingView(FormView):
         return super(TastingView, self).form_valid(form)
 
 
-class CepageCreateReadView(ListCreateAPIView):
+class CepageReadView(ListAPIView):
 	model = Cepage
+
+
+class TagReadView(ListAPIView):
+	model = Tag
+
+
+class TeintReadView(ListAPIView):
+	model = Teint
+
+
+
+
 	
 
 

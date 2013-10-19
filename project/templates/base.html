@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}{% less 'styles.less' %}">
 	{# <script src="{% static 'less-1.4.1.min.js' %}"></script> #}
-	{% block  title %}<title>Title</title>{% endblock title %}
+	{% block  title %}<title>{% trans "Title" %}</title>{% endblock title %}
 </head>
 
 <body>
@@ -20,7 +20,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'landing' %}">Wine Expert</a>
+    <a class="navbar-brand" href="{% url 'landing' %}">{% trans "Wine Expert" %}</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,6 +74,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.min.js"></script>
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
 <script src="{{ STATIC_URL }}/js/core.js"></script>
 </body>
 
