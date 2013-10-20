@@ -28,7 +28,9 @@ class CepageInline(admin.TabularInline):
 # ==================================================
 
 class AcidityAdmin(admin.ModelAdmin):
-    """Manage the Acidity fields """
+    """ 
+    Manage the Acidity fields
+    """
     fields = ('acidity', 'order')
     list_display = ['acidity', 'order']
     ordering = ['order']
@@ -39,6 +41,20 @@ class AromaAdmin(admin.ModelAdmin):
     fields = ('aroma', 'order')
     list_display = ['aroma', 'order']
     ordering = ['order']
+
+
+class CepageAdmin(admin.ModelAdmin):
+    list_display = ['cepage', 'wineType', 'is_approved', 'last_modified', 'created']
+    list_filter = ['status']
+    actions = [make_rejected, make_approved]
+
+
+class CountryAdmin(admin.ModelAdmin):
+    """ Manage Countries """
+    fields = ('country', 'status')
+    list_filter = ['status']
+    actions = [make_rejected, make_approved]
+
 
 class TeintAdmin(admin.ModelAdmin):
     """Manage the Teint fields"""
@@ -91,13 +107,9 @@ class TaninAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ['tag', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status']
-    actions=[make_rejected, make_approved]
+    actions = [make_rejected, make_approved]
 
 
-class CepageAdmin(admin.ModelAdmin):
-    list_display = ['cepage', 'wineType', 'is_approved', 'last_modified', 'created']
-    list_filter = ['status']
-    actions=[make_rejected, make_approved]
 
 # ==================================================
 #  ADMIN REGISTRATION
@@ -106,6 +118,7 @@ class CepageAdmin(admin.ModelAdmin):
 admin.site.register(Wine, WineAdmin)
 admin.site.register(Tanin,TaninAdmin)
 admin.site.register(Cepage, CepageAdmin)
+admin.site.register(Country, CountryAdmin)
 admin.site.register(Aroma, AromaAdmin)
 admin.site.register(Acidity, AcidityAdmin)
 admin.site.register(Tag, TagAdmin)

@@ -88,7 +88,8 @@ class Acidity(Orderable):
         verbose_name_plural = _('Acidities')
 
     acidity = models.CharField(max_length=60,
-                               unique=True
+                               unique=True,
+                               verbose_name=_('Acidity')
                                )
 
     def __unicode__(self):
@@ -96,17 +97,40 @@ class Acidity(Orderable):
 
 
 class Aroma(Orderable):
+    """
+
+    Aromas related to :model:`corewine.Wine`
+    
+    """
     aroma = models.CharField(max_length=60,
-                             unique=True
+                             unique=True,
+                             verbose_name=_('Aroma')
                              )
+
+    class Meta:
+        verbose_name_plural = _('Aromas')
 
     def __unicode__(self):
         return self.aroma
 
 
+class Country(Approvable):
+    country = models.CharField(max_length=250,
+                               unique=True,
+                               verbose_name=_('Country')
+                               )
+    
+    class Meta:
+        verbose_name_plural = _('Countries')
+    
+    def __unicode__(self):
+        return self.country
+
+
 class Tanin(Orderable):
     tanin = models.CharField(max_length=60,
-                             unique=True
+                             unique=True,
+                             verbose_name=_('Tanin')
                              )
 
     def __unicode__(self):
@@ -115,8 +139,8 @@ class Tanin(Orderable):
 
 class Teint(WineType, Orderable):
     teint = models.CharField(max_length=60,
-                             unique=True
-    
+                             unique=True,
+                             verbose_name=_('Teint')
                              )
     def __unicode__(self):
         return self.teint
@@ -124,8 +148,12 @@ class Teint(WineType, Orderable):
 
 class Taste(Orderable):
     taste = models.CharField(max_length=60,
-                             unique=True
+                             unique=True,
+                             verbose_name=_('Taste')
                              )
+
+    class Meta:
+        verbose_name_plural = _('Tastes')
 
     def __unicode__(self):
         return self.taste
@@ -136,7 +164,10 @@ class Taste(Orderable):
 
 class Cepage(Approvable, WineType, Timestamp):
     cepage = models.CharField(max_length=60,
-                              validators=[validate_non_numeric])
+                              validators=[validate_non_numeric],
+                              verbose_name=_('Cepage')
+                              )
+    
 
     def __unicode__(self):
         return self.cepage
@@ -169,7 +200,8 @@ class Wine(WineType, Timestamp):
                                   verbose_name=_('Appelation'),
                                   validators=[validate_non_numeric]
                                  )
-    country = models.CharField(max_length=100, verbose_name=_('Country'))
+
+    country = models.ForeignKey(Country, verbose_name=_('Country'))
 
     region = models.CharField(max_length=100,
                               verbose_name=_('Region'),
@@ -178,7 +210,7 @@ class Wine(WineType, Timestamp):
     alcool = models.FloatField(verbose_name=_('Alcool'),
                                validators=[validate_float_string]
                               )
-    
+
     date = models.DateField(_('Tasting Date'))
     
     code_saq = models.CharField(unique=True,
@@ -199,7 +231,7 @@ class Wine(WineType, Timestamp):
     aroma = models.ForeignKey(Aroma, verbose_name=_('Aroma'))
     taste = models.ForeignKey(Taste, verbose_name=_('Taste'))
     acidity = models.ForeignKey(Acidity, verbose_name=_('Acidity'))
-    tanin = models.ForeignKey(Tanin, verbose_name=_('Tanin'), blank=True, null=True)
+    tanin = models.ForeignKey(Tanin, verbose_name=_('Tanin'), blank=True)
     cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepage'))
     tag = models.ManyToManyField(Tag, blank=True, null=True, verbose_name=_('Tags'))
 

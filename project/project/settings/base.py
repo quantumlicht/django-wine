@@ -1,4 +1,4 @@
-import os
+from os.path import join, abspath, dirname
 from secret import *
 
 ADMINS = (
@@ -6,18 +6,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'dev.db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
+SITE_ID = 1
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -31,9 +20,8 @@ TIME_ZONE = 'America/Montreal'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-can'
-
-SITE_ID = 1
+LANGUAGE_CODE = 'fr-CA'
+LANGUAGES = ('fr', 'en')
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -46,35 +34,55 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-PROJECT_ROOT = os.path.dirname(__file__)
-SITE_ROOT = os.path.dirname(PROJECT_ROOT)
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, '../media')
+# =================================================
+#  PATHS CONFIGURATION
+# =================================================
+here = lambda *x: join(abspath(dirname(__file__)), *x)
+
+# ROOT
+PROJECT_ROOT = here('..','..')
+root = lambda *x: join(abspath(PROJECT_ROOT), *x)
+
+# MEDIA
 MEDIA_URL = '/media/'
+MEDIA_ROOT = root('media')
 
-STATIC_ROOT = os.path.join(SITE_ROOT, '../site_static')
+# STATIC
 STATIC_URL = '/static/'
+STATIC_ROOT  = root('static')
 
+# STATICFILES_DIRS = (
+#     root('static'),
+# )
+
+# TEMPLATES
+TEMPLATE_DIRS = (
+    root('templates'),
+)
+
+# LOCALE
 LOCALE_PATHS = (
-    os.path.join(PROJECT_ROOT, '../../../locale'),
-)
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, '../../static'),
+    root('../locale'),
 )
 
-LESS_MTIME_DELAY = 500
+# =================================================
+# 
+# =================================================
+LESS_MTIME_DELAY = 1
 LESS_USE_CACHE = False
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.i18n'
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request'
 )
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'less.finders.LessFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 TEMPLATE_LOADERS = (
@@ -99,9 +107,6 @@ ROOT_URLCONF = 'project.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'project.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, '../../templates'),
-)
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -117,8 +122,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'south',
     'rest_framework',
+    'south',
+    'tags',
     'django.contrib.staticfiles',
 )
 

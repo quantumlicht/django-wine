@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-19 16:41-0400\n"
+"POT-Creation-Date: 2013-10-20 17:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,15 @@ msgstr ""
 
 #: project/corewine/models.py:17
 msgid "Expression should not contain numeric values"
-msgstr ""
+msgstr "L'expression ne doit pas contenir de chiffres"
 
 #: project/corewine/models.py:21
 msgid "Expression contains letters"
-msgstr ""
+msgstr "L'expression contient des lettres"
 
 #: project/corewine/models.py:26
 msgid "This is not a valid number"
-msgstr ""
+msgstr "Ce n'est pas un nombre valide"
 
 #: project/corewine/models.py:33
 msgid "Last Modified"
@@ -54,91 +54,103 @@ msgstr "Type de vin"
 msgid "Acidities"
 msgstr "Acidités"
 
-#: project/corewine/models.py:159
-msgid "Name"
-msgstr "Nom"
-
-#: project/corewine/models.py:163
-msgid "Producer"
-msgstr "Producteur"
-
-#: project/corewine/models.py:166
-msgid "Year"
-msgstr "Année"
-
-#: project/corewine/models.py:169
-msgid "Appelation"
-msgstr "Appelation"
-
-#: project/corewine/models.py:172
-msgid "Country"
-msgstr "Pays"
-
-#: project/corewine/models.py:175
-msgid "Region"
-msgstr "Région"
-
-#: project/corewine/models.py:178
-msgid "Alcool"
-msgstr "Alcool"
-
-#: project/corewine/models.py:181
-msgid "Tasting Date"
-msgstr "Date de Dégustation"
-
-#: project/corewine/models.py:185
-msgid "SAQ Code"
-msgstr "Code SAQ"
-
-#: project/corewine/models.py:189
-msgid "Price"
-msgstr "Prix"
-
-#: project/corewine/models.py:192
-msgid "Mouth Intensity"
-msgstr "Intensité en Bouche"
-
-#: project/corewine/models.py:193
-msgid "Nose Intensity"
-msgstr "Intensité au Nez"
-
-#: project/corewine/models.py:194
-msgid "Persistance"
-msgstr "Persistance"
-
-#: project/corewine/models.py:195
-msgid "Rating"
-msgstr "Note"
-
-#: project/corewine/models.py:197
-msgid "Teint"
-msgstr "Teinte"
-
-#: project/corewine/models.py:198
-msgid "Aroma"
-msgstr "Arôme"
-
-#: project/corewine/models.py:199
-msgid "Taste"
-msgstr "Goût"
-
-#: project/corewine/models.py:200
+#: project/corewine/models.py:92 project/corewine/models.py:232
 msgid "Acidity"
 msgstr "Acidité"
 
-#: project/corewine/models.py:201
+#: project/corewine/models.py:107 project/corewine/models.py:230
+msgid "Aroma"
+msgstr "Arôme"
+
+#: project/corewine/models.py:111
+msgid "Aromas"
+msgstr "Arômes"
+
+#: project/corewine/models.py:120 project/corewine/models.py:203
+msgid "Country"
+msgstr "Pays"
+
+#: project/corewine/models.py:124
+msgid "Countries"
+msgstr "Pays"
+
+#: project/corewine/models.py:133 project/corewine/models.py:233
 msgid "Tanin"
 msgstr "Tanin"
 
-#: project/corewine/models.py:202
+#: project/corewine/models.py:143 project/corewine/models.py:229
+msgid "Teint"
+msgstr "Teinte"
+
+#: project/corewine/models.py:152 project/corewine/models.py:231
+msgid "Taste"
+msgstr "Goût"
+
+#: project/corewine/models.py:156
+msgid "Tastes"
+msgstr "Goûts"
+
+#: project/corewine/models.py:168 project/corewine/models.py:234
 msgid "Cepage"
 msgstr "Cépage"
 
-#: project/corewine/models.py:203
+#: project/corewine/models.py:189
+msgid "Name"
+msgstr "Nom"
+
+#: project/corewine/models.py:193
+msgid "Producer"
+msgstr "Producteur"
+
+#: project/corewine/models.py:196
+msgid "Year"
+msgstr "Année"
+
+#: project/corewine/models.py:199
+msgid "Appelation"
+msgstr "Appelation"
+
+#: project/corewine/models.py:206
+msgid "Region"
+msgstr "Région"
+
+#: project/corewine/models.py:209
+msgid "Alcool"
+msgstr "Alcool"
+
+#: project/corewine/models.py:213
+msgid "Tasting Date"
+msgstr "Date de Dégustation"
+
+#: project/corewine/models.py:217
+msgid "SAQ Code"
+msgstr "Code SAQ"
+
+#: project/corewine/models.py:221
+msgid "Price"
+msgstr "Prix"
+
+#: project/corewine/models.py:224
+msgid "Mouth Intensity"
+msgstr "Intensité en Bouche"
+
+#: project/corewine/models.py:225
+msgid "Nose Intensity"
+msgstr "Intensité au Nez"
+
+#: project/corewine/models.py:226
+msgid "Persistance"
+msgstr "Persistance"
+
+#: project/corewine/models.py:227
+msgid "Rating"
+msgstr "Note"
+
+#: project/corewine/models.py:235
 msgid "Tags"
 msgstr "Étiquettes"
 
-#: project/corewine/models.py:211
+#: project/corewine/models.py:243
 msgid "Cepages"
 msgstr "Cépages"
 

@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^api/tag$',TagReadView.as_view(), name='tag_rest_api'),
     url(r'^api/teint$',TeintReadView.as_view(), name='teint_rest_api'),
     url(r'^wine/', include('corewine.urls', namespace="corewine")),
+    url(r'^blog/', include('blog.urls', namespace="blog")),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

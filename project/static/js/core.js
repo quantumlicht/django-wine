@@ -5,7 +5,6 @@ $('input,select').attr('class','form-control')
 
 $('#id_name').typeahead({
 	name: 'cepages',
-	// local: ['timtrueman', 'JakeHarding', 'vskarich']
 	template: '<p><strong>{{cepage}}</strong></p>',
 	engine: Hogan,
 		remote: {

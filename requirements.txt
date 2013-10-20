@@ -1,8 +1,10 @@
 Django==1.5.4
 South==0.8.2
 argparse==1.2.1
+coverage==3.7
 distribute==0.6.24
 django-braces==1.2.2
+django-debug-toolbar==0.9.4
 django-less==0.7.2
 djangorestframework==2.3.8
 ipython==1.1.0
