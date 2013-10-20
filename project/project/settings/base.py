@@ -1,7 +1,5 @@
 import os
-
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+from secret import *
 
 ADMINS = (
     ('Philippe Guay', 'guay.philippe@gmail.com'),
@@ -51,17 +49,17 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(__file__)
 SITE_ROOT = os.path.dirname(PROJECT_ROOT)
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, '../media')
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(SITE_ROOT, '../site_static')
 STATIC_URL = '/static/'
 
 LOCALE_PATHS = (
-    os.path.join(PROJECT_ROOT, 'locale'),
+    os.path.join(PROJECT_ROOT, '../../../locale'),
 )
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, '../static'),
+    os.path.join(PROJECT_ROOT, '../../static'),
 )
 
 LESS_MTIME_DELAY = 500
@@ -80,7 +78,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '5aexxxz2e=ypq1ieyd^qd(aw%c#_pta8)@#ty!+j+rxvq-@cle'
+# SECRET_KEY = '5aexxxz2e=ypq1ieyd^qd(aw%c#_pta8)@#ty!+j+rxvq-@cle'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -105,7 +103,7 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, '../templates'),
+    os.path.join(PROJECT_ROOT, '../../templates'),
 )
 
 INSTALLED_APPS = (

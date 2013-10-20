@@ -4,3 +4,4 @@ bootstrap-3.0.0/
 LESS_CACHE/
 less*.min.js
 build/
+secret.py

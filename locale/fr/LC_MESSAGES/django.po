@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-19 16:41-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: project/corewine/models.py:17
+msgid "Expression should not contain numeric values"
+msgstr ""
+
+#: project/corewine/models.py:21
+msgid "Expression contains letters"
+msgstr ""
+
+#: project/corewine/models.py:26
+msgid "This is not a valid number"
+msgstr ""
+
+#: project/corewine/models.py:33
+msgid "Last Modified"
+msgstr "Dernière Modification"
+
+#: project/corewine/models.py:34
+msgid "Creation Date"
+msgstr "Date de Création"
+
+#: project/corewine/models.py:53
+msgid "White"
+msgstr "Blanc"
+
+#: project/corewine/models.py:54
+msgid "Red"
+msgstr "Rouge"
+
+#: project/corewine/models.py:56
+msgid "Wine Type"
+msgstr "Type de vin"
+
+#: project/corewine/models.py:88
+msgid "Acidities"
+msgstr "Acidités"
+
+#: project/corewine/models.py:159
+msgid "Name"
+msgstr "Nom"
+
+#: project/corewine/models.py:163
+msgid "Producer"
+msgstr "Producteur"
+
+#: project/corewine/models.py:166
+msgid "Year"
+msgstr "Année"
+
+#: project/corewine/models.py:169
+msgid "Appelation"
+msgstr "Appelation"
+
+#: project/corewine/models.py:172
+msgid "Country"
+msgstr "Pays"
+
+#: project/corewine/models.py:175
+msgid "Region"
+msgstr "Région"
+
+#: project/corewine/models.py:178
+msgid "Alcool"
+msgstr "Alcool"
+
+#: project/corewine/models.py:181
+msgid "Tasting Date"
+msgstr "Date de Dégustation"
+
+#: project/corewine/models.py:185
+msgid "SAQ Code"
+msgstr "Code SAQ"
+
+#: project/corewine/models.py:189
+msgid "Price"
+msgstr "Prix"
+
+#: project/corewine/models.py:192
+msgid "Mouth Intensity"
+msgstr "Intensité en Bouche"
+
+#: project/corewine/models.py:193
+msgid "Nose Intensity"
+msgstr "Intensité au Nez"
+
+#: project/corewine/models.py:194
+msgid "Persistance"
+msgstr "Persistance"
+
+#: project/corewine/models.py:195
+msgid "Rating"
+msgstr "Note"
+
+#: project/corewine/models.py:197
+msgid "Teint"
+msgstr "Teinte"
+
+#: project/corewine/models.py:198
+msgid "Aroma"
+msgstr "Arôme"
+
+#: project/corewine/models.py:199
+msgid "Taste"
+msgstr "Goût"
+
+#: project/corewine/models.py:200
+msgid "Acidity"
+msgstr "Acidité"
+
+#: project/corewine/models.py:201
+msgid "Tanin"
+msgstr "Tanin"
+
+#: project/corewine/models.py:202
+msgid "Cepage"
+msgstr "Cépage"
+
+#: project/corewine/models.py:203
+msgid "Tags"
+msgstr "Étiquettes"
+
+#: project/corewine/models.py:211
+msgid "Cepages"
+msgstr "Cépages"
+
+#: project/templates/base.html:11
+msgid "Title"
+msgstr "Titre"
+
+#: project/templates/base.html:26
+msgid "Wine Expert"
+msgstr "Expert en vins"
+
+#: project/templates/base.html:31
+msgid "Wine"
+msgstr "Vin"

@@ -178,6 +178,7 @@ class Wine(WineType, Timestamp):
     alcool = models.FloatField(verbose_name=_('Alcool'),
                                validators=[validate_float_string]
                               )
+    
     date = models.DateField(_('Tasting Date'))
     
     code_saq = models.CharField(unique=True,
