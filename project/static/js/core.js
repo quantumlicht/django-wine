@@ -1,17 +1,50 @@
 $(document).ready(function(){
 	
-$('input,select').attr('class','form-control')
 
+
+//====================================
+// ACTIVE NAVBAR SELECTOR
+//====================================
+
+arr_path = location.pathname.split('/');
+if(arr_path.length < 3){
+	//we are at the root, since we usually have a structure like /app_name/
+	selector = "href='/'"
+}
+else{
+	selector = "href*='" + arr_path[1]+ "'"
+}
+// add deactivate class to element if we want to prevent an element from being set as active
+// See for more info on selectors: http://www.w3schools.com/jquery/jquery_ref_selectors.asp
+$('.navbar-nav>li a[' + selector + '][class!="deactivate"]').parent().addClass('active');
+
+
+//====================================
+// adding bootstrap classes
+//====================================
+
+$('input,select').attr('class','form-control');
+
+
+
+//====================================
+// TypeAhead
+//====================================
 
 $('#id_name').typeahead({
 	name: 'cepages',
 	template: '<p><strong>{{cepage}}</strong></p>',
 	engine: Hogan,
-		remote: {
+		prefetch: {
 			url: '../../api/cepage',
 			dataType: 'json'
 		}
 });
+
+//====================================
+// AJAX CONTENT POPULATING
+//====================================
+
 $('#id_wineType').change(function(evt){
 	winetype = evt.target.value;
 
