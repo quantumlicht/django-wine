@@ -82,7 +82,7 @@ class WineAdmin(admin.ModelAdmin):
             'fields': (
                 ('name', 'producer', 'year'),
                 ('appelation','region', 'country'),
-                'cepage',
+                ('cepage','tag'),
                 ('date','code_saq', 'alcool', 'price', 'rating'),
             )
         }),
@@ -94,7 +94,7 @@ class WineAdmin(admin.ModelAdmin):
         }),
         ('Mouth', {
             'fields': ('mouth_intensity', 'persistance', 'taste', 'acidity', 'tanin')
-        })
+        }),
     )
 
 

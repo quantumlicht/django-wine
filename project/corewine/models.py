@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
+from .managers import WineManager
 
 SCALE = [ (0.5*x, str(0.5*x)) for x in xrange(1,11) ]
 
@@ -185,6 +186,8 @@ class Tag(Approvable, WineType ,Timestamp):
 
 
 class Wine(WineType, Timestamp):
+    # FIELDS
+    
     name = models.CharField(max_length=100,
                             unique=True,
                             verbose_name=_('Name')
@@ -235,6 +238,11 @@ class Wine(WineType, Timestamp):
     cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepage'))
     tag = models.ManyToManyField(Tag, blank=True, null=True, verbose_name=_('Tags'))
 
+    # MANAGER
+    objects = WineManager()
+
+
+    # MODEL METHODS
     def list_cepage(obj):
         list_cepage = ', '.join([x.__unicode__() for x in obj.cepage.all() if x.is_approved()])
         return list_cepage
@@ -242,6 +250,22 @@ class Wine(WineType, Timestamp):
     list_cepage.admin_order_field = 'name'
     list_cepage.boolean = False
     list_cepage.short_description = _('Cepages')
+
+    def list_tag(obj):
+        list_tag = ', '.join([x.__unicode__() for x in obj.tag.all() if x.is_approved()])
+        return list_tag
+
+    list_tag.admin_order_field = 'name'
+    list_tag.boolean = False
+    list_tag.short_description = _('Tags')
+
+
+    def arr_cepage(obj):
+        return [x.__unicode__() for x in obj.cepage.all() if x.is_approved()]
+    
+    def arr_tag(obj):
+        return [x.__unicode__() for x in obj.tag.all() if x.is_approved()]
+
 
 
 

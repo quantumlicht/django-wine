@@ -1,5 +1,5 @@
 from django.db import models
-
+from corewine.models import Timestamp, Orderable
 
 class BlogEntry(models.Model):
     title = models.CharField(max_length=250)

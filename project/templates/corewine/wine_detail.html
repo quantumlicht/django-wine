@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block main %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">{{ wine.name }} ({{ wine.wineType}})</div>
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">{% trans "Producer" %}: {{ wine.producer }}</li>
+    <li class="list-group-item">{% trans "Year" %}: {{ wine.year }}</li>
+    <li class="list-group-item">{% trans "Appelation" %}: {{ wine.appelation }}</li>
+    <li class="list-group-item">{% trans "Country" %}: {{ wine.country }}</li>
+    <li class="list-group-item">{% trans "Region" %}: {{ wine.region }}</li>
+    <li class="list-group-item">{% trans "Alcool" %} (%): {{ wine.alcool }}</li>
+    <li class="list-group-item">{% trans "Tasting Date" %}: {{ wine.date }}</li>
+    <li class="list-group-item">{% trans "SAQ Code" %}: {{ wine.code_saq }}</li>
+    <li class="list-group-item">{% trans "Price" %}: {{ wine.price }}$</li>
+    <li class="list-group-item">{% trans "Mouth Intensity" %}: {{ wine.mouth_intensity }}</li>
+    <li class="list-group-item">{% trans "Nose Intensity" %}: {{ wine.nose_intensity }}</li>
+    <li class="list-group-item">{% trans "Persistance" %}: {{ wine.persistance }}</li>
+    <li class="list-group-item">{% trans "Rating" %}: {{ wine.rating }}</li>
+    <li class="list-group-item">{% trans "Teint" %}: {{ wine.teint }}</li>
+    <li class="list-group-item">{% trans "Aroma" %}: {{ wine.aroma }}</li>
+    <li class="list-group-item">{% trans "Taste" %}: {{ wine.taste }}</li>
+    <li class="list-group-item">{% trans "Acidity" %}: {{ wine.acidity }}</li>
+    {% if wine.tanin %}
+    <li class="list-group-item">{% trans "Tanin" %}: {{ wine.tanin }}</li>
+    {% endif %}
+    
+    <li class="list-group-item">
+	    {% blocktrans count arr_cepage as counter %}
+	    Cepage
+	    {% plural %}
+	    Cepages
+	    {% endblocktrans %}
+	    :
+	    {{ arr_cepage|join:', ' }}
+    </li>	
+    <li class="list-group-item">
+	    {% blocktrans count arr_tag as counter %}
+	    Tag
+	    {% plural %}
+	    Tags
+	    {% endblocktrans %}
+	    :
+	    {{ arr_tag|join:', ' }}
+    </li>	
+
+
+  </ul>
+</div>
+
+{% endblock main %}

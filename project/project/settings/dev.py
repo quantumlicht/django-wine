@@ -1,8 +1,10 @@
+from base import *
 
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+TEMPLATE_STRING_IF_INVALID = "INVALID EXPRESSION: %s"
 # INSTALLED_APPS += ('debug_toolbar',)
 
 # INTERNAL_IPS = ('127.0.0.1',)
@@ -22,5 +24,3 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
-
-from base import *

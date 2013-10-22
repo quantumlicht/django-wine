@@ -5,7 +5,7 @@
 <form action="{% url 'corewine:tasting' %}" class="form-horizontal" method="post" role="form">
 {% csrf_token %}
 {% for field in form %}
-    {% include "corewine/form_field.html" with field=field %}
+    {% include "corewine/_form_field.html" with field=field %}
 {% endfor %}
 <button type="submit" class="btn btn-default">Submit</button>
 </form>

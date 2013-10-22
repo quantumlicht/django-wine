@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block main %}
+	
+{% for wine in wine_list %}
+	{% include "corewine/_wine_list_element.html" with wine=wine %}
+{% endfor %}
+
+
+{% endblock main %}

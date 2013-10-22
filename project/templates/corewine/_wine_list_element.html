@@ -1,0 +1,14 @@
+{% load i18n %}
+<a href="{% url 'corewine:detail' wine.id %}"><div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{wine.name}}</h3>
+  </div>
+</a>
+  <div class="panel-body">
+  	<ul>
+  	   <li>{% trans 'Producer' %}: {{ wine.producer }}</li>
+  	   <li>{% trans 'Country' %}: {{ wine.country }}</li>
+  	   <li>{% trans 'Year' %}: {{ wine.year }}</li>
+  	</ul>
+  </div>
+</div>
