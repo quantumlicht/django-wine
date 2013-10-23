@@ -3,7 +3,8 @@ from django.forms.models import model_to_dict
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
-
+import logging
+log = logging.getLogger(__name__) 
 
 from .forms import WineForm
 from .models import Wine, Cepage, Teint, Tag
@@ -14,6 +15,7 @@ from rest_framework.generics import (
 
 
 def index(request):
+    log.debug('test')
     return render(request, 'corewine/index.html')
 
 
@@ -37,7 +39,6 @@ class WineDetailView(DetailView):
     template_name = 'corewine/wine_detail.html'
     context_object_name = 'wine'
     
-
     def get_context_data(self, **kwargs):
         context = super(WineDetailView, self).get_context_data(**kwargs)
         context['arr_cepage'] = Wine.arr_cepage(self.get_object())

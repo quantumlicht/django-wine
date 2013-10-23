@@ -4,10 +4,13 @@ from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-
+import logging
 from .managers import WineManager
 
-SCALE = [ (0.5*x, str(0.5*x)) for x in xrange(1,11) ]
+
+log = logging.getLogger(__name__) 
+
+SCALE = [ (0.5*x, 0.5*x) for x in xrange(1,11) ]
 
 YEARS  = [(x,x) for x in xrange(timezone.now().year, 1899, -1)]
 
@@ -25,6 +28,15 @@ validate_numeric_only = RegexValidator(regex='^[0-9\s-]*$',
 
 validate_float_string = RegexValidator(regex='^\d+\.?\d+$',
                                       message=_('This is not a valid number'),
+                                      code='not_float_formatted'
+                                      )
+validate_price = RegexValidator(regex='^\d+\.?\d{1,2}$',
+                                      message=_('This is not a valid price. 2 decimals maximum and numbers only is allowed.'),
+                                      code='not_float_formatted'
+                                      )
+
+validate_percentage = RegexValidator(regex='^\d{1,2}\.?\d{1,2}$',
+                                      message=_('This is not a valid percentage. Maximum is 100% and only put 1 decimal maximum.'),
                                       code='not_float_formatted'
                                       )
 # ==================================================
@@ -188,6 +200,7 @@ class Tag(Approvable, WineType ,Timestamp):
 class Wine(WineType, Timestamp):
     # FIELDS
     
+    log.debug('test Wine')
     name = models.CharField(max_length=100,
                             unique=True,
                             verbose_name=_('Name')
@@ -211,7 +224,7 @@ class Wine(WineType, Timestamp):
                               validators=[validate_non_numeric]
                              )
     alcool = models.FloatField(verbose_name=_('Alcool'),
-                               validators=[validate_float_string]
+                               validators=[validate_percentage]
                               )
 
     date = models.DateField(_('Tasting Date'))
@@ -223,7 +236,7 @@ class Wine(WineType, Timestamp):
                                 )
 
     price = models.FloatField(verbose_name=_('Price'),
-                              validators=[validate_float_string])
+                              validators=[validate_price])
 
     mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Mouth Intensity'))
     nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Nose Intensity'))

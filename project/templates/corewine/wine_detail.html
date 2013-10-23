@@ -28,20 +28,12 @@
     {% endif %}
     
     <li class="list-group-item">
-	    {% blocktrans count arr_cepage as counter %}
-	    Cepage
-	    {% plural %}
-	    Cepages
-	    {% endblocktrans %}
+	    {% blocktrans count arr_cepage as counter %}Cepage{% plural %}Cepages{% endblocktrans %}
 	    :
 	    {{ arr_cepage|join:', ' }}
     </li>	
     <li class="list-group-item">
-	    {% blocktrans count arr_tag as counter %}
-	    Tag
-	    {% plural %}
-	    Tags
-	    {% endblocktrans %}
+	    {% blocktrans count arr_tag as counter %}Tag{% plural %}Tags{% endblocktrans %}
 	    :
 	    {{ arr_tag|join:', ' }}
     </li>	
