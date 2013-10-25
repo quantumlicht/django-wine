@@ -124,7 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'rest_framework',
     'south',
-    'tags',
+    'core',
     'django.contrib.staticfiles',
 )
 
