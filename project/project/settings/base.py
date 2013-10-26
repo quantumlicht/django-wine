@@ -20,8 +20,14 @@ TIME_ZONE = 'America/Montreal'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
+
 LANGUAGE_CODE = 'fr-CA'
-LANGUAGES = ('fr', 'en')
+
+gettext = lambda s: s
+LANGUAGES = (
+    ('fr', gettext('French')),
+    ('en', gettext('English'))
+)
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -126,6 +132,11 @@ INSTALLED_APPS = (
     'south',
     'core',
     'django.contrib.staticfiles',
+    'modeltranslation',
+)
+
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'corewine.translation',
 )
 
 # A sample logging configuration. The only tangible logging

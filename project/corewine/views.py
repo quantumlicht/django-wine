@@ -41,13 +41,15 @@ class WineCreateView(WineActionMixin, CreateView):
     model = Wine
     form_class = WineForm
     action = 'Creation!'
-    # success_url = reverse('corewine:list')
 
+    
 
 class WineUpdateView(WineActionMixin, UpdateView):
     model = Wine
     form_class = WineForm
-    action = _('updated')
+    action = 'updated'
+
+
 
 
 class WineListView(ListView):
@@ -55,9 +57,9 @@ class WineListView(ListView):
     context_object_name = 'wine_list'
 
 
-class WineDetailView(WineActionMixin, DetailView):
+class WineDetailView(DetailView):
     model = Wine
-    template_name = 'corewine/wine_detail.html'
+    # template_name = 'corewine/wine_detail.html'
     context_object_name = 'wine'
     
     def get_context_data(self, **kwargs):

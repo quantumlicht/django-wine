@@ -57,9 +57,9 @@ class Approvable(models.Model):
         abstract = True
 
     STATUSES = (
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected'),
-        (PENDING, 'Pending'),
+        (APPROVED, _('Approved')),
+        (REJECTED, _('Rejected')),
+        (PENDING, _('Pending')),
     )
     status = models.CharField(max_length=60, choices=STATUSES, default=PENDING)
 
@@ -68,14 +68,15 @@ class Approvable(models.Model):
 
     is_approved.admin_order_field = 'status'
     is_approved.boolean = True
-    is_approved.short_description = 'Approved ?'
+    is_approved.short_description = _('Approved ?')
 
 
 # ==================================================
 #  PRIVATE MODEL CLASSES (EXPOSED TO ADMIN ONLY)
 # ==================================================
 
-class Acidity(Orderable):
+# -------------------------------------------------------------
+class Acidity(Orderable, Timestamp):
     class Meta:
         verbose_name_plural = _('Acidities')
 
@@ -88,7 +89,8 @@ class Acidity(Orderable):
         return self.acidity
 
 
-class Aroma(Orderable):
+# -------------------------------------------------------------
+class Aroma(Orderable, Timestamp):
     """
 
     Aromas related to :model:`corewine.Wine`
@@ -106,7 +108,74 @@ class Aroma(Orderable):
         return self.aroma
 
 
-class Country(Approvable):
+# -------------------------------------------------------------
+class Tanin(Orderable, Timestamp):
+    tanin = models.CharField(max_length=60,
+                             unique=True,
+                             verbose_name=_('Tanin')
+                             )
+
+    def __unicode__(self):
+        return self.tanin
+
+
+# -------------------------------------------------------------
+class Teint(WineType, Orderable, Timestamp):
+    teint = models.CharField(max_length=60,
+                             unique=True,
+                             verbose_name=_('Teint')
+                             )
+    def __unicode__(self):
+        return self.teint
+
+
+# -------------------------------------------------------------
+class Taste(Orderable, Timestamp):
+    taste = models.CharField(max_length=60,
+                             unique=True,
+                             verbose_name=_('Taste')
+                             )
+
+    class Meta:
+        verbose_name_plural = _('Tastes')
+
+    def __unicode__(self):
+        return self.taste
+
+
+# ==================================================
+#  PUBLIC MODEL CLASSES (EXPOSED TO FORMS)
+# ==================================================
+
+# -------------------------------------------------------------
+class Appelation(Approvable, Timestamp):
+    class Meta:
+        verbose_name_plural = _('Appelations')
+
+    appelation = models.CharField(max_length=100,
+                                  verbose_name=_('Appelation'),
+                                  validators=[non_numeric],
+                                  blank=True,
+                                  unique=True
+                                 )
+    def __unicode__(self):
+        return self.appelation
+
+
+# -------------------------------------------------------------
+class Cepage(Approvable, WineType, Timestamp):
+    cepage = models.CharField(max_length=60,
+                              validators=[non_numeric],
+                              verbose_name=_('Cepage'),
+                              unique=True
+                              )
+    
+    def __unicode__(self):
+        return self.cepage
+
+
+# -------------------------------------------------------------
+class Country(Approvable, Timestamp):
     country = models.CharField(max_length=250,
                                unique=True,
                                verbose_name=_('Country')
@@ -119,53 +188,34 @@ class Country(Approvable):
         return self.country
 
 
-class Tanin(Orderable):
-    tanin = models.CharField(max_length=60,
-                             unique=True,
-                             verbose_name=_('Tanin')
-                             )
-
-    def __unicode__(self):
-        return self.tanin
-
-
-class Teint(WineType, Orderable):
-    teint = models.CharField(max_length=60,
-                             unique=True,
-                             verbose_name=_('Teint')
-                             )
-    def __unicode__(self):
-        return self.teint
-
-
-class Taste(Orderable):
-    taste = models.CharField(max_length=60,
-                             unique=True,
-                             verbose_name=_('Taste')
-                             )
-
+# -------------------------------------------------------------
+class Region(Approvable, Timestamp):
     class Meta:
-        verbose_name_plural = _('Tastes')
+        verbose_name_plural = _('Regions')
 
-    def __unicode__(self):
-        return self.taste
-# ==================================================
-#  PUBLIC MODEL CLASSES (EXPOSED TO FORMS)
-# ==================================================
-
-
-class Cepage(Approvable, WineType, Timestamp):
-    cepage = models.CharField(max_length=60,
+    region = models.CharField(max_length=100,
+                              verbose_name=_('Region'),
                               validators=[non_numeric],
-                              verbose_name=_('Cepage')
-                              )
-    
-
+                              unique=True
+                             )
     def __unicode__(self):
-        return self.cepage
+        return self.region
 
 
-class Tag(Approvable, WineType ,Timestamp):
+# -------------------------------------------------------------
+class Producer(Approvable, Timestamp):
+    class Meta:
+        verbose_name_plural = _('Productors')
+
+    producer = models.CharField(max_length=100,
+                                verbose_name=_('Producer'),
+                                validators=[non_numeric],
+                                unique=True
+                                )
+
+
+# -------------------------------------------------------------
+class Tag(Approvable, WineType, Timestamp):
     tag = models.CharField(max_length=60,
                            validators=[non_numeric],
                            unique=True
@@ -176,8 +226,11 @@ class Tag(Approvable, WineType ,Timestamp):
         return self.tag
 
 
+# -------------------------------------------------------------
 class Wine(WineType, Timestamp):
-    # FIELDS
+    
+    # ------------------------------------
+    # Fields
     slug = models.SlugField()
 
     name = models.CharField(max_length=100,
@@ -185,36 +238,20 @@ class Wine(WineType, Timestamp):
                             verbose_name=_('Name')
                             )
     
-    producer = models.CharField(max_length=100,
-                                verbose_name=_('Producer'),
-                                validators=[non_numeric])
-    
     year = models.IntegerField(choices=YEARS, verbose_name=_('Year') )
     
-    appelation = models.CharField(max_length=100,
-                                  verbose_name=_('Appelation'),
-                                  validators=[non_numeric],
-                                  blank=True
-                                 )
-
-    country = models.ForeignKey(Country, verbose_name=_('Country'))
-
-    region = models.CharField(max_length=100,
-                              verbose_name=_('Region'),
-                              validators=[non_numeric]
-                             )
     alcool = models.FloatField(verbose_name=_('Alcool'),
                                validators=[percentage]
                               )
-
-    date = models.DateField(_('Tasting Date'))
     
+    date = models.DateField(_('Tasting Date'))
+
     code_saq = models.CharField(unique=True,
                                 max_length=255,
                                 verbose_name=_('SAQ Code'),
                                 validators=[numeric_only]
                                 )
-
+    
     price = models.FloatField(verbose_name=_('Price'),
                               validators=[price,price_too_high])
 
@@ -223,29 +260,50 @@ class Wine(WineType, Timestamp):
     persistance = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Persistance'))
     rating = models.DecimalField(choices=SCALE, max_digits=3, decimal_places=1, verbose_name=_('Rating'))
 
+    # ------------------------------------
+    # Foreign Keys
+    producer = models.ForeignKey(Producer)
+
+    appelation = models.ForeignKey(Appelation)
+    
+    country = models.ForeignKey(Country, verbose_name=_('Country'))
+    
+    region = models.ForeignKey(Region)
+    
     teint = models.ForeignKey(Teint, verbose_name=_('Teint'))
+    
     aroma = models.ForeignKey(Aroma, verbose_name=_('Aroma'))
+    
     taste = models.ForeignKey(Taste, verbose_name=_('Taste'))
+    
     acidity = models.ForeignKey(Acidity, verbose_name=_('Acidity'))
+    
     tanin = models.ForeignKey(Tanin, verbose_name=_('Tanin'), blank=True)
+
+    # ------------------------------------
+    # Many To Many
     cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepage'))
+    
     tag = models.ManyToManyField(Tag, blank=True, null=True, verbose_name=_('Tags'))
 
-    # MANAGER
-    objects = WineManager()
+
+    # ------------------------------------
+    # Managers
+    # objects = WineManager()
 
 
-    # MODEL METHODS
+    # ------------------------------------
+    # Model Methods
+    # ------------------------------------
     def get_absolute_url(self):
-        return reverse('corewine:tasting')
-        # return reverse('corewine:detail', kwargs={"slug": self.slug})
+        return reverse('corewine:detail', kwargs={"slug": self.slug})
 
-
+    # ------------------------------------
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Wine, self).save(*args, **kwargs)
 
-
+    # ------------------------------------
     def list_cepage(obj):
         list_cepage = ', '.join([x.__unicode__() for x in obj.cepage.all() if x.is_approved()])
         return list_cepage
@@ -254,6 +312,7 @@ class Wine(WineType, Timestamp):
     list_cepage.boolean = False
     list_cepage.short_description = _('Cepages')
 
+    # ------------------------------------
     def list_tag(obj):
         list_tag = ', '.join([x.__unicode__() for x in obj.tag.all() if x.is_approved()])
         return list_tag
@@ -262,10 +321,11 @@ class Wine(WineType, Timestamp):
     list_tag.boolean = False
     list_tag.short_description = _('Tags')
 
-
+    # ------------------------------------
     def arr_cepage(obj):
         return [x.__unicode__() for x in obj.cepage.all() if x.is_approved()]
     
+    # ------------------------------------
     def arr_tag(obj):
         return [x.__unicode__() for x in obj.tag.all() if x.is_approved()]
 

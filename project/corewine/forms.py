@@ -1,5 +1,12 @@
 import json
-from django.forms import ModelForm, ValidationError
+from django.forms import (
+    ModelForm,
+    ValidationError,
+    CharField,
+    TextInput,
+    Textarea,
+    RadioSelect
+)
 from .models import Wine
 
 
@@ -7,21 +14,28 @@ class WineForm(ModelForm):
 
     class Meta:
         model = Wine
+
+        fields = (
+            'wineType', 'name','producer','year','appelation','country','region','alcool',\
+            'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
+            'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
+        )
+        widgets = {
+            'region': TextInput(),
+            'appelation': TextInput(),
+            'country': TextInput(),
+            'producer': TextInput(),
+            'wineType': RadioSelect(),
+        }
+
+    # def clean(self):
         
-    
-        fields = ('wineType', 'name','producer','year','appelation','country','region','alcool',\
-              'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
-              'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
-             )
+    #     cleaned_data = super(WineForm, self).clean()
 
-    def clean(self):
-        
-        cleaned_data = super(WineForm, self).clean()
+    #     if cleaned_data.get('wineType')=='Red':
+    #         raise ValidationError('Red wines need to have tanin described.')
 
-        if cleaned_data.get('wineType')=='Red':
-            raise ValidationError('Red wines need to have tanin described.')
-
-        return cleaned_data
+    #     return cleaned_data
     # fieldsets = list(WineAdmin.fieldsets)
     # field_list = Wine._meta.fields + Wine._meta.many_to_many
 
