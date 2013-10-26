@@ -3,6 +3,7 @@ from django.utils import timezone
 from core.validators import * 
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 import logging
 from .managers import WineManager
 
@@ -38,10 +39,13 @@ class WineType(models.Model):
         abstract = True
 
     WINE_TYPES = (
-        ('White', _('White')),
-        ('Red', _('Red'))
+        (_('White'), _('White')),
+        (_('Red'), _('Red'))
     )
     wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name=_('Wine Type'))
+    
+    def __unicode__(self):
+        return self.wineType
 
 
 class Approvable(models.Model):
@@ -152,7 +156,7 @@ class Taste(Orderable):
 
 class Cepage(Approvable, WineType, Timestamp):
     cepage = models.CharField(max_length=60,
-                              validators=[validate_non_numeric],
+                              validators=[non_numeric],
                               verbose_name=_('Cepage')
                               )
     
@@ -163,7 +167,7 @@ class Cepage(Approvable, WineType, Timestamp):
 
 class Tag(Approvable, WineType ,Timestamp):
     tag = models.CharField(max_length=60,
-                           validators=[validate_non_numeric],
+                           validators=[non_numeric],
                            unique=True
                            )
     description = models.CharField(max_length=300)
@@ -174,8 +178,8 @@ class Tag(Approvable, WineType ,Timestamp):
 
 class Wine(WineType, Timestamp):
     # FIELDS
-    
-    log.debug('test Wine')
+    slug = models.SlugField()
+
     name = models.CharField(max_length=100,
                             unique=True,
                             verbose_name=_('Name')
@@ -183,23 +187,24 @@ class Wine(WineType, Timestamp):
     
     producer = models.CharField(max_length=100,
                                 verbose_name=_('Producer'),
-                                validators=[validate_non_numeric])
+                                validators=[non_numeric])
     
     year = models.IntegerField(choices=YEARS, verbose_name=_('Year') )
     
     appelation = models.CharField(max_length=100,
                                   verbose_name=_('Appelation'),
-                                  validators=[validate_non_numeric]
+                                  validators=[non_numeric],
+                                  blank=True
                                  )
 
     country = models.ForeignKey(Country, verbose_name=_('Country'))
 
     region = models.CharField(max_length=100,
                               verbose_name=_('Region'),
-                              validators=[validate_non_numeric]
+                              validators=[non_numeric]
                              )
     alcool = models.FloatField(verbose_name=_('Alcool'),
-                               validators=[validate_percentage]
+                               validators=[percentage]
                               )
 
     date = models.DateField(_('Tasting Date'))
@@ -207,11 +212,11 @@ class Wine(WineType, Timestamp):
     code_saq = models.CharField(unique=True,
                                 max_length=255,
                                 verbose_name=_('SAQ Code'),
-                                validators=[validate_numeric_only]
+                                validators=[numeric_only]
                                 )
 
     price = models.FloatField(verbose_name=_('Price'),
-                              validators=[validate_price])
+                              validators=[price,price_too_high])
 
     mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Mouth Intensity'))
     nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Nose Intensity'))
@@ -231,6 +236,16 @@ class Wine(WineType, Timestamp):
 
 
     # MODEL METHODS
+    def get_absolute_url(self):
+        return reverse('corewine:tasting')
+        # return reverse('corewine:detail', kwargs={"slug": self.slug})
+
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Wine, self).save(*args, **kwargs)
+
+
     def list_cepage(obj):
         list_cepage = ', '.join([x.__unicode__() for x in obj.cepage.all() if x.is_approved()])
         return list_cepage

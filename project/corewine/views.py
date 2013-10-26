@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
@@ -26,24 +27,26 @@ def index(request):
 class WineActionMixin(object):
 
     @property
-
     def action(self):
         msg = "{0} is missing action.".format(self.__class__)
         raise NotImplementedError(msg)
 
     def form_valid(self, form):
         msg = "Wine {0}!".format(self.action)
-        message.info(self.request, msg)
+        messages.success(self.request, 'test Message')
         return super(WineActionMixin, self).form_valid(form)
 
 
-class WineCreateView(LoginRequiredMixin, WineActionMixin, CreateView):
+class WineCreateView(WineActionMixin, CreateView):
     model = Wine
-    action = _('created')
+    form_class = WineForm
+    action = 'Creation!'
+    # success_url = reverse('corewine:list')
 
 
-class WineUpdateView(LoginRequiredMixin, WineActionMixin, UpdateView):
+class WineUpdateView(WineActionMixin, UpdateView):
     model = Wine
+    form_class = WineForm
     action = _('updated')
 
 
@@ -52,7 +55,7 @@ class WineListView(ListView):
     context_object_name = 'wine_list'
 
 
-class WineDetailView(DetailView):
+class WineDetailView(WineActionMixin, DetailView):
     model = Wine
     template_name = 'corewine/wine_detail.html'
     context_object_name = 'wine'

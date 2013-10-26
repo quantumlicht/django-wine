@@ -73,14 +73,14 @@ class TasteAdmin(admin.ModelAdmin):
 
 
 class WineAdmin(admin.ModelAdmin):
-    # date_hierarchy = 'last_modified'
+    prepopulated_fields = {"slug": ('wineType','name','year')}
     list_display = ['name', 'wineType', 'producer', 'appelation', 'list_cepage', 'region', 'country', 'year','code_saq', 'price', 'alcool','rating']
     list_filter = ['producer','wineType', 'country', 'cepage', 'region','appelation']
     search_fields = ['name','producer','appelation','cepage','region','code_saq']
     fieldsets = (
         ('Fiche', {
             'fields': (
-                ('name', 'producer', 'year'),
+                ('name', 'slug', 'producer', 'year'),
                 ('appelation','region', 'country'),
                 ('cepage','tag'),
                 ('date','code_saq', 'alcool', 'price', 'rating'),

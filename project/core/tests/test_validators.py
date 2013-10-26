@@ -9,7 +9,8 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 import core.validators as v
 from django.utils.translation import ugettext_lazy as _
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
+from django import forms
 from corewine.models import Wine
 
 
@@ -19,25 +20,37 @@ class CharFieldForm(ModelForm):
 	fields = ('name', 'producer', 'appelation', 'region', 'code_saq', 'tag', 'cepage')
 
 
-class PriceFieldForm(ModelForm):
-	model = Wine
-	fields = ('price')
+class PriceFieldForm(Form):
+	price = forms.FloatField(validators=[v.price])
 
 
 class ValidatorsTest(TestCase):
 
-	def get_price(self, arg):
-		wine = Wine(price=arg)
-		f = PriceFieldForm(instance=wine)
-		return f.errors
+	def get_price(self, price):
+		# wine = Wine(price=arg)
+		f = PriceFieldForm({'price': price})
+		return f.errors['price']
 
 	def test_price(self):
-		test_a = self.get_price('aaaaaaaa')
-		self.assertEqual(test_a, 'a')
+	
+		test = PriceFieldForm({'price': 00000000.000000000000}).errors
+		self.assertEqual({}, test)
 
+		test = PriceFieldForm({'price': 111.11}).errors
+		self.assertEqual({}, test)
 
-		test_b = self.get_price(11.111111)
-		self.assertEqual(test_b, False)
+		test = self.get_price(111.1111)
+		self.assertIn(v.price.message.format(), test)
+
+		test = self.get_price('')
+		self.assertIn(_(u'This field is required.'),test)
+
+		test = self.get_price('aaaa')
+		self.assertIn(_(u'Enter a number.'),test)
+
+		test = self.get_price(object)
+		self.assertIn(_(u'Enter a number.'),test)
+
 
 
 
@@ -46,15 +59,15 @@ class ValidatorsTest(TestCase):
 
 
 	def test_charfields(self):
-		# self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),validate_non_numeric,)
-		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.validate_non_numeric,'%^*(%%^')
-		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.validate_non_numeric,'179879878')
+		# self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),non_numeric,)
+		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.non_numeric,'%^*(%%^')
+		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.non_numeric,'179879878')
 	
 	def test_numeric_only(self):
-		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.validate_non_numeric,object)
-		# self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.validate_non_numeric,'aaaajk')
+		self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.non_numeric,object)
+		# self.assertRaisesMessage(ValidationError,_('Expression should not contain numeric values'),v.non_numeric,'aaaajk')
 
 
 	# def test_float_string(self):
-	# 	self.assertRaisesMessage(ValidationError,_('This is not a valid number'),validate_float_string,'1678698')
+	# 	self.assertRaisesMessage(ValidationError,_('This is not a valid number'),float_string,'1678698')
 

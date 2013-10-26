@@ -1,19 +1,8 @@
 {% extends 'base.html' %}
 
 {% block main %}
-{% if messages %}
-<ul class="messages">
-	{% for message in messages %}
-	<li id="message_{{ forloop.counter }}"{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-		{{ message }}
-	</li>
-	{% endfor %}
-</ul>
-{% endif %}	
 {% for wine in wine_list %}
 	{% include "corewine/_wine_list_element.html" with wine=wine %}
 {% endfor %}
 
-
-{% endblock main %}
 {% endblock main %}

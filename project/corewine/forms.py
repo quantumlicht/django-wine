@@ -7,7 +7,13 @@ class WineForm(ModelForm):
 
     class Meta:
         model = Wine
+        
     
+        fields = ('wineType', 'name','producer','year','appelation','country','region','alcool',\
+              'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
+              'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
+             )
+
     def clean(self):
         
         cleaned_data = super(WineForm, self).clean()

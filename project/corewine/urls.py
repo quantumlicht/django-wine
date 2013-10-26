@@ -7,5 +7,5 @@ urlpatterns = patterns('',
                        url(r'^$', index, name='index'),
                        url(r'^tasting/$', WineCreateView.as_view(), name='tasting'),
                        url(r'^wine_list/$', WineListView.as_view(), name='list'),
-                       url(r'^wine_list/(?P<pk>\d+)/$', WineDetailView.as_view(), name='detail'),
+                       url(r'^wine_list/(?P<slug>[-\w]+)/$', WineDetailView.as_view(), name='detail'),
                        )
