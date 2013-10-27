@@ -45,12 +45,10 @@ $('#id_name').typeahead({
 // AJAX CONTENT POPULATING
 //====================================
 
-$('#id_wineType').change(function(evt){
+var teint = $('#id_teint option');
+$('input[name="wineType"]').change(function(evt){
 	winetype = evt.target.value;
-
-
-	teint = $('#id_teint option');
-	$.ajax({url:'/api/teint',
+	$.ajax({url: '/api/teint/',
 		cache: false,
 		success:function(data){
 			arr =[];
@@ -60,11 +58,9 @@ $('#id_wineType').change(function(evt){
 				}
 				return obj.wineType==winetype;
 			});
-
 			filtered_options = teint.filter(function(index){
 				return $.inArray(teint[index].text, arr) > -1;
 			})
-
 			$('#id_teint').html(filtered_options);
 			// return filtered_data.sort(function(a, b){re	turn  a.order < b.order ? true:false;});
 		}

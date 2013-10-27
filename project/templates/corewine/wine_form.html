@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load less %}
 {% block main %}
-<h1>Tasting</h1>
-<form action="{% url 'corewine:tasting' %}" class="form-horizontal" method="post" role="form">
+<h1>{% trans 'Tasting' %}</h1>
+<form action="{% url 'corewine:tasting' %}" class="form-horizontal" method="post" id="wine_form" role="form">
 {% csrf_token %}
 {% for field in form %}
     {% include "corewine/_form_field.html" with field=field %}

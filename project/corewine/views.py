@@ -1,21 +1,31 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.forms.models import model_to_dict
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
+from braces.views import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 import logging
 
 log = logging.getLogger(__name__) 
 
 from .forms import WineForm
-from .models import Wine, Cepage, Teint, Tag
-from braces.views import LoginRequiredMixin
+from .models import (
+    Wine,
+    Cepage,
+    Teint,
+    Tag,
+    Region,
+    Appelation,
+    Producer,
+    Country
+)
 
 from rest_framework.generics import (
-	ListAPIView
+	ListAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView
 )
 
 
@@ -42,14 +52,11 @@ class WineCreateView(WineActionMixin, CreateView):
     form_class = WineForm
     action = 'Creation!'
 
-    
 
 class WineUpdateView(WineActionMixin, UpdateView):
     model = Wine
     form_class = WineForm
     action = 'updated'
-
-
 
 
 class WineListView(ListView):
@@ -78,30 +85,47 @@ class WineDetailView(DetailView):
     #     return super(TastingView, self).form_valid(form)
 
 
-
-
-
-
-
 # ===================================
 # API VIEWS
 # ===================================
 
 # READ ONLY 
-class CepageReadView(ListAPIView):
-	model = Cepage
 
-
-class TagReadView(ListAPIView):
-	model = Tag
-
-
+# --------------------------------------------------
 class TeintReadView(ListAPIView):
-	model = Teint
-
-# WRITE
+    model = Teint
 
 
+# READ-WRITE
+
+# --------------------------------------------------
+class AppelationCreateReadView(ListCreateAPIView):
+    model = Appelation
+
+
+# --------------------------------------------------
+class CepageCreateReadView(ListCreateAPIView):
+    model = Cepage
+
+
+# --------------------------------------------------
+class CountryCreateReadView(ListCreateAPIView):
+    model = Country
+
+
+# --------------------------------------------------
+class ProducerCreateReadView(ListCreateAPIView):
+    model = Producer
+
+
+# --------------------------------------------------
+class RegionCreateReadView(ListCreateAPIView):
+    model = Region
+
+
+# --------------------------------------------------
+class TagCreateReadView(ListCreateAPIView):
+    model = Tag
 	
 
 

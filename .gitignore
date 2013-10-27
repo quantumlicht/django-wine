@@ -1,7 +1,9 @@
+*.coverage
 *.pyc
 *.db
 *.mo
 bootstrap-3.0.0/
 LESS_CACHE/
+htmlcov/
 less*.min.js
 secret.py

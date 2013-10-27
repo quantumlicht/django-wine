@@ -18,11 +18,11 @@ def make_rejected(modeladmin, request, queryset):
 make_rejected.short_description = _("Mark selected as rejected")
 
 def make_red(modeladmin, request, queryset):
-        queryset.update(wineType=_('Red'))
+        queryset.update(wineType='r')
 make_red.short_description = _("Mark selected as Red")
 
 def make_white(modeladmin, request, queryset):
-        queryset.update(wineType=_('White'))
+        queryset.update(wineType='w')
 make_white.short_description = _("Mark selected as White")
 
 # ==================================================

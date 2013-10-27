@@ -23,4 +23,4 @@ where environment can be [dev]
 Run tests
 
 coverage run manage.py test --settings=project.settings.test
-coverage html --include="$SITE_URL*" --omit="admin.py"
+coverage html --include="$SITE_URL*" --omit="admin.py,*/site-packages/*"

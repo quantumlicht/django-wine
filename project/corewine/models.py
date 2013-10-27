@@ -39,10 +39,10 @@ class WineType(models.Model):
         abstract = True
 
     WINE_TYPES = (
-        (_('White'), _('White')),
-        (_('Red'), _('Red'))
+        ('w', _('White')),
+        ('r', _('Red'))
     )
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name=_('Wine Type'))
+    wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name=_('Wine Type'), blank=False, default='White')
     
     def __unicode__(self):
         return self.wineType
