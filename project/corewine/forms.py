@@ -7,7 +7,15 @@ from django.forms import (
     Textarea,
     RadioSelect
 )
-from .models import Wine
+from .models import (
+    Wine,
+    Region,
+    Appelation,
+    Producer,
+    Country,
+    Tag,
+    Cepage,
+)
 
 
 class WineForm(ModelForm):
@@ -16,18 +24,19 @@ class WineForm(ModelForm):
         model = Wine
 
         fields = (
-            'wineType', 'name','producer','year','appelation','country','region','alcool',\
+            'wineType','region', 'name','producer','year','country','alcool','appelation',\
             'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
             'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
         )
+        # On va commencer pour overrider seulement region pour voir si ca fonctionne
         widgets = {
             'region': TextInput(),
-            'appelation': TextInput(),
-            'country': TextInput(),
-            'producer': TextInput(),
+            # 'appelation': TextInput(),
+            # 'country': TextInput(),
+            # 'producer': TextInput(),
             'wineType': RadioSelect(),
-            'cepage' : TextInput(),
-            'tag': TextInput(),
+            # 'cepage' : TextInput(),
+            # 'tag': TextInput(),
         }
 
     # def clean_tanin(self):

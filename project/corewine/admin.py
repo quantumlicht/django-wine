@@ -84,13 +84,14 @@ class ProducerAdmin(admin.ModelAdmin):
     fields =('producer', 'status')
     list_display = ('producer', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
-
+    actions = [make_rejected, make_approved]
 
 # -------------------------------------------
 class RegionAdmin(admin.ModelAdmin):
     fields =('region', 'status')
     list_display = ('region', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
+    actions = [make_rejected, make_approved]
 
 
 # -------------------------------------------

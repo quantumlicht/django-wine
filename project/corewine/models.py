@@ -213,6 +213,8 @@ class Producer(Approvable, Timestamp):
                                 unique=True
                                 )
 
+    def __unicode__(self):
+        return self.producer
 
 # -------------------------------------------------------------
 class Tag(Approvable, WineType, Timestamp):
@@ -264,7 +266,7 @@ class Wine(WineType, Timestamp):
     # Foreign Keys
     producer = models.ForeignKey(Producer)
 
-    appelation = models.ForeignKey(Appelation)
+    appelation = models.ForeignKey(Appelation, null=True, blank=True)
     
     country = models.ForeignKey(Country, verbose_name=_('Country'))
     

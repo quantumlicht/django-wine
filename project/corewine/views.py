@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.models import inlineformset_factory
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -11,6 +14,7 @@ import logging
 log = logging.getLogger(__name__) 
 
 from .forms import WineForm
+
 from .models import (
     Wine,
     Cepage,
@@ -30,7 +34,7 @@ from rest_framework.generics import (
 
 
 def index(request):
-    log.debug('test')
+    log.debug('Index page')
     return render(request, 'corewine/index.html')
 
 
@@ -52,6 +56,54 @@ class WineCreateView(WineActionMixin, CreateView):
     form_class = WineForm
     action = 'Creation!'
 
+    def post(self, *args, **kwargs):
+        log.debug('region %s' % self.request.POST['region'])
+        self.request.POST = self.request.POST.copy() 
+        res = self.request.POST['region']
+
+        try:
+            region = Region.objects.get(region=res)
+            log.debug("region pk from post request %s " % region.pk)
+            self.request.POST['region'] = region.id
+        except ObjectDoesNotExist:
+            log.error('object does not exist')
+            region = Region(region=res,status='p')
+            region.save()
+            log.debug('region.id %s' % region.id)
+            self.request.POST['region'] = region.id
+        
+        return super(WineCreateView,self).post(self.request, *args, **kwargs)
+
+
+    def get_object(self):
+        wine_object = super(WineCreateView,self).get_object()
+        log.debug('object %s' % wine_object)
+        return wine_object
+
+    def get_context_data(self, **kwargs):
+        form = kwargs['form']
+        region = form['region']
+        log.debug('arguments: %s' % region)
+        return super(WineCreateView,self).get_context_data(**kwargs)
+
+
+# def WineCreate(request):
+#     RegionInlineFormSet = inlineformset_factory(Wine, Region, form=RegionForm)
+
+#     if request.method == 'POST':
+#         wineForm = WineForm(request.POST)
+
+#         if wineForm.is_valid():
+#             new_wine = wineForm.save()
+#             regionInlineFormSet = RegionInlineFormSet(request.POST, instance=new_wine)
+
+#             if regionInlineFormSet.is_valid():
+#                 regionInlineFormSet.save()
+#                 return HttpResponseRedirect(reverse('corewine:detail', kwargs={'slug': request.POST['slug']}))
+#     else:
+#         regionInlineFormSet = RegionInlineFormSet()
+#         wineForm = WineForm()
+#     return render(request,'corewine:wine_form',locals())
 
 class WineUpdateView(WineActionMixin, UpdateView):
     model = Wine
