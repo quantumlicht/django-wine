@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.forms.models import inlineformset_factory
+from django.forms.models import modelform_factory
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -11,10 +11,8 @@ from braces.views import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 import logging
 
-log = logging.getLogger(__name__) 
 
 from .forms import WineForm
-
 from .models import (
     Wine,
     Cepage,
@@ -23,14 +21,16 @@ from .models import (
     Region,
     Appelation,
     Producer,
-    Country
+    Country,
 )
 
 from rest_framework.generics import (
-	ListAPIView,
+    ListAPIView,
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView
 )
+
+log = logging.getLogger(__name__) 
 
 
 def index(request):
@@ -57,53 +57,36 @@ class WineCreateView(WineActionMixin, CreateView):
     action = 'Creation!'
 
     def post(self, *args, **kwargs):
-        log.debug('region %s' % self.request.POST['region'])
-        self.request.POST = self.request.POST.copy() 
-        res = self.request.POST['region']
+        self.request.POST = self.request.POST.copy()  # makes the request mutable
+        
+        regionForm = modelform_factory(Region, fields=('region',))
+        appelationForm = modelform_factory(Appelation, fields=('appelation',))
+        producerForm = modelform_factory(Producer, fields=('producer',))
 
-        try:
-            region = Region.objects.get(region=res)
-            log.debug("region pk from post request %s " % region.pk)
-            self.request.POST['region'] = region.id
-        except ObjectDoesNotExist:
-            log.error('object does not exist')
-            region = Region(region=res,status='p')
-            region.save()
-            log.debug('region.id %s' % region.id)
-            self.request.POST['region'] = region.id
+        form_dict = {
+            'region': regionForm,
+            'appelation': appelationForm,
+            'producer': producerForm
+        }
+        for k, modelForm in form_dict.iteritems():
+            model_class = modelForm.Meta.model
+            log.debug('current model_class is: %s' % model_class)
+            log.debug('request is %s' % self.request.POST[k])
+            try:
+                obj = model_class.objects.get( **{k: self.request.POST[k]} )
+                log.debug("object exists. %s pk from post request %s " % (model_class,obj.pk))
+                self.request.POST[k] = obj.id
+            except ObjectDoesNotExist as e:
+                log.error('Exception %s' % e)
+                f = modelForm(self.request.POST)            
+                log.debug('errors %s' % f.errors)
+                if f.is_valid():
+                    model_instance = f.save()
+                    self.request.POST[k] = model_instance.pk
+
         
         return super(WineCreateView,self).post(self.request, *args, **kwargs)
 
-
-    def get_object(self):
-        wine_object = super(WineCreateView,self).get_object()
-        log.debug('object %s' % wine_object)
-        return wine_object
-
-    def get_context_data(self, **kwargs):
-        form = kwargs['form']
-        region = form['region']
-        log.debug('arguments: %s' % region)
-        return super(WineCreateView,self).get_context_data(**kwargs)
-
-
-# def WineCreate(request):
-#     RegionInlineFormSet = inlineformset_factory(Wine, Region, form=RegionForm)
-
-#     if request.method == 'POST':
-#         wineForm = WineForm(request.POST)
-
-#         if wineForm.is_valid():
-#             new_wine = wineForm.save()
-#             regionInlineFormSet = RegionInlineFormSet(request.POST, instance=new_wine)
-
-#             if regionInlineFormSet.is_valid():
-#                 regionInlineFormSet.save()
-#                 return HttpResponseRedirect(reverse('corewine:detail', kwargs={'slug': request.POST['slug']}))
-#     else:
-#         regionInlineFormSet = RegionInlineFormSet()
-#         wineForm = WineForm()
-#     return render(request,'corewine:wine_form',locals())
 
 class WineUpdateView(WineActionMixin, UpdateView):
     model = Wine
@@ -127,16 +110,7 @@ class WineDetailView(DetailView):
         context['arr_tag'] = Wine.arr_tag(self.get_object())
         return context
 
-        
-    # template_name = 'corewine/tasting.html'
-    # form_class = WineForm
-    # success_url = '/wine'
-
-    # def form_valid(self, form):
-    #     form.save()
-    #     return super(TastingView, self).form_valid(form)
-
-
+    
 # ===================================
 # API VIEWS
 # ===================================

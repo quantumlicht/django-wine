@@ -16,8 +16,6 @@ from .models import (
     Tag,
     Cepage,
 )
-
-
 class WineForm(ModelForm):
 
     class Meta:
@@ -31,24 +29,13 @@ class WineForm(ModelForm):
         # On va commencer pour overrider seulement region pour voir si ca fonctionne
         widgets = {
             'region': TextInput(),
-            # 'appelation': TextInput(),
+            'appelation': TextInput(),
             # 'country': TextInput(),
-            # 'producer': TextInput(),
+            'producer': TextInput(),
             'wineType': RadioSelect(),
             # 'cepage' : TextInput(),
             # 'tag': TextInput(),
         }
-
-    # def clean_tanin(self):
-    #     # cleaned_data = super(WineForm, self).clean()
-    #     winetype = self.cleaned_data['wineType']
-    #     tanin = self.cleaned_data['tanin']
-    #     if winetype == 'White':
-    #         tanin = ''
-    #         # raise ValidationError('Red wines need to have tanin described.')
-    #     return tanin
-    #     # return cleaned_data
-    
 
     
     

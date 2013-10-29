@@ -216,6 +216,7 @@ class Producer(Approvable, Timestamp):
     def __unicode__(self):
         return self.producer
 
+
 # -------------------------------------------------------------
 class Tag(Approvable, WineType, Timestamp):
     tag = models.CharField(max_length=60,
@@ -297,6 +298,10 @@ class Wine(WineType, Timestamp):
     # ------------------------------------
     # Model Methods
     # ------------------------------------
+    
+    def __unicode__(self):
+        return self.name
+
     def get_absolute_url(self):
         return reverse('corewine:detail', kwargs={"slug": self.slug})
 
