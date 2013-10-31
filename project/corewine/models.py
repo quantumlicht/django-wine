@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 import logging
-from .managers import WineManager
+from .managers import ApprovedManager
 
 
 log = logging.getLogger(__name__) 
@@ -30,6 +30,7 @@ class Orderable(models.Model):
     order = models.IntegerField()
 
     class Meta:
+        ordering = ['order']
         abstract = True
 
 
@@ -56,6 +57,7 @@ class Approvable(models.Model):
     class Meta:
         abstract = True
 
+    
     STATUSES = (
         (APPROVED, _('Approved')),
         (REJECTED, _('Rejected')),
@@ -77,7 +79,10 @@ class Approvable(models.Model):
 
 # -------------------------------------------------------------
 class Acidity(Orderable, Timestamp):
-    class Meta:
+    '''
+    Can subclass WineType,Orderable,Timestamp Meta classes if needed
+    '''
+    class Meta(Orderable.Meta):
         verbose_name_plural = _('Acidities')
 
     acidity = models.CharField(max_length=60,
@@ -91,18 +96,19 @@ class Acidity(Orderable, Timestamp):
 
 # -------------------------------------------------------------
 class Aroma(Orderable, Timestamp):
-    """
-
+    '''
     Aromas related to :model:`corewine.Wine`
     
-    """
+    Can subclass WineType,Orderable,Timestamp Meta classes if needed
+    '''
+    class Meta(Orderable.Meta):
+        verbose_name_plural = _('Aromas')
+
     aroma = models.CharField(max_length=60,
                              unique=True,
                              verbose_name=_('Aroma')
                              )
 
-    class Meta:
-        verbose_name_plural = _('Aromas')
 
     def __unicode__(self):
         return self.aroma
@@ -110,6 +116,10 @@ class Aroma(Orderable, Timestamp):
 
 # -------------------------------------------------------------
 class Tanin(Orderable, Timestamp):
+    '''
+    Can subclass WineType,Orderable,Timestamp Meta classes if needed
+    '''
+
     tanin = models.CharField(max_length=60,
                              unique=True,
                              verbose_name=_('Tanin')
@@ -121,6 +131,9 @@ class Tanin(Orderable, Timestamp):
 
 # -------------------------------------------------------------
 class Teint(WineType, Orderable, Timestamp):
+    '''
+    Can subclass WineType,Orderable,Timestamp Meta classes if needed
+    '''
     teint = models.CharField(max_length=60,
                              unique=True,
                              verbose_name=_('Teint')
@@ -131,13 +144,15 @@ class Teint(WineType, Orderable, Timestamp):
 
 # -------------------------------------------------------------
 class Taste(Orderable, Timestamp):
+
+    class Meta(Orderable.Meta):
+        verbose_name_plural = _('Tastes')
+
     taste = models.CharField(max_length=60,
                              unique=True,
                              verbose_name=_('Taste')
                              )
 
-    class Meta:
-        verbose_name_plural = _('Tastes')
 
     def __unicode__(self):
         return self.taste

@@ -38,27 +38,27 @@ class CepageInline(admin.TabularInline):
 # ==================================================
 
 # -------------------------------------------
-class AcidityAdmin(admin.ModelAdmin):
+class AcidityAdmin(TranslationAdmin):
     """ 
     Manage the Acidity fields
     """
     fields = ('acidity', 'order')
-    list_display = ['acidity', 'order',  'last_modified', 'created']
+    list_display = ['acidity_fr','acidity_en', 'order', 'last_modified', 'created']
     ordering = ['order']
 
 
 # -------------------------------------------
-class AppelationAdmin(admin.ModelAdmin):
+class AppelationAdmin(TranslationAdmin):
     fields =('appelation', 'status')
-    list_display = ('appelation', 'is_approved',  'last_modified', 'created')
+    list_display = ['appelation_fr','appelation_en','is_approved', 'last_modified', 'created']
     ordering = ['status']
 
 
 # -------------------------------------------
-class AromaAdmin(admin.ModelAdmin):
+class AromaAdmin(TranslationAdmin):
     """ Manage the Aroma fields """
     fields = ('aroma', 'order')
-    list_display = ['aroma', 'order',  'last_modified', 'created']
+    list_display = ['aroma_fr','aroma_en', 'order', 'last_modified', 'created']
     ordering = ['order']
 
 
@@ -87,27 +87,27 @@ class ProducerAdmin(admin.ModelAdmin):
     actions = [make_rejected, make_approved]
 
 # -------------------------------------------
-class RegionAdmin(admin.ModelAdmin):
+class RegionAdmin(TranslationAdmin):
     fields =('region', 'status')
-    list_display = ('region', 'is_approved', 'last_modified', 'created')
+    list_display = ('region_fr', 'region_en', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
     actions = [make_rejected, make_approved]
 
 
 # -------------------------------------------
-class TeintAdmin(admin.ModelAdmin):
+class TeintAdmin(TranslationAdmin):
     """ Manage the Teint fields """
     fields = ('teint', 'wineType', 'order')
-    list_display = ['teint', 'wineType', 'order', 'last_modified', 'created']
+    list_display = ['teint_fr','teint_en', 'wineType', 'order', 'last_modified', 'created']
     list_filter = ['wineType']    
     ordering = ['wineType', 'order']
     actions = [make_red, make_white]
 
 # -------------------------------------------
-class TasteAdmin(admin.ModelAdmin):
+class TasteAdmin(TranslationAdmin):
     """ Manage the Taste fields """
     fields = ('taste', 'order')
-    list_display = ['taste', 'order', 'last_modified', 'created']
+    list_display = ['taste_fr','taste_en', 'order', 'last_modified', 'created']
     list_filter = ['taste']    
     ordering = ['order']
     actions = [make_red, make_white]
@@ -141,15 +141,15 @@ class WineAdmin(admin.ModelAdmin):
 
 
 # -------------------------------------------
-class TaninAdmin(admin.ModelAdmin):
-    list_display = ['tanin','order', 'last_modified', 'created']
+class TaninAdmin(TranslationAdmin):
+    list_display = ['tanin_fr', 'tanin_en', 'order', 'last_modified', 'created']
     list_filter = ['tanin']
     ordering = ['order']
 
 
 # -------------------------------------------
-class TagAdmin(admin.ModelAdmin):
-    list_display = ['tag', 'wineType', 'is_approved', 'last_modified', 'created']
+class TagAdmin(TranslationAdmin):
+    list_display = ['tag_fr', 'tag_en', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status']
     actions = [make_rejected, make_approved]
 

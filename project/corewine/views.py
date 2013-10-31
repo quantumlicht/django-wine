@@ -58,7 +58,7 @@ class WineCreateView(WineActionMixin, CreateView):
 
     def post(self, *args, **kwargs):
         self.request.POST = self.request.POST.copy()  # makes the request mutable
-        
+
         regionForm = modelform_factory(Region, fields=('region',))
         appelationForm = modelform_factory(Appelation, fields=('appelation',))
         producerForm = modelform_factory(Producer, fields=('producer',))
@@ -83,7 +83,6 @@ class WineCreateView(WineActionMixin, CreateView):
                 if f.is_valid():
                     model_instance = f.save()
                     self.request.POST[k] = model_instance.pk
-
         
         return super(WineCreateView,self).post(self.request, *args, **kwargs)
 
