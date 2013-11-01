@@ -9,6 +9,7 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 import logging
 
 
@@ -34,7 +35,6 @@ log = logging.getLogger(__name__)
 
 
 def index(request):
-    log.debug('Index page')
     return render(request, 'corewine/index.html')
 
 
@@ -47,14 +47,14 @@ class WineActionMixin(object):
 
     def form_valid(self, form):
         msg = "Wine {0}!".format(self.action)
-        messages.success(self.request, 'test Message')
+        messages.success(self.request, msg)
         return super(WineActionMixin, self).form_valid(form)
 
 
-class WineCreateView(WineActionMixin, CreateView):
+class WineCreateView(WineActionMixin, LoginRequiredMixin, CreateView):
     model = Wine
     form_class = WineForm
-    action = 'Creation!'
+    action = 'created'
 
     def post(self, *args, **kwargs):
         self.request.POST = self.request.POST.copy()  # makes the request mutable
@@ -87,7 +87,7 @@ class WineCreateView(WineActionMixin, CreateView):
         return super(WineCreateView,self).post(self.request, *args, **kwargs)
 
 
-class WineUpdateView(WineActionMixin, UpdateView):
+class WineUpdateView(LoginRequiredMixin, WineActionMixin, UpdateView):
     model = Wine
     form_class = WineForm
     action = 'updated'
@@ -124,32 +124,32 @@ class TeintReadView(ListAPIView):
 # READ-WRITE
 
 # --------------------------------------------------
-class AppelationCreateReadView(ListCreateAPIView):
+class AppelationCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Appelation
 
 
 # --------------------------------------------------
-class CepageCreateReadView(ListCreateAPIView):
+class CepageCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Cepage
 
 
 # --------------------------------------------------
-class CountryCreateReadView(ListCreateAPIView):
+class CountryCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Country
 
 
 # --------------------------------------------------
-class ProducerCreateReadView(ListCreateAPIView):
+class ProducerCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Producer
 
 
 # --------------------------------------------------
-class RegionCreateReadView(ListCreateAPIView):
+class RegionCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Region
 
 
 # --------------------------------------------------
-class TagCreateReadView(ListCreateAPIView):
+class TagCreateReadView(LoginRequiredMixin, ListCreateAPIView):
     model = Tag
 	
 
