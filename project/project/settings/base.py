@@ -22,7 +22,6 @@ TIME_ZONE = 'America/Montreal'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 
 LANGUAGE_CODE = 'fr-CA'
-
 gettext = lambda s: s
 LANGUAGES = (
     ('fr', gettext('French')),
@@ -73,10 +72,22 @@ LOCALE_PATHS = (
 )
 
 # =================================================
-# 
+#  PACKAGES CONFIGS
 # =================================================
 LESS_MTIME_DELAY = 1
 LESS_USE_CACHE = False
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'corewine.translation',
+)
+
+
+# =================================================
+#  CONTEXT PROCESSORS
+# =================================================
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -116,6 +127,11 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
+
+# =================================================
+#  INSTALLED APPS
+# =================================================
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -124,6 +140,7 @@ INSTALLED_APPS = (
     'braces',
     'django.contrib.contenttypes',
     'corewine',
+    'crispy_forms',
     'django.contrib.formtools',
     'django.contrib.humanize',
     'less',
@@ -137,9 +154,6 @@ INSTALLED_APPS = (
     'modeltranslation',
 )
 
-MODELTRANSLATION_TRANSLATION_FILES = (
-    'corewine.translation',
-)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

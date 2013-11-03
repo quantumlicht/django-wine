@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.models import modelform_factory
+from django.views.i18n import set_language
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -37,7 +38,6 @@ log = logging.getLogger(__name__)
 def index(request):
     return render(request, 'corewine/index.html')
 
-
 class WineActionMixin(object):
 
     @property
@@ -49,6 +49,7 @@ class WineActionMixin(object):
         msg = "Wine {0}!".format(self.action)
         messages.success(self.request, msg)
         return super(WineActionMixin, self).form_valid(form)
+
 
 
 class WineCreateView(WineActionMixin, LoginRequiredMixin, CreateView):
@@ -121,35 +122,52 @@ class TeintReadView(ListAPIView):
     model = Teint
 
 
-# READ-WRITE
+# --------------------------------------------------
+class WineReadView(ListAPIView):
+    model = Wine
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Wine.objects.all()
+        name = self.request.QUERY_PARAMS.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name__iexact=name)
+        return queryset
 
 # --------------------------------------------------
-class AppelationCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class AppelationReadView(ListAPIView):
     model = Appelation
 
+    def get_queryset(self):
+        return Appelation.objects.all().filter(status='a')
+
 
 # --------------------------------------------------
-class CepageCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class CepageReadView(ListAPIView):
     model = Cepage
 
 
 # --------------------------------------------------
-class CountryCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class CountryReadView(ListAPIView):
     model = Country
-
+    def get_queryset(self):
+        return Country.objects.all().filter(status='a')
 
 # --------------------------------------------------
-class ProducerCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class ProducerReadView(ListAPIView):
     model = Producer
 
 
 # --------------------------------------------------
-class RegionCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class RegionReadView(ListAPIView):
     model = Region
 
 
 # --------------------------------------------------
-class TagCreateReadView(LoginRequiredMixin, ListCreateAPIView):
+class TagReadView(ListAPIView):
     model = Tag
 	
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-31 20:17-0400\n"
+"POT-Creation-Date: 2013-11-02 22:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,19 +60,35 @@ msgstr "Entrez un nombre."
 
 #: project/corewine/admin.py:13
 msgid "Mark selected as approved"
-msgstr ""
+msgstr "Marquer sélections comme approuvées"
 
 #: project/corewine/admin.py:18
 msgid "Mark selected as rejected"
-msgstr ""
+msgstr "Marquer sélections comme rejetées"
 
 #: project/corewine/admin.py:22
 msgid "Mark selected as Red"
-msgstr ""
+msgstr "Mar selections comme Rouge"
 
 #: project/corewine/admin.py:26
 msgid "Mark selected as White"
-msgstr ""
+msgstr "Marquer sélections comme Blanc"
+
+#: project/corewine/forms.py:52
+msgid "Submit"
+msgstr "Soumettre"
+
+#: project/corewine/forms.py:56
+msgid "General Info"
+msgstr "Information générale"
+
+#: project/corewine/forms.py:69
+msgid "Aromatic profile"
+msgstr "Profil aromatique"
+
+#: project/corewine/forms.py:73
+msgid "Taste profile"
+msgstr "Profil gustatif"
 
 #: project/corewine/models.py:22
 msgid "Last Modified"
@@ -96,19 +112,19 @@ msgstr "Type de vin"
 
 #: project/corewine/models.py:62
 msgid "Approved"
-msgstr ""
+msgstr "Approuvé"
 
 #: project/corewine/models.py:63
 msgid "Rejected"
-msgstr ""
+msgstr "Rejeté"
 
 #: project/corewine/models.py:64
 msgid "Pending"
-msgstr ""
+msgstr "En attente"
 
 #: project/corewine/models.py:73
 msgid "Approved ?"
-msgstr ""
+msgstr "Approuvé ?"
 
 #: project/corewine/models.py:86
 msgid "Acidities"
@@ -151,7 +167,7 @@ msgstr "Goût"
 msgid "Appelations"
 msgstr "Appelations"
 
-#: project/corewine/models.py:171
+#: project/corewine/models.py:171 project/corewine/models.py:285
 #: project/templates/corewine/wine_detail.html:12
 msgid "Appelation"
 msgstr "Appelation"
@@ -175,7 +191,7 @@ msgstr "Pays"
 msgid "Regions"
 msgstr "Régions"
 
-#: project/corewine/models.py:212
+#: project/corewine/models.py:212 project/corewine/models.py:289
 #: project/templates/corewine/wine_detail.html:14
 msgid "Region"
 msgstr "Région"
@@ -184,7 +200,7 @@ msgstr "Région"
 msgid "Productors"
 msgstr "Producteurs"
 
-#: project/corewine/models.py:226
+#: project/corewine/models.py:226 project/corewine/models.py:283
 #: project/templates/corewine/_wine_list_element.html:9
 #: project/templates/corewine/wine_detail.html:10
 msgid "Producer"
@@ -248,22 +264,17 @@ msgstr "Étiquettes"
 msgid "Cepages"
 msgstr "Cépages"
 
-
-#: project/corewine/views.py:56
-msgid "created"
-msgstr "créé"
-
 #: project/htmlcov/_home_montreal-python_django-projects_virtual_envs_django-wine_lib_python2_7_site-packages_django_views_static.html:294
 #: project/htmlcov/_home_montreal-python_django-projects_virtual_envs_django-wine_lib_python2_7_site-packages_django_views_static.html:297
 #, python-format
 msgid "Index of %(directory)s"
 msgstr ""
 
-#: project/project/settings/base.py:28
+#: project/project/settings/base.py:27
 msgid "French"
 msgstr "Français"
 
-#: project/project/settings/base.py:29
+#: project/project/settings/base.py:28
 msgid "English"
 msgstr "Anglais"
 
@@ -284,7 +295,7 @@ msgid "Blog"
 msgstr "Blog"
 
 #: project/templates/_navigation.html:19
-#: project/templates/corewine/wine_form.html:5
+#: project/templates/corewine/wine_form.html:8
 msgid "Tasting"
 msgstr "Dégustation"
 
@@ -309,6 +320,9 @@ msgid "Tag"
 msgid_plural "Tags"
 msgstr[0] "Libellé"
 msgstr[1] "Libellés"
+
+#~ msgid "created"
+#~ msgstr "créé"
 
 #~ msgid "updated"
 #~ msgstr "Mis à jour"

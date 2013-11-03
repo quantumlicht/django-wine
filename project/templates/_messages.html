@@ -1,6 +1,7 @@
 {% if messages %}
 	{% for message in messages %}
-	<div class="alert alert-success {% if message.tags %} {{ message.tags }} {% endif %}" id="message_{{ forloop.counter }}">
+	<div class="alert alert-success alert-dismissable {% if message.tags %} {{ message.tags }} {% endif %}" id="message_{{ forloop.counter }}">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		{{ message }}
 	</div>
 	{% endfor %}

@@ -1,6 +1,9 @@
 $(document).ready(function(){
 	
-
+function capitalize(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 //====================================
 // ACTIVE NAVBAR SELECTOR
@@ -26,19 +29,159 @@ $('.navbar-nav>li a[' + selector + '][class!="deactivate"]').parent().addClass('
 $('input,select').attr('class','form-control');
 
 
+//====================================
+// WINE EXISTANCE CHECK
+//====================================
+$('#id_name').click(function(){
+	$(this).parent().find('.help-block').hide();
+	$(this).closest('.form-group').removeClass('has-error');
+});
+$('#id_name').focusout(function(evt){
+	name_to_check = evt.target.value;
+	console.log(name_to_check);
+	$.ajax({
+		url: '../../api/wine?name='+name_to_check,
+		cache: false,
+		success: function(data){
+			if (data.length){
+				console.log(data);
+				$('#id_name').closest('.form-group').addClass('has-error');
+				$('#id_name').parent().append(
+					$('<span>',{
+						class:'help-block',
+						text: 'The wine already exists.'
+					})
+				)
+
+			}
+		}
+	})
+});
+
+
 
 //====================================
 // TypeAhead
 //====================================
+arr_typeaheads = ['country','cepage','tag','region','producer'];
 
-$('#id_name').typeahead({
-	name: 'cepages',
-	template: '<p><strong>{{cepage}}</strong></p>',
+$('#id_country').typeahead({
+	name: 'Countries',
+	template: '<p><strong>{{name}}</strong></p>',
 	engine: Hogan,
-		prefetch: {
-			url: '../../api/cepage',
-			dataType: 'json'
+	prefetch: {
+		url: '../../api/country',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['country'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
 		}
+	}
+});
+
+
+$('#id_cepage').typeahead({
+	name: 'Cepages',
+	template: '<p><strong>{{name}}</strong></p>',
+	engine: Hogan,
+	prefetch: {
+		url: '../../api/cepage',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['cepage'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
+		}
+	}
+});
+
+
+$('#id_tag').typeahead({
+	name: 'Tags',
+	template: '<p><strong>{{name}}</strong></p>',
+	engine: Hogan,
+	prefetch: {
+		url: '../../api/tag',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['tag'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
+		}
+	}
+});
+
+
+$('#id_region').typeahead({
+	name: 'Regions',
+	template: '<p><strong>{{name}}</strong></p>',
+	engine: Hogan,
+	prefetch: {
+		url: '../../api/region',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['region'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
+		}
+	}
+});
+
+
+$('#id_producer').typeahead({
+	name: 'Producers',
+	template: '<p><strong>{{name}}</strong></p>',
+	engine: Hogan,
+	prefetch: {
+		url: '../../api/producer',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['producer'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
+		}
+	}
 });
 
 //====================================

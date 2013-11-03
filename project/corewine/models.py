@@ -57,7 +57,7 @@ class Approvable(models.Model):
     class Meta:
         abstract = True
 
-    
+
     STATUSES = (
         (APPROVED, _('Approved')),
         (REJECTED, _('Rejected')),
@@ -280,13 +280,13 @@ class Wine(WineType, Timestamp):
 
     # ------------------------------------
     # Foreign Keys
-    producer = models.ForeignKey(Producer)
+    producer = models.ForeignKey(Producer, verbose_name=_('Producer'))
 
-    appelation = models.ForeignKey(Appelation, null=True, blank=True)
+    appelation = models.ForeignKey(Appelation, null=True, blank=True, verbose_name=_('Appelation'))
     
     country = models.ForeignKey(Country, verbose_name=_('Country'))
     
-    region = models.ForeignKey(Region)
+    region = models.ForeignKey(Region, verbose_name=_('Region'))
     
     teint = models.ForeignKey(Teint, verbose_name=_('Teint'))
     
