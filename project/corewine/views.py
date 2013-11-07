@@ -1,20 +1,26 @@
+import logging
+
 from django.shortcuts import render
-from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+
+from django.core.exceptions import ObjectDoesNotExist
+
+from django.forms.models import inlineformset_factory
 from django.forms.models import modelform_factory
+
 from django.views.i18n import set_language
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
+
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-import logging
-
 
 from .forms import WineForm
+
 from .models import (
     Wine,
     Cepage,
@@ -36,7 +42,9 @@ log = logging.getLogger(__name__)
 
 
 def index(request):
+
     return render(request, 'corewine/index.html')
+
 
 class WineActionMixin(object):
 
@@ -51,41 +59,45 @@ class WineActionMixin(object):
         return super(WineActionMixin, self).form_valid(form)
 
 
-
 class WineCreateView(WineActionMixin, LoginRequiredMixin, CreateView):
     model = Wine
     form_class = WineForm
     action = 'created'
-
-    def post(self, *args, **kwargs):
-        self.request.POST = self.request.POST.copy()  # makes the request mutable
-
-        regionForm = modelform_factory(Region, fields=('region',))
-        appelationForm = modelform_factory(Appelation, fields=('appelation',))
-        producerForm = modelform_factory(Producer, fields=('producer',))
-
-        form_dict = {
-            'region': regionForm,
-            'appelation': appelationForm,
-            'producer': producerForm
-        }
-        for k, modelForm in form_dict.iteritems():
-            model_class = modelForm.Meta.model
-            log.debug('current model_class is: %s' % model_class)
-            log.debug('request is %s' % self.request.POST[k])
-            try:
-                obj = model_class.objects.get( **{k: self.request.POST[k]} )
-                log.debug("object exists. %s pk from post request %s " % (model_class,obj.pk))
-                self.request.POST[k] = obj.id
-            except ObjectDoesNotExist as e:
-                log.error('Exception %s' % e)
-                f = modelForm(self.request.POST)            
-                log.debug('errors %s' % f.errors)
-                if f.is_valid():
-                    model_instance = f.save()
-                    self.request.POST[k] = model_instance.pk
         
-        return super(WineCreateView,self).post(self.request, *args, **kwargs)
+
+    # def post(self, *args, **kwargs):
+    #     self.request.POST = self.request.POST.copy()  # makes the request mutable
+
+    #     regionForm = modelform_factory(Region, fields=('region',))
+    #     appelationForm = modelform_factory(Appelation, fields=('appelation',))
+    #     producerForm = modelform_factory(Producer, fields=('producer',))
+    #     tagForm = modelform_factory(Tag, fields=('tag',))
+
+
+    #     form_dict = {
+    #         'region': regionForm,
+    #         'appelation': appelationForm,
+    #         'producer': producerForm,
+    #         # 'tag': tagForm
+    #     }
+    #     for k, modelForm in form_dict.iteritems():
+    #         model_class = modelForm.Meta.model
+    #         # log.debug('current model_class is: %s' % model_class)
+    #         # log.debug('request is %s' % self.request.POST[k])
+    #         try:
+    #             obj = model_class.objects.get( **{k: self.request.POST[k]} )
+    #             # log.debug("object exists. %s pk from post request %s " % (model_class,obj.pk))
+    #             self.request.POST[k] = obj.id
+    #         except ObjectDoesNotExist as e:
+    #             log.error('Exception %s' % e)
+    #             return super(WineCreateView,self).post(self.request, *args, **kwargs)
+    #             f = modelForm(self.request.POST)            
+    #             # log.debug('errors %s' % f.errors)
+    #             if f.is_valid():
+    #                 model_instance = f.save()
+    #                 self.request.POST[k] = model_instance.pk
+        
+    #     return super(WineCreateView,self).post(self.request, *args, **kwargs)
 
 
 class WineUpdateView(LoginRequiredMixin, WineActionMixin, UpdateView):

@@ -63,7 +63,7 @@ $('#id_name').focusout(function(evt){
 //====================================
 // TypeAhead
 //====================================
-arr_typeaheads = ['country','cepage','tag','region','producer'];
+arr_typeaheads = ['cepage','tag','region','producer'];
 
 $('#id_country').typeahead({
 	name: 'Countries',
@@ -89,28 +89,28 @@ $('#id_country').typeahead({
 });
 
 
-$('#id_cepage').typeahead({
-	name: 'Cepages',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/cepage',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['cepage'];
+// $('#id_cepage').typeahead({
+// 	name: 'Cepages',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/cepage',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['cepage'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
-});
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
 
 
 $('#id_tag').typeahead({
@@ -153,6 +153,31 @@ $('#id_region').typeahead({
 					tokens: [data,capitalize(data)],
 					name: data
 				} 
+				console.log(elem);
+				arr_datums.push(elem);
+			} 
+			return arr_datums;
+		}
+	}
+});
+
+$('#id_appelation').typeahead({
+	name: 'Appelations',
+	template: '<p><strong>{{name}}</strong></p>',
+	engine: Hogan,
+	prefetch: {
+		url: '../../api/appelation',
+		filter: function(parsedResponse){
+			arr_datums = [];
+			for (var idx=0; idx<parsedResponse.length;idx++){
+				data = parsedResponse[idx]['appelation'];
+				
+				elem = {
+					value: data,
+					tokens: [data,capitalize(data)],
+					name: data
+				} 
+				console.log(elem);
 				arr_datums.push(elem);
 			} 
 			return arr_datums;
@@ -189,7 +214,7 @@ $('#id_producer').typeahead({
 //====================================
 
 var teint = $('#id_teint option');
-$('input[name="wineType"]').change(function(evt){
+$('#id_wineType').change(function(evt){
 	winetype = evt.target.value;
 	$.ajax({url: '/api/teint/',
 		cache: false,

@@ -1,17 +1,40 @@
 {% extends 'base.html' %}
+{% load tags %}
 {% load i18n %}
 {% block main %}
 
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading">{{ wine.name }} ({{ wine.wineType}})</div>
+  <div class="panel-heading">{{ wine.name }} ({{ wine.get_wineType_display }})</div>
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item">{% trans "Producer" %}: {{ wine.producer }}</li>
+    <li class="list-group-item">{% trans "Producer" %}:
+        {% if wine.producer|approved %}
+            {{ wine.producer }}
+        {% else %}
+            <b>{{ wine.producer.get_status_display }}</b>
+        {% endif %}
+    </li>
     <li class="list-group-item">{% trans "Year" %}: {{ wine.year }}</li>
-    <li class="list-group-item">{% trans "Appelation" %}: {{ wine.appelation }}</li>
+
+    <li class="list-group-item">{% trans "Appelation" %}:
+        {% if wine.appelation|approved %}
+            {{ wine.appelation }}
+        {% else %}
+            <b>{{ wine.appelation.get_status_display }}</b>
+        {% endif %}
+    </li>
+
     <li class="list-group-item">{% trans "Country" %}: {{ wine.country }}</li>
-    <li class="list-group-item">{% trans "Region" %}: {{ wine.region }}</li>
+
+    <li class="list-group-item">{% trans "Region" %}:
+        {% if wine.region|approved %}
+            {{ wine.region }}
+        {% else %}
+            <b>{{ wine.region.get_status_display }}</b>
+        {% endif %}
+     </li>
+
     <li class="list-group-item">{% trans "Alcool" %} (%): {{ wine.alcool }}</li>
     <li class="list-group-item">{% trans "Tasting Date" %}: {{ wine.date }}</li>
     <li class="list-group-item">{% trans "SAQ Code" %}: {{ wine.code_saq }}</li>

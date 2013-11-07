@@ -13,3 +13,8 @@ def active(request, urls):
     if request.path in (reverse(url) for url in urls.split() ):
         return 'active'
     return ''
+
+
+@register.filter(name='approved')
+def approved(ob):
+	return ob.status=='a'

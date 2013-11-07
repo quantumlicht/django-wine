@@ -52,6 +52,7 @@ class AppelationAdmin(TranslationAdmin):
     fields =('appelation', 'status')
     list_display = ['appelation_fr','appelation_en','is_approved', 'last_modified', 'created']
     ordering = ['status']
+    actions = [make_rejected, make_approved]
 
 
 # -------------------------------------------

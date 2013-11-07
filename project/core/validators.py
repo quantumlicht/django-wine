@@ -1,6 +1,9 @@
+import logging
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+
+log = logging.getLogger(__name__)
 
 non_numeric = RegexValidator(regex='^[a-zA-Z\s-]*$',
                                       message=_('Expression should not contain numeric values'),

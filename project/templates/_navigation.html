@@ -25,6 +25,13 @@
                   {% csrf_token %}
                   <div class="form-group">
                      <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+                     {% comment %}
+                     si on decide d'ajouter la localisation d'url avec un /<language_code>/..., on doit utiler le code suivant:
+                     <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                     voir: http://stackoverflow.com/questions/18392405/issue-trying-to-change-language-from-django-template/18393243#18393243
+                     le slice 3, sous-entend que le code de language contient 2 lettres
+                     {% endcomment %}
+
                      <input name="language" type="hidden" value="fr" />
                      <button class="btn btn-xs btn-default" type="submit"/>Français</button>
                   </div>
@@ -41,11 +48,11 @@
                </form>
             </li>
          </ul>
-         <form class="navbar-form navbar-right" role="search">
+         <form class="navbar-form" role="search">
             <div class="form-group">
-               <input type="text" class="form-control" placeholder="Search">
+               <input type="text" class="form-control" placeholder="{% trans 'Search' %}">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
          </form>
       </div><!-- /.navbar-collapse -->
    </nav>
