@@ -74,8 +74,15 @@ LOCALE_PATHS = (
 # =================================================
 #  PACKAGES CONFIGS
 # =================================================
-LESS_MTIME_DELAY = 1
+LESS_MTIME_DELAY = 2
 LESS_USE_CACHE = False
+
+STATIC_PRECOMPILER_COMPILERS=(
+  # "static_precompiler.compilers.CoffeeScript",
+  # "static_precompiler.compilers.SASS",
+  # "static_precompiler.compilers.SCSS",
+  "static_precompiler.compilers.LESS",
+)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -100,8 +107,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'less.finders.LessFinder',
+    # 'less.finders.LessFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'static_precompiler.finders.StaticPrecompilerFinder',
 )
 
 TEMPLATE_LOADERS = (
@@ -143,7 +151,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'django.contrib.formtools',
     'django.contrib.humanize',
-    'less',
+    'static_precompiler',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',

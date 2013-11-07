@@ -63,7 +63,6 @@ $('#id_name').focusout(function(evt){
 //====================================
 // TypeAhead
 //====================================
-arr_typeaheads = ['cepage','tag','region','producer'];
 
 $('#id_country').typeahead({
 	name: 'Countries',

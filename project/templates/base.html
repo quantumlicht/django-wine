@@ -1,13 +1,12 @@
-{% load i18n %}
 {% load staticfiles %}
 {% load less %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
    <meta charset="utf-8"> 
    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-   {# <link rel="stylesheet" type="text/css" href="{% static 'styles.less' %}" /> #}
-   {# <script src="{% static 'less-1.4.1.min.js' %}"></script> #}
+   <link rel="stylesheet" type="text/css" href="{% static '' %}{% less 'styles.less' %}" />
      {% block  title %}<title>{% trans "Title" %}</title>{% endblock title %}
 </head>
 
@@ -33,13 +32,12 @@
    </div>
 
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-   <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.min.js"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
    <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
-   <script src="{% static  'js/core.js' %}"></script>
+   <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.min.js"></script>
    <script src="{% static  'js/jquery.cookie.js' %}"></script>
    <script src="{% static  'js/csrf.js' %}"></script>
-   {# <script src="{% static  'js/forms.js' %}"></script> #}
+   <script src="{% static  'js/core.js' %}"></script>
 
 </body>
 
