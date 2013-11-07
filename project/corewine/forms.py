@@ -27,6 +27,16 @@ from .models import (
 log = logging.getLogger(__name__)
 
 
+# Check this snippet
+# https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#writing-custom-model-fieldsv
+# class HandField(CharField):
+
+#     description = "A hand of cards (bridge style)"
+
+#     def __init__(self, *args, **kwargs):
+#         kwargs['max_length'] = 104
+#         super(HandField, self).__init__(*args, **kwargs)
+
 class RegionTypeAheadField(CharField):
     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
     default_validators = [non_numeric]
