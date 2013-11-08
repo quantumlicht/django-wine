@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-02 22:33-0400\n"
+"POT-Creation-Date: 2013-11-07 20:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,21 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: project/core/validators.py:6 project/core/tests/test_validators.py:63
-#: project/core/tests/test_validators.py:64
-#: project/core/tests/test_validators.py:67
+#: project/core/validators.py:10 project/core/tests/test_validators.py:135
+#: project/core/tests/test_validators.py:143
+#: project/core/tests/test_validators.py:151
 msgid "Expression should not contain numeric values"
 msgstr "L'expression ne doit pas contenir de chiffres"
 
-#: project/core/validators.py:11
+#: project/core/validators.py:15 project/core/tests/test_validators.py:167
+#: project/core/tests/test_validators.py:175
+#: project/core/tests/test_validators.py:183
 msgid "Expression contains letters"
 msgstr "L'expression contient des lettres"
 
-#: project/core/validators.py:16
-msgid "This is not a valid number"
-msgstr "Ce n'est pas un nombre valide"
-
-#: project/core/validators.py:20
+#: project/core/validators.py:20 project/core/tests/test_validators.py:55
+#: project/core/tests/test_validators.py:69
+#: project/core/tests/test_validators.py:77
+#: project/core/tests/test_validators.py:85
 msgid "Not a valid price. 2 decimals maximum and numbers only is allowed."
 msgstr ""
 "Ce n'est pas un prix valide. 2 décimales maximum et des nombres seulement."
@@ -41,22 +42,13 @@ msgstr ""
 msgid "This price seems too high. Please make sure it is correct."
 msgstr "Ce prix semble élevé. Assurez-vous que c'est correct."
 
-#: project/core/validators.py:29
+#: project/core/validators.py:29 project/core/tests/test_validators.py:40
 msgid ""
-"This is not a valid percentage. Maximum is 100% and only put 1 decimal "
+"This is not a valid percentage. Maximum is 100% and only put 2 decimals "
 "maximum."
 msgstr ""
-"Ce n'est pas un pourcentage valide. Le max est 100% et mettre seulement une "
-"décimale."
-
-#: project/core/tests/test_validators.py:46
-msgid "This field is required."
-msgstr "Ce champ est requis."
-
-#: project/core/tests/test_validators.py:49
-#: project/core/tests/test_validators.py:52
-msgid "Enter a number."
-msgstr "Entrez un nombre."
+"Ce n'est pas un pourcentage valide. Le maximum est 100% et mettre seulement 2 "
+"décimales."
 
 #: project/corewine/admin.py:13
 msgid "Mark selected as approved"
@@ -73,22 +65,6 @@ msgstr "Mar selections comme Rouge"
 #: project/corewine/admin.py:26
 msgid "Mark selected as White"
 msgstr "Marquer sélections comme Blanc"
-
-#: project/corewine/forms.py:52
-msgid "Submit"
-msgstr "Soumettre"
-
-#: project/corewine/forms.py:56
-msgid "General Info"
-msgstr "Information générale"
-
-#: project/corewine/forms.py:69
-msgid "Aromatic profile"
-msgstr "Profil aromatique"
-
-#: project/corewine/forms.py:73
-msgid "Taste profile"
-msgstr "Profil gustatif"
 
 #: project/corewine/models.py:22
 msgid "Last Modified"
@@ -130,8 +106,8 @@ msgstr "Approuvé ?"
 msgid "Acidities"
 msgstr "Acidités"
 
-#: project/corewine/models.py:90 project/corewine/models.py:297
-#: project/templates/corewine/wine_detail.html:26
+#: project/corewine/models.py:90 project/corewine/models.py:298
+#: project/templates/corewine/wine_detail.html:49
 msgid "Acidity"
 msgstr "Acidité"
 
@@ -139,18 +115,18 @@ msgstr "Acidité"
 msgid "Aromas"
 msgstr "Arômes"
 
-#: project/corewine/models.py:109 project/corewine/models.py:293
-#: project/templates/corewine/wine_detail.html:24
+#: project/corewine/models.py:109 project/corewine/models.py:294
+#: project/templates/corewine/wine_detail.html:47
 msgid "Aroma"
 msgstr "Arôme"
 
-#: project/corewine/models.py:125 project/corewine/models.py:299
-#: project/templates/corewine/wine_detail.html:28
+#: project/corewine/models.py:125 project/corewine/models.py:300
+#: project/templates/corewine/wine_detail.html:51
 msgid "Tanin"
 msgstr "Tanin"
 
-#: project/corewine/models.py:139 project/corewine/models.py:291
-#: project/templates/corewine/wine_detail.html:23
+#: project/corewine/models.py:139 project/corewine/models.py:292
+#: project/templates/corewine/wine_detail.html:46
 msgid "Teint"
 msgstr "Teinte"
 
@@ -158,8 +134,8 @@ msgstr "Teinte"
 msgid "Tastes"
 msgstr "Goûts"
 
-#: project/corewine/models.py:153 project/corewine/models.py:295
-#: project/templates/corewine/wine_detail.html:25
+#: project/corewine/models.py:153 project/corewine/models.py:296
+#: project/templates/corewine/wine_detail.html:48
 msgid "Taste"
 msgstr "Goût"
 
@@ -167,19 +143,19 @@ msgstr "Goût"
 msgid "Appelations"
 msgstr "Appelations"
 
-#: project/corewine/models.py:171 project/corewine/models.py:285
-#: project/templates/corewine/wine_detail.html:12
+#: project/corewine/models.py:171 project/corewine/models.py:286
+#: project/templates/corewine/wine_detail.html:20
 msgid "Appelation"
 msgstr "Appelation"
 
-#: project/corewine/models.py:184 project/corewine/models.py:303
-#: project/templates/corewine/wine_detail.html:32
+#: project/corewine/models.py:184 project/corewine/models.py:304
+#: project/templates/corewine/wine_detail.html:55
 msgid "Cepage"
 msgstr "Cépage"
 
-#: project/corewine/models.py:196 project/corewine/models.py:287
+#: project/corewine/models.py:196 project/corewine/models.py:288
 #: project/templates/corewine/_wine_list_element.html:10
-#: project/templates/corewine/wine_detail.html:13
+#: project/templates/corewine/wine_detail.html:28
 msgid "Country"
 msgstr "Pays"
 
@@ -191,8 +167,8 @@ msgstr "Pays"
 msgid "Regions"
 msgstr "Régions"
 
-#: project/corewine/models.py:212 project/corewine/models.py:289
-#: project/templates/corewine/wine_detail.html:14
+#: project/corewine/models.py:212 project/corewine/models.py:290
+#: project/templates/corewine/wine_detail.html:30
 msgid "Region"
 msgstr "Région"
 
@@ -200,9 +176,9 @@ msgstr "Région"
 msgid "Productors"
 msgstr "Producteurs"
 
-#: project/corewine/models.py:226 project/corewine/models.py:283
+#: project/corewine/models.py:226 project/corewine/models.py:284
 #: project/templates/corewine/_wine_list_element.html:9
-#: project/templates/corewine/wine_detail.html:10
+#: project/templates/corewine/wine_detail.html:11
 msgid "Producer"
 msgstr "Producteur"
 
@@ -210,57 +186,57 @@ msgstr "Producteur"
 msgid "Name"
 msgstr "Nom"
 
-#: project/corewine/models.py:259
+#: project/corewine/models.py:260
 #: project/templates/corewine/_wine_list_element.html:11
-#: project/templates/corewine/wine_detail.html:11
+#: project/templates/corewine/wine_detail.html:18
 msgid "Year"
 msgstr "Année"
 
-#: project/corewine/models.py:261
-#: project/templates/corewine/wine_detail.html:15
+#: project/corewine/models.py:262
+#: project/templates/corewine/wine_detail.html:38
 msgid "Alcool"
 msgstr "Alcool"
 
-#: project/corewine/models.py:265
-#: project/templates/corewine/wine_detail.html:16
+#: project/corewine/models.py:266
+#: project/templates/corewine/wine_detail.html:39
 msgid "Tasting Date"
 msgstr "Date de Dégustation"
 
-#: project/corewine/models.py:269
-#: project/templates/corewine/wine_detail.html:17
+#: project/corewine/models.py:270
+#: project/templates/corewine/wine_detail.html:40
 msgid "SAQ Code"
 msgstr "Code SAQ"
 
-#: project/corewine/models.py:273
-#: project/templates/corewine/wine_detail.html:18
+#: project/corewine/models.py:274
+#: project/templates/corewine/wine_detail.html:41
 msgid "Price"
 msgstr "Prix"
 
-#: project/corewine/models.py:276
-#: project/templates/corewine/wine_detail.html:19
+#: project/corewine/models.py:277
+#: project/templates/corewine/wine_detail.html:42
 msgid "Mouth Intensity"
 msgstr "Intensité en Bouche"
 
-#: project/corewine/models.py:277
-#: project/templates/corewine/wine_detail.html:20
+#: project/corewine/models.py:278
+#: project/templates/corewine/wine_detail.html:43
 msgid "Nose Intensity"
 msgstr "Intensité au Nez"
 
-#: project/corewine/models.py:278
-#: project/templates/corewine/wine_detail.html:21
+#: project/corewine/models.py:279
+#: project/templates/corewine/wine_detail.html:44
 msgid "Persistance"
 msgstr "Persistance"
 
-#: project/corewine/models.py:279
-#: project/templates/corewine/wine_detail.html:22
+#: project/corewine/models.py:280
+#: project/templates/corewine/wine_detail.html:45
 msgid "Rating"
 msgstr "Note"
 
-#: project/corewine/models.py:305 project/corewine/models.py:344
+#: project/corewine/models.py:306 project/corewine/models.py:345
 msgid "Tags"
 msgstr "Étiquettes"
 
-#: project/corewine/models.py:335
+#: project/corewine/models.py:336
 msgid "Cepages"
 msgstr "Cépages"
 
@@ -287,15 +263,15 @@ msgid "Home"
 msgstr "Acceuil"
 
 #: project/templates/_navigation.html:17
-msgid "Wine"
-msgstr "Vin"
-
-#: project/templates/_navigation.html:18
 msgid "Blog"
 msgstr "Blog"
 
+#: project/templates/_navigation.html:18
+msgid "Wine"
+msgstr "Vin"
+
 #: project/templates/_navigation.html:19
-#: project/templates/corewine/wine_form.html:8
+#: project/templates/corewine/wine_form.html:7
 msgid "Tasting"
 msgstr "Dégustation"
 
@@ -303,7 +279,11 @@ msgstr "Dégustation"
 msgid "List Tastings"
 msgstr "Liste des Dégustations"
 
-#: project/templates/base.html:11
+#: project/templates/_navigation.html:54
+msgid "Search"
+msgstr "Recherche"
+
+#: project/templates/base.html:10
 msgid "Title"
 msgstr "Titre"
 
@@ -315,11 +295,32 @@ msgstr "Bienvenue dans le monde des vins!"
 msgid "A place to discuss and share about wine"
 msgstr "Un endroit pour échanger et partager sur le vin"
 
-#: project/templates/corewine/wine_detail.html:37
+#: project/templates/corewine/wine_detail.html:60
 msgid "Tag"
 msgid_plural "Tags"
 msgstr[0] "Libellé"
 msgstr[1] "Libellés"
+
+#~ msgid "This is not a valid number"
+#~ msgstr "Ce n'est pas un nombre valide"
+
+#~ msgid "This field is required."
+#~ msgstr "Ce champ est requis."
+
+#~ msgid "Enter a number."
+#~ msgstr "Entrez un nombre."
+
+#~ msgid "Submit"
+#~ msgstr "Soumettre"
+
+#~ msgid "General Info"
+#~ msgstr "Information générale"
+
+#~ msgid "Aromatic profile"
+#~ msgstr "Profil aromatique"
+
+#~ msgid "Taste profile"
+#~ msgstr "Profil gustatif"
 
 #~ msgid "created"
 #~ msgstr "créé"

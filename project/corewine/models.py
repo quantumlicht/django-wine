@@ -253,7 +253,8 @@ class Wine(WineType, Timestamp):
 
     name = models.CharField(max_length=100,
                             unique=True,
-                            verbose_name=_('Name')
+                            verbose_name=_('Name'),
+                            validators=[non_numeric]
                             )
     
     year = models.IntegerField(choices=YEARS, verbose_name=_('Year') )
