@@ -1,5 +1,5 @@
 import logging
-from core.validators import non_numeric
+from core.validators import non_numeric,validate_future_date
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import (
     ModelForm,
@@ -7,7 +7,8 @@ from django.forms import (
     CharField,
     TextInput,
     RadioSelect,
-    MultipleChoiceField
+    MultipleChoiceField,
+    DateField
 )
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -121,6 +122,7 @@ class WineForm(ModelForm):
     country = CountryTypeAheadField()
     producer = ProducerTypeAheadField()
     appelation = AppelationTypeAheadField()
+
     class Meta:
         model = Wine
         fields = (
@@ -152,6 +154,10 @@ class WineForm(ModelForm):
         log.debug('cepage %s' % data)
         return data
 
+    def clean_date(self):
+        data = self.cleaned_data['date']
+        validate_future_date(data)
+        return data    
 
 # class WineForm(ModelForm):
 

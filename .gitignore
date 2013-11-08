@@ -4,6 +4,8 @@
 *.mo
 bootstrap-3.0.0/
 LESS_CACHE/
+COMPILED/
 htmlcov/
 less*.min.js
 secret.py
+Procfile

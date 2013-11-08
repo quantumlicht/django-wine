@@ -263,7 +263,7 @@ class Wine(WineType, Timestamp):
                                validators=[percentage]
                               )
     
-    date = models.DateField(_('Tasting Date'))
+    date = models.DateField(_('Tasting Date'), help_text='Format : yyyy-mm-dd', validators=[validate_future_date])
 
     code_saq = models.CharField(unique=True,
                                 max_length=255,
