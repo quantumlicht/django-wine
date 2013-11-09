@@ -8,11 +8,10 @@ Replace this with more appropriate tests for your application.
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 import core.validators as v
+from django.utils import timezone
+from datetime import datetime,timedelta
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as ugettext
-from django.forms import ModelForm, Form
-from django import forms
-from corewine.models import Wine
 
 import logging
 
@@ -20,6 +19,23 @@ log = logging.getLogger(__name__)
 
 
 class ValidatorsTest(TestCase):
+	# =======================================================================================
+	# FUTURE_DATE VALIDATOR
+	# =======================================================================================
+	def test_future_date_with_present_date(self):
+		self.assertEquals(None, v.validate_future_date(datetime.now().date()))
+
+
+	def test_future_date_with_past_date(self):
+		self.assertEquals(None, v.validate_future_date(datetime.now().date() + timedelta(days=-30)))
+
+
+	def test_future_date_with_future_date(self):
+		self.assertRaisesMessage(ValidationError,_('Invalid Date. This date is in the future.'),v.validate_future_date, datetime.now().date()+timedelta(days=30))
+		with self.assertRaises(ValidationError) as e:
+			v.validate_future_date(datetime.now().date()+timedelta(days=30))
+		exc  = e.exception
+		self.assertEqual(exc.code, 'invalid_date')
 
 	# =======================================================================================
 	# PERCENTAGE VALIDATOR

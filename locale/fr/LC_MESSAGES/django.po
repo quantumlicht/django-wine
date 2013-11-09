@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-07 20:34-0500\n"
+"POT-Creation-Date: 2013-11-08 19:27-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,37 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: project/core/validators.py:10 project/core/tests/test_validators.py:135
-#: project/core/tests/test_validators.py:143
-#: project/core/tests/test_validators.py:151
+#: project/core/validators.py:12 project/core/tests/test_validators.py:159
+#: project/core/tests/test_validators.py:167
+#: project/core/tests/test_validators.py:175
 msgid "Expression should not contain numeric values"
 msgstr "L'expression ne doit pas contenir de chiffres"
 
-#: project/core/validators.py:15 project/core/tests/test_validators.py:167
-#: project/core/tests/test_validators.py:175
-#: project/core/tests/test_validators.py:183
+#: project/core/validators.py:17 project/core/tests/test_validators.py:191
+#: project/core/tests/test_validators.py:199
+#: project/core/tests/test_validators.py:207
 msgid "Expression contains letters"
 msgstr "L'expression contient des lettres"
 
-#: project/core/validators.py:20 project/core/tests/test_validators.py:55
-#: project/core/tests/test_validators.py:69
-#: project/core/tests/test_validators.py:77
-#: project/core/tests/test_validators.py:85
+#: project/core/validators.py:22
 msgid "Not a valid price. 2 decimals maximum and numbers only is allowed."
 msgstr ""
 "Ce n'est pas un prix valide. 2 décimales maximum et des nombres seulement."
 
-#: project/core/validators.py:24
+#: project/core/validators.py:26
 msgid "This price seems too high. Please make sure it is correct."
 msgstr "Ce prix semble élevé. Assurez-vous que c'est correct."
 
-#: project/core/validators.py:29 project/core/tests/test_validators.py:40
+#: project/core/validators.py:31
 msgid ""
 "This is not a valid percentage. Maximum is 100% and only put 2 decimals "
 "maximum."
 msgstr ""
-"Ce n'est pas un pourcentage valide. Le maximum est 100% et mettre seulement 2 "
-"décimales."
+"Ce n'est pas un pourcentage valide. Le maximum est 100% et mettre seulement "
+"2 décimales."
+
+#: project/core/validators.py:38
+msgid "Invalid Date. This date is in the future."
+msgstr "Date Invalide. Cette date est dans le futur."
 
 #: project/corewine/admin.py:13
 msgid "Mark selected as approved"
@@ -60,7 +61,7 @@ msgstr "Marquer sélections comme rejetées"
 
 #: project/corewine/admin.py:22
 msgid "Mark selected as Red"
-msgstr "Mar selections comme Rouge"
+msgstr "Marquer sélections comme Rouge"
 
 #: project/corewine/admin.py:26
 msgid "Mark selected as White"

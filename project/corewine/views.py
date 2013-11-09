@@ -132,17 +132,19 @@ class WineDetailView(DetailView):
 # --------------------------------------------------
 class TeintReadView(ListAPIView):
     model = Teint
-
+    def get_queryset(self):
+        log.debug(self.request.QUERY_PARAMS.get('type', None))
+        queryset = Teint.objects.all()
+        name = self.request.QUERY_PARAMS.get('type', None)
+        if name is not None:
+            queryset = queryset.filter(wineType__iexact=name)
+        return queryset
 
 # --------------------------------------------------
 class WineReadView(ListAPIView):
     model = Wine
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
         queryset = Wine.objects.all()
         name = self.request.QUERY_PARAMS.get('name', None)
         if name is not None:
@@ -152,35 +154,33 @@ class WineReadView(ListAPIView):
 # --------------------------------------------------
 class AppelationReadView(ListAPIView):
     model = Appelation
-
-    def get_queryset(self):
-        return Appelation.objects.all().filter(status='a')
+    queryset = Appelation.approved.all()
 
 
 # --------------------------------------------------
 class CepageReadView(ListAPIView):
     model = Cepage
-
+    queryset = Cepage.approved.all()
 
 # --------------------------------------------------
 class CountryReadView(ListAPIView):
     model = Country
-    def get_queryset(self):
-        return Country.objects.all().filter(status='a')
+    queryset = Country.approved.all()
 
 # --------------------------------------------------
 class ProducerReadView(ListAPIView):
     model = Producer
-
+    queryset = Producer.approved.all()
 
 # --------------------------------------------------
 class RegionReadView(ListAPIView):
     model = Region
-
+    queryset = Region.approved.all()
 
 # --------------------------------------------------
 class TagReadView(ListAPIView):
     model = Tag
+    queryset = Tag.approved.all() 
 	
 
 

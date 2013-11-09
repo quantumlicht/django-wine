@@ -67,8 +67,7 @@ class AromaAdmin(TranslationAdmin):
 class CepageAdmin(admin.ModelAdmin):
     list_display = ['cepage', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status']
-    actions = [make_rejected, make_approved]
-    actions = [make_red, make_white]
+    actions = [make_rejected, make_approved, make_red, make_white]
 
 
 # -------------------------------------------

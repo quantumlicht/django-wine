@@ -57,7 +57,10 @@ class Approvable(models.Model):
     class Meta:
         abstract = True
 
-
+    # Managers
+    objects = models.Manager()
+    approved = ApprovedManager() 
+    
     STATUSES = (
         (APPROVED, _('Approved')),
         (REJECTED, _('Rejected')),

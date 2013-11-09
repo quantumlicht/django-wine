@@ -214,22 +214,27 @@ $('#id_producer').typeahead({
 
 var teint = $('#id_teint option');
 $('#id_wineType').change(function(evt){
-	winetype = evt.target.value;
-	$.ajax({url: '/api/teint/',
+	winetype = '';
+	try{
+		winetype = String(evt.target.value);
+	}
+	catch(e){
+		console.log('Exception caught:' + e);
+	}
+
+	$.ajax({url: '/api/teint?type=' + winetype,
 		cache: false,
 		success:function(data){
 			arr =[];
-			filtered_data = data.filter(function(obj){
-				if(obj.wineType == winetype){
-					arr.push(obj.teint);
-				}
-				return obj.wineType==winetype;
+
+			filtered_data = data.filter(function(obj){				
+				arr.push(obj.teint);
 			});
+			
 			filtered_options = teint.filter(function(index){
 				return $.inArray(teint[index].text, arr) > -1;
 			})
 			$('#id_teint').html(filtered_options);
-			// return filtered_data.sort(function(a, b){re	turn  a.order < b.order ? true:false;});
 		}
 	});
 });
