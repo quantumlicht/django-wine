@@ -94,7 +94,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,cepage_b)
+		self.assertContains(response,cepage_a)
 		self.assertContains(response,cepage_b)
 
 
@@ -106,7 +106,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,cepage_b)
+		self.assertNotContains(response,cepage_a)
 		self.assertNotContains(response,cepage_b)
 
 
@@ -143,7 +143,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,appelation_b)
+		self.assertContains(response,appelation_a)
 		self.assertContains(response,appelation_b)
 
 
@@ -155,7 +155,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,appelation_b)
+		self.assertNotContains(response,appelation_a)
 		self.assertNotContains(response,appelation_b)
 
 
@@ -192,7 +192,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,country_b)
+		self.assertContains(response,country_a)
 		self.assertContains(response,country_b)
 
 
@@ -204,7 +204,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,country_b)
+		self.assertNotContains(response,country_a)
 		self.assertNotContains(response,country_b)
 
 
@@ -241,7 +241,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,producer_b)
+		self.assertContains(response,producer_a)
 		self.assertContains(response,producer_b)
 
 
@@ -253,7 +253,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,producer_b)
+		self.assertNotContains(response,producer_a)
 		self.assertNotContains(response,producer_b)
 
 
@@ -290,7 +290,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,region_b)
+		self.assertContains(response,region_a)
 		self.assertContains(response,region_b)
 
 
@@ -302,7 +302,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,region_b)
+		self.assertNotContains(response,region_a)
 		self.assertNotContains(response,region_b)
 
 
@@ -339,7 +339,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertContains(response,tag_b)
+		self.assertContains(response,tag_a)
 		self.assertContains(response,tag_b)
 
 
@@ -351,7 +351,7 @@ class ApiTests(TestCase):
 		
 		self.assertEquals(response.status_code,200)
 
-		self.assertNotContains(response,tag_b)
+		self.assertNotContains(response,tag_a)
 		self.assertNotContains(response,tag_b)
 
 
