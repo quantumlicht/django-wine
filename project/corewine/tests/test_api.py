@@ -57,6 +57,17 @@ class TeintFactory(factory.django.DjangoModelFactory):
 	order = fuzzy.FuzzyInteger(1,10)
 
 
+class WineFactory(factory.django.DjangoModelFactory):
+	FACTORY_FOR = Wine
+	wineType = 'w'
+	cepage = factory.SubFactory(CepageFactory)
+	appelation = factory.SubFactory(AppelationFactory)
+	country = factory.SubFactory(CountryFactory)
+	producer = factory.SubFactory(ProducerFactory)
+	region = factory.SubFactory(RegionFactory)
+	tag = factory.SubFactory(TagFactory)
+	
+
 # ============================================================================================
 # TESTS
 # ============================================================================================

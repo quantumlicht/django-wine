@@ -125,6 +125,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.contrib.admindocs.middleware.XViewMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -135,14 +136,14 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
-
+# ADMIN_FOR = ('project.corewine','project.core','project.blog')
 # =================================================
 #  INSTALLED APPS
 # =================================================
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.admin',
     'django.contrib.auth',
     'blog',
     'braces',
@@ -158,6 +159,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'south',
     'core',
+    'taggit',
     'django.contrib.staticfiles',
     'modeltranslation',
 )

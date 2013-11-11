@@ -84,6 +84,7 @@ class ProducerAdmin(admin.ModelAdmin):
     fields =('producer', 'status')
     list_display = ('producer', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
+    list_filter = ['status']
     actions = [make_rejected, make_approved]
 
 # -------------------------------------------
@@ -91,6 +92,7 @@ class RegionAdmin(TranslationAdmin):
     fields =('region', 'status')
     list_display = ('region_fr', 'region_en', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
+    list_filter = ['status']
     actions = [make_rejected, make_approved]
 
 

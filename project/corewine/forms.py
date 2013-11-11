@@ -1,5 +1,5 @@
 import logging
-from core.validators import non_numeric,validate_future_date
+from core.validators import non_numeric, validate_future_date
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import (
     ModelForm,
@@ -8,14 +8,16 @@ from django.forms import (
     TextInput,
     RadioSelect,
     MultipleChoiceField,
+    ChoiceField,
     DateField
 )
+from django.forms.widgets import SelectMultiple
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field, Div
 from crispy_forms.bootstrap import FormActions, AppendedText, InlineRadios, TabHolder, Tab
-
+from django.db import models
 from .models import (
     Wine,
     Region,
@@ -28,7 +30,7 @@ from .models import (
 log = logging.getLogger(__name__)
 
 
-# Check this snippet
+# Check this snippet for refactoring typeahead fields
 # https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#writing-custom-model-fieldsv
 # class HandField(CharField):
 
@@ -38,91 +40,206 @@ log = logging.getLogger(__name__)
 #         kwargs['max_length'] = 104
 #         super(HandField, self).__init__(*args, **kwargs)
 
-class RegionTypeAheadField(CharField):
+class RegionTypeAheadField(ChoiceField):
     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
     default_validators = [non_numeric]
 
     def clean(self, value):
-        value = super(RegionTypeAheadField, self).clean(value)
-        # log.debug('value %s' % value)
+        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
             obj = Region.objects.get(region=value)    
-            return obj
         except ObjectDoesNotExist as e:
-            reg = Region(region=value,status='p')
+            obj = Region(region=value,status='p')
                 
-            return reg
+        self.choices.append((obj, value))
+        log.debug('Region::clean choices %s' % self.choices)
+        value = super(RegionTypeAheadField, self).clean(value)
+        return obj
 
 
-class AppelationTypeAheadField(CharField):
+class AppelationTypeAheadField(ChoiceField):
     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
     default_validators = [non_numeric]
 
     def clean(self, value):
-        value = super(AppelationTypeAheadField, self).clean(value)
-        # log.debug('value %s' % value)
+        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
             obj = Appelation.objects.get(appelation=value)    
-            return obj
         except ObjectDoesNotExist as e:
-            reg = Appelation(appelation=value,status='p')
+            obj = Appelation(appelation=value,status='p')
                 
-            return reg
+        self.choices.append((obj, value))
+        log.debug('Appelation::clean choices %s' % self.choices)
+        value = super(AppelationTypeAheadField, self).clean(value)
+        return obj
 
 
-class ProducerTypeAheadField(CharField):
+class ProducerTypeAheadField(ChoiceField):
     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
     default_validators = [non_numeric]
 
     def clean(self, value):
-        value = super(ProducerTypeAheadField, self).clean(value)
-        # log.debug('value %s' % value)
+        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
             obj = Producer.objects.get(producer=value)    
-            return obj
         except ObjectDoesNotExist as e:
-            reg = Producer(producer=value,status='p')
-                
-            return reg
+            obj = Producer(producer=value,status='p')
+                    
+        self.choices.append((obj, value))
+        log.debug('Producer::clean choices %s' % self.choices)
+        value = super(ProducerTypeAheadField, self).clean(value)
+        return obj
 
 
-class CountryTypeAheadField(CharField):
-    # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
-    default_validators = [non_numeric]
+# class CountryTypeAheadField(CharField):
+#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
+#     default_validators = [non_numeric]
 
-    def clean(self, value):
-        value = super(CountryTypeAheadField, self).clean(value)
-        # log.debug('value %s' % value)
-        # errors = non_numeric(value)
-            # log.debug('errors %s' % errors)
-        try:
-            obj = Country.objects.get(country=value)    
-            return obj
-        except ObjectDoesNotExist as e:
-            msg = 'Invalid Country'
-            raise ValidationError(msg)
-                
-
-# class multiselectfield(MultipleChoiceField):
 #     def clean(self, value):
-#         value = super(multiselectfield,self).clean(value)
-#         log.debug('value %s' % value)
-#         return value
+#         value = super(CountryTypeAheadField, self).clean(value)
+#         # log.debug('value %s' % value)
+#         # errors = non_numeric(value)
+#             # log.debug('errors %s' % errors)
+#         try:
+#             obj = Country.objects.get(country=value)    
+#             return obj
+#         except ObjectDoesNotExist as e:
+#             msg = 'Invalid Country'
+#             raise ValidationError(msg)
+                
+
+# class CepageTypeAheadField(CharField):
+#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
+#     default_validators = [non_numeric]
+
+#     def clean(self, value):
+#         value = super(CepageTypeAheadField, self).clean(value)
+#         # log.debug('value %s' % value)
+#         # errors = non_numeric(value)
+#         try:
+#             # log.debug('errors %s' % errors)
+#             obj = Cepage.objects.get(cepage=value)    
+#             return (obj,)
+#         except ObjectDoesNotExist as e:
+#             obj = Cepage(cepage=value,status='p')
+                
+#             return (obj,)
+
+
+# class TagTypeAheadField(CharField):
+#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
+#     default_validators = [non_numeric]
+
+#     def clean(self, value):
+#         value = super(TagTypeAheadField, self).clean(value)
+#         # log.debug('value %s' % value)
+#         # errors = non_numeric(value)
+#         try:
+#             # log.debug('errors %s' % errors)
+#             obj = Tag.objects.get(tag=value)    
+#             return (obj,)
+#         except ObjectDoesNotExist as e:
+#             obj = tag(tag=value,status='p', description='')
+                
+#             return (obj,)
+
+class TagField(MultipleChoiceField):
+    __metaclass__ = models.SubfieldBase
+    
+    def to_python(self, value):
+        arr = []
+        for tag in value:
+            try:
+                obj = Tag.objects.get(tag=tag)
+                arr.append(obj.id)
+            except ObjectDoesNotExist as e:
+                non_numeric(tag)
+                obj = Tag(tag=tag,status='p')            
+                obj.save()
+                self.choices.append((value,tag))
+                arr.append(obj.id)
+        log.debug('to_python::arr %s' % arr)
+        return arr
+
+
+    def validate(self, value):
+        # super(TagField, self).validate(value)
+        log.debug('validate::value %s' %  value)
+        return value
+        for tag in value:
+            non_numeric(tag)
+
+
+
+class CepageField(MultipleChoiceField):
+    __metaclass__ = models.SubfieldBase
+    
+    def to_python(self, value):
+        arr = []
+        for cepage in value:
+            try:
+                obj = Cepage.objects.get(cepage=cepage)
+                arr.append(obj.id)
+            except ObjectDoesNotExist as e:
+                non_numeric(cepage)
+                obj = Cepage(cepage=cepage,status='p')            
+                obj.save()
+                self.choices.append((value,cepage))
+                arr.append(obj.id)
+        log.debug('to_python::arr %s' % arr)
+        return arr
+
+
+    def validate(self, value):
+        # super(TagField, self).validate(value)
+        log.debug('validate::value %s' %  value)
+        return value
+        for cepage in value:
+            non_numeric(cepage)
+
+    # def clean(self, value):
+    #     # value = super(TagField, self).clean(value)
+    #     log.debug('clean::value %s' % value)
+    #     for tag in value:
+    #         errors = non_numeric(value)
+
+
+
+    # def clean(self, value):
+    #     # value = super(TagField,self).clean(value)
+    #     log.debug('value %s' % value)
+    #     for tag in value:
+    #         try:
+    #             obj = Tag.objects.get(tag=tag)
+    #             return (obj,)
+    #         except ObjectDoesNotExist as e:
+    #             obj = tag(tag)
+    #             return (obj,)
+
 
 
 class WineForm(ModelForm):
 
     region = RegionTypeAheadField()
-    country = CountryTypeAheadField()
+    # country = CountryTypeAheadField()
     producer = ProducerTypeAheadField()
     appelation = AppelationTypeAheadField()
+    tag = TagField()
+    cepage = CepageField()
 
+    def __init__(self,*args,**kwargs):
+        super(WineForm, self).__init__(*args,**kwargs)
+
+        self.fields['region'].choices  =  [(x,x.region) for x in Region.approved.all()]
+        self.fields['producer'].choices = [(x,x.producer) for x in Producer.approved.all()]
+        self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
+        self.fields['tag'].choices = [(x,x.tag) for x in Tag.approved.all()]
     class Meta:
         model = Wine
         fields = (
@@ -130,6 +247,11 @@ class WineForm(ModelForm):
             'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
             'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
         )
+
+        widgets = {
+            'wineType': RadioSelect
+        }
+
 
     def clean_appelation(self):
         data  = self.cleaned_data['appelation']
@@ -151,13 +273,30 @@ class WineForm(ModelForm):
 
     def clean_cepage(self):
         data = self.cleaned_data['cepage']
-        log.debug('cepage %s' % data)
+        log.debug('cleaned_cepage %s' % data)
+        # for cepage in data:
+        #     cepage.save()
+
         return data
 
     def clean_date(self):
         data = self.cleaned_data['date']
         validate_future_date(data)
         return data    
+
+
+    # def save(self, commit=True):
+    #     log.debug('clean_data %s' % self.cleaned_data)
+    #     instance = super(WineForm, self).save(commit=False)
+
+    #     return instance
+
+    def clean_tag(self):
+        data = self.cleaned_data['tag']
+        log.debug('cleaned_data %s' % data)
+        # for tag in data:
+        #     tag.save()
+        return data
 
 # class WineForm(ModelForm):
 

@@ -7,7 +7,6 @@ from django.contrib import messages
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.forms.models import inlineformset_factory
 from django.forms.models import modelform_factory
 
 from django.views.i18n import set_language
@@ -17,7 +16,6 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
 
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
 
 from .forms import WineForm
 

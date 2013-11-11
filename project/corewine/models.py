@@ -1,12 +1,16 @@
+"""
+py:module:: corewine
+
+"""
+import logging
 from django.db import models
 from django.utils import timezone
 from core.validators import * 
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
-import logging
 from .managers import ApprovedManager
-
+from taggit.managers import TaggableManager
 
 log = logging.getLogger(__name__) 
 
@@ -87,7 +91,6 @@ class Acidity(Orderable, Timestamp):
     '''
     class Meta(Orderable.Meta):
         verbose_name_plural = _('Acidities')
-
     acidity = models.CharField(max_length=60,
                                unique=True,
                                verbose_name=_('Acidity')
@@ -169,7 +172,7 @@ class Taste(Orderable, Timestamp):
 class Appelation(Approvable, Timestamp):
     class Meta:
         verbose_name_plural = _('Appelations')
-
+        ordering = ['appelation']
     appelation = models.CharField(max_length=100,
                                   verbose_name=_('Appelation'),
                                   validators=[non_numeric],
@@ -182,6 +185,9 @@ class Appelation(Approvable, Timestamp):
 
 # -------------------------------------------------------------
 class Cepage(Approvable, WineType, Timestamp):
+
+    class Meta:
+        ordering = ['cepage']
     cepage = models.CharField(max_length=60,
                               validators=[non_numeric],
                               verbose_name=_('Cepage'),
@@ -194,13 +200,16 @@ class Cepage(Approvable, WineType, Timestamp):
 
 # -------------------------------------------------------------
 class Country(Approvable, Timestamp):
+
+    class Meta:
+        verbose_name_plural = _('Countries')
+        ordering = ['country']
+
     country = models.CharField(max_length=250,
                                unique=True,
                                verbose_name=_('Country')
                                )
     
-    class Meta:
-        verbose_name_plural = _('Countries')
     
     def __unicode__(self):
         return self.country
@@ -210,7 +219,7 @@ class Country(Approvable, Timestamp):
 class Region(Approvable, Timestamp):
     class Meta:
         verbose_name_plural = _('Regions')
-
+        ordering = ['region']
     region = models.CharField(max_length=100,
                               verbose_name=_('Region'),
                               validators=[non_numeric],
@@ -224,7 +233,7 @@ class Region(Approvable, Timestamp):
 class Producer(Approvable, Timestamp):
     class Meta:
         verbose_name_plural = _('Productors')
-
+        ordering = ['producer']
     producer = models.CharField(max_length=100,
                                 verbose_name=_('Producer'),
                                 validators=[non_numeric],
@@ -237,6 +246,9 @@ class Producer(Approvable, Timestamp):
 
 # -------------------------------------------------------------
 class Tag(Approvable, WineType, Timestamp):
+
+    class Meta:
+        ordering = ['tag']
     tag = models.CharField(max_length=60,
                            validators=[non_numeric],
                            unique=True
@@ -246,12 +258,20 @@ class Tag(Approvable, WineType, Timestamp):
     def __unicode__(self):
         return self.tag
 
-
 # -------------------------------------------------------------
 class Wine(WineType, Timestamp):
-    
+    """
+    Stores a single blog entry, related to :model:`Country` 
+    :model:`Tag`.
+
+    """
     # ------------------------------------
     # Fields
+
+
+    class Meta:
+        ordering = ['name']
+
     slug = models.SlugField()
 
     name = models.CharField(max_length=100,
@@ -304,10 +324,12 @@ class Wine(WineType, Timestamp):
 
     # ------------------------------------
     # Many To Many
-    cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepage'))
+    cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepages'))
     
     tag = models.ManyToManyField(Tag, blank=True, null=True, verbose_name=_('Tags'))
 
+    # tag_test = TaggableManager(verbose_name='Tags Test')
+    # cepage_test = TaggableManager(verbose_name='Cepages Test')
 
     # ------------------------------------
     # Managers

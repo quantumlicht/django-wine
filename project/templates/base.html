@@ -7,6 +7,7 @@
    <meta charset="utf-8"> 
    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
    <link rel="stylesheet" type="text/css" href="{% static '' %}{% less 'styles.less' %}" />
+   <link rel="stylesheet" type="text/css" href="{% static '' %}{% less 'selectize.bootstrap3.less' %}" />
      {% block  title %}<title>{% trans "Title" %}</title>{% endblock title %}
 </head>
 
@@ -32,6 +33,7 @@
    </div>
 
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+   <script src="{% static  'js/selectize.min.js' %}"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
    <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
    <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.min.js"></script>

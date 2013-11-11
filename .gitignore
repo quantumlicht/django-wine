@@ -9,3 +9,7 @@ htmlcov/
 less*.min.js
 secret.py
 Procfile
+Makefile
+make.bat
+build/
+source/

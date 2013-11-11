@@ -3,7 +3,9 @@ from base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
+DEBUG_TOOLBAR_CONFIG = {
+	'INTERCEPT_REDIRECTS': False
+}
 TEST_RUNNER = 'discover_runner.DiscoverRunner'
 
 TEMPLATE_STRING_IF_INVALID = "INVALID EXPRESSION: %s"

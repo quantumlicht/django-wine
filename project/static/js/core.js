@@ -36,6 +36,7 @@ $('#id_name').click(function(){
 	$(this).parent().find('.help-block').hide();
 	$(this).closest('.form-group').removeClass('has-error');
 });
+
 $('#id_name').focusout(function(evt){
 	name_to_check = evt.target.value;
 	console.log(name_to_check);
@@ -64,30 +65,113 @@ $('#id_name').focusout(function(evt){
 // TypeAhead
 //====================================
 
-$('#id_country').typeahead({
-	name: 'Countries',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/country',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['country'];
+// $('#id_country').typeahead({
+// 	name: 'Countries',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/country',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['country'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
+
+$('#id_producer').selectize({
+	create: true,
+	persist: false
 });
 
+$('#id_nose_intensity').selectize();
+$('#id_persistance').selectize();
+$('#id_mouth_intensity').selectize();
+$('#id_teint').selectize();
+$('#id_aroma').selectize();
+$('#id_taste').selectize();
+$('#id_acidity').selectize();
+$('#id_tanin').selectize();
+$('#id_rating').selectize();
+$('#id_appelation').selectize({
+	create: true,
+	persist: false
+});
 
+$('#id_region').selectize({
+	create:true,
+	persist: false
+});
+
+$('#id_year').selectize();
+$('#id_country').selectize();
+
+$('#id_cepage').selectize({
+	maxItems:5,
+	create:true,
+	persist: false,
+	plugins: ['remove_button','restore_on_backspace']
+});
+
+$('#id_tag').selectize({
+	maxItems:5,
+	create:true,
+	persist: false,
+	// plugins: ['remove_button','restore_on_backspace'],
+	// render: {
+ //        option: function(item, escape) {
+ //            var actors = [];
+ //            for (var i = 0, n = item.abridged_cast.length; i < n; i++) {
+ //                actors.push('<span>' + escape(item.abridged_cast[i].name) + '</span>');
+ //            }
+
+ //            return '<div>' +
+ //                '<img src="' + escape(item.posters.thumbnail) + '" alt="">' +
+ //                '<span class="title">' +
+ //                    '<span class="name">' + escape(item.title) + '</span>' +
+ //                '</span>' +
+ //                '<span class="description">' + escape(item.synopsis || 'No synopsis available at this time.') + '</span>' +
+ //                '<span class="actors">' + (actors.length ? 'Starring ' + actors.join(', ') : 'Actors unavailable') + '</span>' +
+ //            '</div>';
+ //        }
+ //    },
+	load: function(query, callback){
+		if (!query.length) return callback();
+        $.ajax({
+            url: '../../api/tag',
+            type: 'GET',
+            dataType: 'jsonp',
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+            	console.log('res',res);
+                callback(res);
+            }
+        });
+
+	}
+
+});
+
+// $('#id_tag').selectize({
+// 	maxItems:5,
+// 	create: function(input) {
+//         return {
+//             value: input,
+//             text: input
+//         }
+//     }
+// });
 // $('#id_cepage').typeahead({
 // 	name: 'Cepages',
 // 	template: '<p><strong>{{name}}</strong></p>',
@@ -112,101 +196,100 @@ $('#id_country').typeahead({
 // });
 
 
-$('#id_tag').typeahead({
-	name: 'Tags',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/tag',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['tag'];
+// $('#id_tag').typeahead({
+// 	name: 'Tags',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/tag',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['tag'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
-});
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
 
 
-$('#id_region').typeahead({
-	name: 'Regions',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/region',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['region'];
+// $('#id_region').typeahead({
+// 	name: 'Regions',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/region',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['region'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				console.log(elem);
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
-});
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				console.log(elem);
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
 
-$('#id_appelation').typeahead({
-	name: 'Appelations',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/appelation',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['appelation'];
+// $('#id_appelation').typeahead({
+// 	name: 'Appelations',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/appelation',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['appelation'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				console.log(elem);
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
-});
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				console.log(elem);
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
 
-
-$('#id_producer').typeahead({
-	name: 'Producers',
-	template: '<p><strong>{{name}}</strong></p>',
-	engine: Hogan,
-	prefetch: {
-		url: '../../api/producer',
-		filter: function(parsedResponse){
-			arr_datums = [];
-			for (var idx=0; idx<parsedResponse.length;idx++){
-				data = parsedResponse[idx]['producer'];
+// $('#id_producer').typeahead({
+// 	name: 'Producers',
+// 	template: '<p><strong>{{name}}</strong></p>',
+// 	engine: Hogan,
+// 	prefetch: {
+// 		url: '../../api/producer',
+// 		filter: function(parsedResponse){
+// 			arr_datums = [];
+// 			for (var idx=0; idx<parsedResponse.length;idx++){
+// 				data = parsedResponse[idx]['producer'];
 				
-				elem = {
-					value: data,
-					tokens: [data,capitalize(data)],
-					name: data
-				} 
-				arr_datums.push(elem);
-			} 
-			return arr_datums;
-		}
-	}
-});
+// 				elem = {
+// 					value: data,
+// 					tokens: [data,capitalize(data)],
+// 					name: data
+// 				} 
+// 				arr_datums.push(elem);
+// 			} 
+// 			return arr_datums;
+// 		}
+// 	}
+// });
 
 //====================================
 // AJAX CONTENT POPULATING
