@@ -5,6 +5,8 @@
 {% block main %}
 
 <h1>{% trans 'Tasting' %}</h1>
+{% crispy form %}
+{% comment %}
 <form action="{% url 'corewine:tasting' %}" class="form-horizontal" method="post" id="wine_form" role="form">
 	{% csrf_token %}
  	{% for field in form %}
@@ -12,6 +14,7 @@
  	{% endfor %}
 	<button type="submit" class="btn btn-default">Submit</button>
 </form>
+{% endcomment %}
 {% endblock main %}
 
 

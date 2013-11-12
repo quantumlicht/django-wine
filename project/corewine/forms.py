@@ -137,26 +137,6 @@ class CepageField(MultipleChoiceField):
         for cepage in value:
             non_numeric(cepage)
 
-    # def clean(self, value):
-    #     # value = super(TagField, self).clean(value)
-    #     log.debug('clean::value %s' % value)
-    #     for tag in value:
-    #         errors = non_numeric(value)
-
-
-
-    # def clean(self, value):
-    #     # value = super(TagField,self).clean(value)
-    #     log.debug('value %s' % value)
-    #     for tag in value:
-    #         try:
-    #             obj = Tag.objects.get(tag=tag)
-    #             return (obj,)
-    #         except ObjectDoesNotExist as e:
-    #             obj = tag(tag)
-    #             return (obj,)
-
-
 
 class WineForm(ModelForm):
 
@@ -167,13 +147,7 @@ class WineForm(ModelForm):
     tag = TagField()
     cepage = CepageField()
 
-    def __init__(self,*args,**kwargs):
-        super(WineForm, self).__init__(*args,**kwargs)
-
-        self.fields['region'].choices  =  [(x,x.region) for x in Region.approved.all()]
-        self.fields['producer'].choices = [(x,x.producer) for x in Producer.approved.all()]
-        self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
-        self.fields['tag'].choices = [(x,x.tag) for x in Tag.approved.all()]
+    
     class Meta:
         model = Wine
         fields = (
@@ -246,45 +220,61 @@ class WineForm(ModelForm):
         #     tag.save()
         return data
 
-# class WineForm(ModelForm):
+    def __init__(self,*args,**kwargs):
+        super(WineForm, self).__init__(*args,**kwargs)
 
-#     class Meta: 
-#         model = Wine
+        self.fields['region'].choices  =  [(x,x.region) for x in Region.approved.all()]
+        self.fields['producer'].choices = [(x,x.producer) for x in Producer.approved.all()]
+        self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
+        self.fields['tag'].choices = [(x,x.tag) for x in Tag.approved.all()]
+        self.fields['cepage'].choices = [(x,x.cepage) for x in Cepage.approved.all()]
 
-    # def __init__(self,*args,**kwargs):
-    #     super(WineForm,self).__init__(*args,**kwargs)
-    #     self.helper = FormHelper()
-    #     self.form_id = 'wine_form'
-    #     self.label_class= 'col-lg-12'
-    #     self.field_class= 'col-lg-12'
-    #     self.form_method = 'post'
-    #     self.form_class = 'form_horizontal'
-    #     self.form_action = reverse('corewine:tasting')
+        self.helper = FormHelper()
+        self.form_id = 'wine_form'
+        self.label_class= 'col-lg-12'
+        self.field_class= 'col-lg-12'
+        self.form_method = 'post'
+        self.form_class = 'form_horizontal'
+        self.form_action = reverse('corewine:tasting')
 
-    #     self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('submit', _('Submit')))
 
-    #     self.helper.layout = Layout(
-    #         InlineRadios('wineType'),
-    #         Div(Field('name'), css_class='col-lg-4'),
-    #         Div(Field('producer'), css_class='col-lg-4'),
-    #         Div(Field('year'), css_class='col-lg-4'),
-    #         Div(Field('appelation'),css_class='col-lg-4'),
-    #         'region',
-    #         'country',
-    #         'cepage',
-    #         Div(AppendedText('alcool', '%'),css_class="col-lg-4"),
-    #         Div('date', css_class='col-lg-4'),
-    #         Div('code_saq', css_class='col-lg-4'),
-    #         Div(AppendedText('price', '$'),css_class='col-lg-4'),
-    #         Div('nose_intensity',css_class='col-lg-4'),
-    #         Div('aroma',css_class='col-lg-4'),
-    #         Div('mouth_intensity',css_class='col-lg-4'),
-    #         Div('persistance',css_class='col-lg-4'),
-    #         Div('taste',css_class='col-lg-4'),
-    #         Div('acidity',css_class='col-lg-4'),
-    #         Div('tanin',css_class='col-lg-4'),
-    #         'Tags',
-    #         'tag',
-    #         'rating',
-    #         FormActions('Sign in', css_class='btn-primary')
-    #     )
+        self.helper.layout = Layout(
+            Fieldset(_('Type'),
+                InlineRadios('wineType'),
+            ),
+            Fieldset(_('General Information'),
+                Div(Field('name'), css_class='col-lg-4'),
+                Div(Field('producer'), css_class='col-lg-4'),
+                Div(Field('year'), css_class='col-lg-4'),
+                Div('date', css_class='col-lg-3'),
+                Div(AppendedText('alcool', '%'),css_class="col-lg-3"),
+                Div('code_saq', css_class='col-lg-3'),
+                Div(AppendedText('price', '$'),css_class='col-lg-3'),
+            ),
+            Fieldset(_('Geography'),
+                Div(Field('region'),css_class='col-lg-4'),
+                Div(Field('appelation'),css_class='col-lg-4'),
+                Div('cepage',css_class='col-lg-4'),
+                Div(Field('country'),css_class='col-lg-4'),
+            ),
+            Fieldset(_('Eye'),
+                Div(Field('teint'), css_class='col-lg-2'),
+                Div('aroma',css_class='col-lg-2'),
+            ),
+            Fieldset(_('Nose'),
+                Div('nose_intensity',css_class='col-lg-2'),
+            ),
+            Fieldset(_('Mouth'),
+                Div('mouth_intensity',css_class='col-lg-2'),
+                Div('persistance',css_class='col-lg-2'),
+                Div('taste',css_class='col-lg-2'),
+                Div('tanin',css_class='col-lg-2'),
+                Div('acidity',css_class='col-lg-2'),
+            ),
+            Fieldset(_('Extra information'),
+                Div('tag',css_class='col-lg-4'),
+                Div('rating',css_class='col-lg-4'),
+            ),
+            FormActions('Sign in', css_class='btn-primary')
+        )

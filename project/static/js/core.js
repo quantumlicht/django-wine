@@ -96,7 +96,22 @@ $('#id_cepage').selectize({
 	maxItems:5,
 	create:true,
 	persist: false,
-	plugins: ['remove_button','restore_on_backspace']
+	load: function(query, callback){
+		if (!query.length) return callback();
+        $.ajax({
+            url: '../../api/cepage',
+            type: 'GET',
+            dataType: 'jsonp',
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+            	console.log('res',res);
+                callback(res);
+            }
+        });
+
+	}
 });
 
 $('#id_tag').selectize({
