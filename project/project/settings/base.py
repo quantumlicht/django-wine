@@ -69,6 +69,7 @@ TEMPLATE_DIRS = (
 # LOCALE
 LOCALE_PATHS = (
     root('../locale'),
+    root('static/js'),
 )
 
 # =================================================

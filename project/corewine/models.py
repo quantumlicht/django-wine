@@ -182,6 +182,12 @@ class Appelation(Approvable, Timestamp):
     def __unicode__(self):
         return self.appelation
 
+    def save(self, *args, **kwargs):
+        val = getattr(self,'appelation', False)
+        if val:
+            setattr(self,'appelation', val.title())
+
+        super(Appelation,self).save(*args, **kwargs)
 
 # -------------------------------------------------------------
 class Cepage(Approvable, WineType, Timestamp):
@@ -194,6 +200,13 @@ class Cepage(Approvable, WineType, Timestamp):
                               unique=True
                               )
     
+    def save(self, *args, **kwargs):
+        val = getattr(self,'cepage', False)
+        if val:
+            setattr(self,'cepage', val.title())
+
+        super(Cepage,self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.cepage
 
@@ -229,6 +242,14 @@ class Region(Approvable, Timestamp):
         return self.region
 
 
+    def save(self, *args, **kwargs):
+        val = getattr(self,'region', False)
+        if val:
+            setattr(self,'region', val.title())
+
+        super(Region,self).save(*args, **kwargs)
+
+
 # -------------------------------------------------------------
 class Producer(Approvable, Timestamp):
     class Meta:
@@ -244,6 +265,14 @@ class Producer(Approvable, Timestamp):
         return self.producer
 
 
+    def save(self, *args, **kwargs):
+        val = getattr(self,'producer', False)
+        if val:
+            setattr(self,'producer', val.title())
+
+        super(Producer,self).save(*args, **kwargs)
+
+
 # -------------------------------------------------------------
 class Tag(Approvable, WineType, Timestamp):
 
@@ -257,6 +286,14 @@ class Tag(Approvable, WineType, Timestamp):
 
     def __unicode__(self):
         return self.tag
+
+    def save(self, *args, **kwargs):
+        val = getattr(self,'tag', False)
+        if val:
+            setattr(self,'tag', val.title())
+
+        super(Tag,self).save(*args, **kwargs)
+
 
 # -------------------------------------------------------------
 class Wine(WineType, Timestamp):
@@ -343,12 +380,14 @@ class Wine(WineType, Timestamp):
     def __unicode__(self):
         return self.name
 
+
     def get_absolute_url(self):
         return reverse('corewine:detail', kwargs={"slug": self.slug})
 
     # ------------------------------------
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        self.name = self.name.title()
         super(Wine, self).save(*args, **kwargs)
 
     # ------------------------------------

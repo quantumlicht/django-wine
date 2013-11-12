@@ -30,22 +30,11 @@ from .models import (
 log = logging.getLogger(__name__)
 
 
-# Check this snippet for refactoring typeahead fields
-# https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#writing-custom-model-fieldsv
-# class HandField(CharField):
-
-#     description = "A hand of cards (bridge style)"
-
-#     def __init__(self, *args, **kwargs):
-#         kwargs['max_length'] = 104
-#         super(HandField, self).__init__(*args, **kwargs)
-
 class RegionTypeAheadField(ChoiceField):
     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
     default_validators = [non_numeric]
 
     def clean(self, value):
-        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
@@ -54,7 +43,7 @@ class RegionTypeAheadField(ChoiceField):
             obj = Region(region=value,status='p')
                 
         self.choices.append((obj, value))
-        log.debug('Region::clean choices %s' % self.choices)
+        # log.debug('Region::clean choices %s' % self.choices)
         value = super(RegionTypeAheadField, self).clean(value)
         return obj
 
@@ -64,7 +53,6 @@ class AppelationTypeAheadField(ChoiceField):
     default_validators = [non_numeric]
 
     def clean(self, value):
-        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
@@ -73,7 +61,7 @@ class AppelationTypeAheadField(ChoiceField):
             obj = Appelation(appelation=value,status='p')
                 
         self.choices.append((obj, value))
-        log.debug('Appelation::clean choices %s' % self.choices)
+        # log.debug('Appelation::clean choices %s' % self.choices)
         value = super(AppelationTypeAheadField, self).clean(value)
         return obj
 
@@ -83,7 +71,6 @@ class ProducerTypeAheadField(ChoiceField):
     default_validators = [non_numeric]
 
     def clean(self, value):
-        log.debug('value %s' % value)
         # errors = non_numeric(value)
         try:
             # log.debug('errors %s' % errors)
@@ -92,62 +79,10 @@ class ProducerTypeAheadField(ChoiceField):
             obj = Producer(producer=value,status='p')
                     
         self.choices.append((obj, value))
-        log.debug('Producer::clean choices %s' % self.choices)
+        # log.debug('Producer::clean choices %s' % self.choices)
         value = super(ProducerTypeAheadField, self).clean(value)
         return obj
 
-
-# class CountryTypeAheadField(CharField):
-#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
-#     default_validators = [non_numeric]
-
-#     def clean(self, value):
-#         value = super(CountryTypeAheadField, self).clean(value)
-#         # log.debug('value %s' % value)
-#         # errors = non_numeric(value)
-#             # log.debug('errors %s' % errors)
-#         try:
-#             obj = Country.objects.get(country=value)    
-#             return obj
-#         except ObjectDoesNotExist as e:
-#             msg = 'Invalid Country'
-#             raise ValidationError(msg)
-                
-
-# class CepageTypeAheadField(CharField):
-#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
-#     default_validators = [non_numeric]
-
-#     def clean(self, value):
-#         value = super(CepageTypeAheadField, self).clean(value)
-#         # log.debug('value %s' % value)
-#         # errors = non_numeric(value)
-#         try:
-#             # log.debug('errors %s' % errors)
-#             obj = Cepage.objects.get(cepage=value)    
-#             return (obj,)
-#         except ObjectDoesNotExist as e:
-#             obj = Cepage(cepage=value,status='p')
-                
-#             return (obj,)
-
-
-# class TagTypeAheadField(CharField):
-#     # Override __init__ method to pass additional arguments if we cannot find a good way to retrieve the model field linked to this form field.
-#     default_validators = [non_numeric]
-
-#     def clean(self, value):
-#         value = super(TagTypeAheadField, self).clean(value)
-#         # log.debug('value %s' % value)
-#         # errors = non_numeric(value)
-#         try:
-#             # log.debug('errors %s' % errors)
-#             obj = Tag.objects.get(tag=value)    
-#             return (obj,)
-#         except ObjectDoesNotExist as e:
-#             obj = tag(tag=value,status='p', description='')
-                
-#             return (obj,)
 
 class TagField(MultipleChoiceField):
     __metaclass__ = models.SubfieldBase
@@ -176,7 +111,6 @@ class TagField(MultipleChoiceField):
             non_numeric(tag)
 
 
-
 class CepageField(MultipleChoiceField):
     __metaclass__ = models.SubfieldBase
     
@@ -185,13 +119,13 @@ class CepageField(MultipleChoiceField):
         for cepage in value:
             try:
                 obj = Cepage.objects.get(cepage=cepage)
-                arr.append(obj.id)
+                arr.append(obj)
             except ObjectDoesNotExist as e:
                 non_numeric(cepage)
                 obj = Cepage(cepage=cepage,status='p')            
                 obj.save()
                 self.choices.append((value,cepage))
-                arr.append(obj.id)
+                arr.append(obj)
         log.debug('to_python::arr %s' % arr)
         return arr
 
@@ -243,9 +177,9 @@ class WineForm(ModelForm):
     class Meta:
         model = Wine
         fields = (
-            'wineType','name','region', 'producer','year','country','alcool','appelation',\
+            'wineType','name', 'producer', 'country', 'region', 'cepage', 'year', 'alcool', 'appelation',\
             'date', 'code_saq', 'price', 'mouth_intensity', 'nose_intensity',\
-            'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'cepage', 'tag'
+            'rating', 'teint', 'aroma', 'taste', 'acidity', 'tanin', 'persistance', 'tag'
         )
 
         widgets = {
@@ -272,7 +206,16 @@ class WineForm(ModelForm):
         return data
 
     def clean_cepage(self):
+        arr = []
         data = self.cleaned_data['cepage']
+        winetype = self.cleaned_data['wineType']
+        for cepage in data:
+            log.debug('cepage before %s' % cepage)
+            cepage.wineType = winetype
+            cepage.save()
+            log.debug('cepage after %s' % cepage)
+            arr.append(cepage.id)
+
         log.debug('cleaned_cepage %s' % data)
         # for cepage in data:
         #     cepage.save()
@@ -284,6 +227,11 @@ class WineForm(ModelForm):
         validate_future_date(data)
         return data    
 
+
+    # def clean(self):
+    #     wineType = self.cleaned_data['wineType']
+        # cepages = self.cleaned_data['cepage']
+        # log.debug('form_clean:: cepage %s , wineType %s ' % (cepages,wineType))
 
     # def save(self, commit=True):
     #     log.debug('clean_data %s' % self.cleaned_data)

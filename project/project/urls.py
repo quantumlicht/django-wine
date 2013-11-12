@@ -4,6 +4,11 @@ from .views import landing, set_language, set_lang
 
 admin.autodiscover()
 
+js_info_dict = {
+    'packages': ('corewine',),
+}
+
+
 urlpatterns = patterns('',
     url(r'^$', landing, name='landing'),
     url(r'^api/', include('core.api', namespace="api" )),
@@ -14,4 +19,8 @@ urlpatterns = patterns('',
     url(r'^lang/', set_language, name='set_lang'),
     url(r'^test/', set_lang, name='lang'),
     url(r'^admin/', include(admin.site.urls)),
+)
+
+urlpatterns += patterns('',
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )

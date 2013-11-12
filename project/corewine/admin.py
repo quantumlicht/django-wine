@@ -152,7 +152,7 @@ class TaninAdmin(TranslationAdmin):
 # -------------------------------------------
 class TagAdmin(TranslationAdmin):
     list_display = ['tag_fr', 'tag_en', 'wineType', 'is_approved', 'last_modified', 'created']
-    list_filter = ['status']
+    list_filter = ['status','wineType','last_modified']
     actions = [make_rejected, make_approved]
 
 
