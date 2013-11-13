@@ -1,9 +1,25 @@
+import json
+import factory
+from datetime import datetime
+
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-import factory
 from factory import fuzzy
-from corewine.models import Wine, Cepage, Appelation, Country, Producer, Region, Tag, Teint
+from corewine.models import (
+	Wine,
+	Cepage,
+	Appelation,
+	Country,
+	Producer,
+	Region,
+	Tag,
+	Teint,
+	Aroma,
+	Taste,
+	Acidity,
+	Tanin
+)
 
 import logging
 logger = logging.getLogger('factory')
@@ -17,6 +33,30 @@ class CepageFactory(factory.django.DjangoModelFactory):
 	cepage = fuzzy.FuzzyText()
 	status = 'p'
 	wineType = 'w'
+
+
+class AromaFactory(factory.django.DjangoModelFactory):
+	FACTORY_FOR = Aroma
+	order = 1
+	aroma = fuzzy.FuzzyText()
+
+
+class TaninFactory(factory.django.DjangoModelFactory):
+	FACTORY_FOR = Tanin
+	order = 1
+	tanin = fuzzy.FuzzyText()
+
+
+class TasteFactory(factory.django.DjangoModelFactory):
+	FACTORY_FOR = Taste
+	order = 1
+	taste = fuzzy.FuzzyText()
+
+
+class AcidityFactory(factory.django.DjangoModelFactory):
+	FACTORY_FOR = Acidity
+	order = 1
+	acidity = fuzzy.FuzzyText()
 
 
 class AppelationFactory(factory.django.DjangoModelFactory):
@@ -60,12 +100,29 @@ class TeintFactory(factory.django.DjangoModelFactory):
 class WineFactory(factory.django.DjangoModelFactory):
 	FACTORY_FOR = Wine
 	wineType = 'w'
-	cepage = factory.SubFactory(CepageFactory)
+	name = u'test'
+	# cepage = factory.SubFactory(CepageFactory)
 	appelation = factory.SubFactory(AppelationFactory)
 	country = factory.SubFactory(CountryFactory)
 	producer = factory.SubFactory(ProducerFactory)
 	region = factory.SubFactory(RegionFactory)
-	tag = factory.SubFactory(TagFactory)
+	# tag = factory.SubFactory(TagFactory)
+	teint = factory.SubFactory(TeintFactory)
+	# slug = u'slug-a'
+	date = fuzzy.FuzzyDate(datetime(2005,1,1).date())
+	alcool = fuzzy.FuzzyDecimal(1,100)
+	price = fuzzy.FuzzyDecimal(1,1000)
+	year = 2009
+	mouth_intensity = 0.5
+	nose_intensity = 0.5
+	rating = 0.5
+	persistance = 0.5
+	aroma = factory.SubFactory(AromaFactory)
+	taste = factory.SubFactory(TasteFactory)
+	acidity = factory.SubFactory(AcidityFactory)
+	tanin = factory.SubFactory(TaninFactory)
+	code_saq = fuzzy.FuzzyInteger(0,10000000)
+
 	
 
 # ============================================================================================
@@ -458,3 +515,35 @@ class ApiTests(TestCase):
 		response = self.client.get(self.teint_url,{'type':789789})
 		self.assertEquals(response.status_code,200)
 		self.assertEquals(response.content,'[]')
+
+	# =======================================================================================
+	# WINE API
+	# =======================================================================================
+	def test_wine_with_good_wine(self):
+		wine_a = WineFactory.create(name=u'wine a')
+		wine_b = WineFactory.create(name=u'wine b')
+
+		response = self.client.get(self.wine_url,{'name':'wine b'})
+		data = json.loads(response.content)
+		self.assertEquals(response.status_code,200)
+		self.assertEquals(len(data),1) # Creation makes name as title
+		self.assertEquals(data[0]['name'],'Wine B')
+
+
+	def test_wine_with_bad_request(self):
+		wine_a = WineFactory.create(name=u'wine a')
+		wine_b = WineFactory.create(name=u'wine b')
+
+		response = self.client.get(self.wine_url,{'name':'bad request'})
+		data = json.loads(response.content)
+		self.assertEquals(response.status_code,200)
+		self.assertEquals(data,[])
+
+	def test_wine_with_bad_numeric_request(self):
+		wine_a = WineFactory.create(name=u'wine a')
+		wine_b = WineFactory.create(name=u'wine b')
+
+		response = self.client.get(self.wine_url,{'name':78998789})
+		data = json.loads(response.content)
+		self.assertEquals(response.status_code,200)
+		self.assertEquals(data,[])

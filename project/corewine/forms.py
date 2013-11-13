@@ -1,4 +1,5 @@
-import logging
+import logging, re
+
 from core.validators import non_numeric, validate_future_date
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import (
@@ -179,6 +180,12 @@ class WineForm(ModelForm):
         data.save()
         return data
 
+    def clean_code_saq(self):
+        data = self.cleaned_data['code_saq']
+        data = re.sub(r"[\s\.\-\,]", '', data)
+        return data
+
+
     def clean_cepage(self):
         arr = []
         data = self.cleaned_data['cepage']
@@ -244,19 +251,19 @@ class WineForm(ModelForm):
                 InlineRadios('wineType'),
             ),
             Fieldset(_('General Information'),
-                Div(Field('name'), css_class='col-lg-4'),
-                Div(Field('producer'), css_class='col-lg-4'),
-                Div(Field('year'), css_class='col-lg-4'),
+                Div(Field('name'), css_class='col-lg-3'),
+                Div(Field('producer'), css_class='col-lg-3'),
+                Div(Field('year'), css_class='col-lg-3'),
                 Div('date', css_class='col-lg-3'),
                 Div(AppendedText('alcool', '%'),css_class="col-lg-3"),
                 Div('code_saq', css_class='col-lg-3'),
+                Div('cepage',css_class='col-lg-3'),
                 Div(AppendedText('price', '$'),css_class='col-lg-3'),
             ),
             Fieldset(_('Geography'),
-                Div(Field('region'),css_class='col-lg-4'),
-                Div(Field('appelation'),css_class='col-lg-4'),
-                Div('cepage',css_class='col-lg-4'),
-                Div(Field('country'),css_class='col-lg-4'),
+                Div(Field('appelation'),css_class='col-lg-3'),
+                Div(Field('region'),css_class='col-lg-3'),
+                Div(Field('country'),css_class='col-lg-3'),
             ),
             Fieldset(_('Eye'),
                 Div(Field('teint'), css_class='col-lg-2'),

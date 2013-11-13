@@ -32,10 +32,12 @@ $('input,select').attr('class','form-control');
 //====================================
 // WINE EXISTANCE CHECK
 //====================================
-$('#id_name').click(function(){
+$('#id_name,#id_code_saq').click(function(){
 	$(this).parent().find('.help-block').hide();
 	$(this).closest('.form-group').removeClass('has-error');
 });
+
+
 
 $('#id_name').focusout(function(evt){
 	name_to_check = evt.target.value;
@@ -50,13 +52,35 @@ $('#id_name').focusout(function(evt){
 				$('#id_name').parent().append(
 					$('<span>',{
 						class:'help-block',
-						text: 'The wine already exists.'
+						text: gettext('this wine already exists.')
 					})
 				)
 
 			}
 		}
-	})
+	});
+});
+
+$('#id_code_saq').focusout(function(evt){
+	code_to_check = evt.target.value;
+	console.log(code_to_check);
+	$.ajax({
+		url: '../../api/wine?code='+code_to_check,
+		cache: false,
+		success: function(data){
+			if (data.length){
+				console.log(data);
+				$('#id_code_saq').closest('.form-group').addClass('has-error');
+				$('#id_code_saq').parent().append(
+					$('<span>',{
+						class:'help-block',
+						text: gettext('This code already exists.')
+					})
+				)
+
+			}
+		}
+	});
 });
 
 

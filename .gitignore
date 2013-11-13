@@ -7,9 +7,17 @@ LESS_CACHE/
 COMPILED/
 htmlcov/
 less*.min.js
+
+
 secret.py
+
+# Heroku
 Procfile
+
+# Sphinx Documentation
 Makefile
 make.bat
-build/
-source/
+_build
+_static
+_templates
+conf.py

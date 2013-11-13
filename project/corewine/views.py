@@ -145,8 +145,13 @@ class WineReadView(ListAPIView):
     def get_queryset(self):
         queryset = Wine.objects.all()
         name = self.request.QUERY_PARAMS.get('name', None)
+        code_saq = self.request.QUERY_PARAMS.get('code', None)
         if name is not None:
             queryset = queryset.filter(name__iexact=name)
+
+        if code_saq is not None:
+            queryset = queryset.filter(code_saq__iexact=code_saq)
+
         return queryset
 
 # --------------------------------------------------
