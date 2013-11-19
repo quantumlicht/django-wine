@@ -10,7 +10,7 @@ function capitalize(string)
 //====================================
 
 arr_path = location.pathname.split('/');
-console.log('arr_path',arr_path);
+// console.log('arr_path',arr_path);
 if(arr_path.length < 3){
 	//we are at the root, since we usually have a structure like /app_name/
 	selector = "href='/'"
@@ -42,13 +42,13 @@ $('#id_name,#id_code_saq').click(function(){
 
 $('#id_name').focusout(function(evt){
 	name_to_check = evt.target.value;
-	console.log(name_to_check);
+	// console.log(name_to_check);
 	$.ajax({
 		url: '../../api/wine?name='+name_to_check,
 		cache: false,
 		success: function(data){
 			if (data.length){
-				console.log(data);
+				// console.log(data);
 				$('#id_name').closest('.form-group').addClass('has-error');
 				$('#id_name').parent().append(
 					$('<span>',{
@@ -64,13 +64,13 @@ $('#id_name').focusout(function(evt){
 
 $('#id_code_saq').focusout(function(evt){
 	code_to_check = evt.target.value;
-	console.log(code_to_check);
+	// console.log(code_to_check);
 	$.ajax({
 		url: '../../api/wine?code='+code_to_check,
 		cache: false,
 		success: function(data){
 			if (data.length){
-				console.log(data);
+				// console.log(data);
 				$('#id_code_saq').closest('.form-group').addClass('has-error');
 				$('#id_code_saq').parent().append(
 					$('<span>',{
@@ -120,25 +120,39 @@ $('#id_year').selectize();
 $('#id_country').selectize();
 
 $('#id_cepage').selectize({
-	maxItems:5,
+	valueField: 'cepage',
+	labelField: 'cepage',
+	searchField: 'cepage',
 	create:true,
 	persist: false,
-	load: function(query, callback){
-		if (!query.length) return callback();
+	plugins: ['remove_button','restore_on_backspace'],
+	maxItems:5,
+	render: {
+        option: function(item, escape) {
+        	console.log(item);
+        	type = item.wineType=='w' ? gettext('White'):gettext('Red');
+
+            return '<div>' +
+                '<h5>' +
+					'<strong>'+item.cepage+'</strong> <span class="label label-default">'+escape(type)+'</span>'+
+                '</h5>' +
+            '</div>';
+        }
+    },
+	load: function(query, callback) {
+		type = $('#div.id_wineType, input[type=radio]:checked').val() || '';
+        if (!query.length) return callback();
         $.ajax({
-            url: '../../api/cepage/',
+            url: '../../api/cepage/?cepage='+ encodeURIComponent(query)+ '&type='+encodeURIComponent(type),
             type: 'GET',
-            dataType: 'jsonp',
             error: function() {
                 callback();
             },
             success: function(res) {
-            	console.log('res',res);
                 callback(res);
             }
         });
-
-	}
+    }
 });
 
 $('#id_tag').selectize({
@@ -151,6 +165,7 @@ $('#id_tag').selectize({
 	maxItems:5,
 	render: {
         option: function(item, escape) {
+        	console.log(item);
         	type = item.wineType=='w' ? gettext('White'):gettext('Red');
 
             return '<div>' +
@@ -187,11 +202,10 @@ $('#id_tag').selectize({
 var teint = $('#div_id_teint > .controls > .selectize-control > .selectize-input');
 elements = $('')
 $('[id*=id_wineType_]').change(function(evt){
-	console.log('test');
 	winetype = '';
 	try{
 		winetype = String(evt.target.value);
-		console.log(winetype);
+		// console.log(winetype);
 	}
 	catch(e){
 		console.log('Exception caught:' + e);
@@ -204,9 +218,9 @@ $('[id*=id_wineType_]').change(function(evt){
 			arr_teint = $.map(data,function(obj){				
 				return obj.teint;
 			});
-			console.log(arr_teint);
+			// console.log(arr_teint);
 			selected_teint = $(teint).text();
-			console.log('selected_teint', selected_teint);
+			// console.log('selected_teint', selected_teint);
 			if ( $.inArray(selected_teint,arr_teint ) > -1 ){
 
 				filtered_options = teint.filter(function(index){

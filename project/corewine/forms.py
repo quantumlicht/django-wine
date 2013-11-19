@@ -239,7 +239,7 @@ class WineForm(ModelForm):
         self.fields['producer'].choices = [(x,x.producer) for x in Producer.approved.all()]
         self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
         # self.fields['tag'].choices = [(x,x.tag) for x in Tag.approved.all()]
-        self.fields['cepage'].choices = [(x,x.cepage) for x in Cepage.approved.all()]
+        # self.fields['cepage'].choices = [(x,x.cepage) for x in Cepage.approved.all()]
 
         self.helper = FormHelper()
         self.form_id = 'wine_form'

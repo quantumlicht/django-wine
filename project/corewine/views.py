@@ -159,7 +159,22 @@ class AppelationReadView(ListAPIView):
 # --------------------------------------------------
 class CepageReadView(ListAPIView):
     model = Cepage
-    queryset = Cepage.approved.all()
+    def get_queryset(self):
+        queryset = Cepage.approved.all()
+        cepage = self.request.QUERY_PARAMS.get('cepage', None)
+        color = self.request.QUERY_PARAMS.get('type', None)
+        if color=='':
+            color = None
+        if cepage=='':
+            cepage = None
+            
+        if cepage is not None:
+            queryset = queryset.filter(cepage__icontains=cepage)
+
+        if color is not None:
+            queryset = queryset.filter(wineType__iexact=color)
+
+        return queryset 
 
 # --------------------------------------------------
 class CountryReadView(ListAPIView):
@@ -180,14 +195,14 @@ class RegionReadView(ListAPIView):
 class TagReadView(ListAPIView):
     model = Tag
     def get_queryset(self):
-        queryset = Tag.objects.all()
+        queryset = Tag.approved.all()
         tag = self.request.QUERY_PARAMS.get('tag', None)
         color = self.request.QUERY_PARAMS.get('type', None)
         if color=='':
             color = None
         if tag=='':
             tag = None
-            
+
         if tag is not None:
             queryset = queryset.filter(tag__icontains=tag)
 

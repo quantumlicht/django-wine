@@ -14,7 +14,7 @@ from taggit.managers import TaggableManager
 
 log = logging.getLogger(__name__) 
 
-SCALE = [ (0.5*x, 0.5*x) for x in xrange(1,11) ]
+SCALE = [ (float(0.5*x), float(0.5*x)) for x in xrange(1,11) ]
 
 YEARS  = [(x,x) for x in xrange(timezone.now().year, 1899, -1)]
 
