@@ -22,7 +22,7 @@ class TaninTranslationOptions(TranslationOptions):
 
 
 class TagTranslationOptions(TranslationOptions):
-	fields = ('tag',)
+	fields = ('tag','description')
 
 
 class RegionTranslationOptions(TranslationOptions):
