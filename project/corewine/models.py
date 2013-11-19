@@ -45,9 +45,10 @@ class WineType(models.Model):
 
     WINE_TYPES = (
         ('w', _('White')),
-        ('r', _('Red'))
+        ('r', _('Red')),
+        ('n', _('None'))
     )
-    wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name=_('Wine Type'), blank=False, default='White')
+    wineType = models.CharField(max_length=60, choices=WINE_TYPES, verbose_name=_('Wine Type'), blank=False, default='n')
     
     def __unicode__(self):
         return self.wineType
@@ -298,9 +299,8 @@ class Tag(Approvable, WineType, Timestamp):
 # -------------------------------------------------------------
 class Wine(WineType, Timestamp):
     """
-    Stores a single blog entry, related to :model:`Country` 
-    :model:`Tag`.
-
+    Docstring for class Wine.
+    py:class:: Wine
     """
     # ------------------------------------
     # Fields
@@ -308,6 +308,7 @@ class Wine(WineType, Timestamp):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = _('Wines')
 
     slug = models.SlugField()
 
@@ -337,7 +338,7 @@ class Wine(WineType, Timestamp):
     mouth_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Mouth Intensity'))
     nose_intensity = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Nose Intensity'))
     persistance = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Persistance'))
-    rating = models.DecimalField(choices=SCALE, max_digits=3, decimal_places=1, verbose_name=_('Rating'))
+    rating = models.DecimalField(choices=SCALE, max_digits=2, decimal_places=1, verbose_name=_('Rating'))
 
     # ------------------------------------
     # Foreign Keys

@@ -10,12 +10,13 @@ function capitalize(string)
 //====================================
 
 arr_path = location.pathname.split('/');
+console.log('arr_path',arr_path);
 if(arr_path.length < 3){
 	//we are at the root, since we usually have a structure like /app_name/
 	selector = "href='/'"
 }
 else{
-	selector = "href*='" + arr_path[1]+ "'"
+	selector = "href*='" + arr_path[arr_path.length-2]+ "'"
 }
 // add deactivate class to element if we want to prevent an element from being set as active
 // See for more info on selectors: http://www.w3schools.com/jquery/jquery_ref_selectors.asp
@@ -98,6 +99,8 @@ $('#id_nose_intensity').selectize();
 $('#id_persistance').selectize();
 $('#id_mouth_intensity').selectize();
 $('#id_teint').selectize();
+
+
 $('#id_aroma').selectize();
 $('#id_taste').selectize();
 $('#id_acidity').selectize();
@@ -123,7 +126,7 @@ $('#id_cepage').selectize({
 	load: function(query, callback){
 		if (!query.length) return callback();
         $.ajax({
-            url: '../../api/cepage',
+            url: '../../api/cepage/',
             type: 'GET',
             dataType: 'jsonp',
             error: function() {
@@ -139,43 +142,41 @@ $('#id_cepage').selectize({
 });
 
 $('#id_tag').selectize({
-	maxItems:5,
+	valueField: 'tag',
+	labelField: 'tag',
+	searchField: 'tag',
 	create:true,
 	persist: false,
-	// plugins: ['remove_button','restore_on_backspace'],
-	// render: {
- //        option: function(item, escape) {
- //            var actors = [];
- //            for (var i = 0, n = item.abridged_cast.length; i < n; i++) {
- //                actors.push('<span>' + escape(item.abridged_cast[i].name) + '</span>');
- //            }
+	plugins: ['remove_button','restore_on_backspace'],
+	maxItems:5,
+	render: {
+        option: function(item, escape) {
+        	type = item.wineType=='w' ? gettext('White'):gettext('Red');
 
- //            return '<div>' +
- //                '<img src="' + escape(item.posters.thumbnail) + '" alt="">' +
- //                '<span class="title">' +
- //                    '<span class="name">' + escape(item.title) + '</span>' +
- //                '</span>' +
- //                '<span class="description">' + escape(item.synopsis || 'No synopsis available at this time.') + '</span>' +
- //                '<span class="actors">' + (actors.length ? 'Starring ' + actors.join(', ') : 'Actors unavailable') + '</span>' +
- //            '</div>';
- //        }
- //    },
-	load: function(query, callback){
-		if (!query.length) return callback();
+            return '<div>' +
+                '<h5>' +
+					'<strong>'+item.tag+'</strong> <span class="label label-default">'+escape(type)+'</span>'+
+                '</h5>' +
+                '<h6>' + 
+                	escape(item.description || gettext('No description.')) + 
+            	'</h6>' +
+            '</div>';
+        }
+    },
+	load: function(query, callback) {
+		type = $('#div.id_wineType, input[type=radio]:checked').val() || '';
+        if (!query.length) return callback();
         $.ajax({
-            url: '../../api/tag',
+            url: '../../api/tag/?tag='+ encodeURIComponent(query)+ '&type='+encodeURIComponent(type),
             type: 'GET',
-            dataType: 'jsonp',
             error: function() {
                 callback();
             },
             success: function(res) {
-            	console.log('res',res);
                 callback(res);
             }
         });
-
-	}
+    }
 
 });
 
@@ -183,11 +184,14 @@ $('#id_tag').selectize({
 // AJAX CONTENT POPULATING
 //====================================
 
-var teint = $('#id_teint option');
-$('#id_wineType').change(function(evt){
+var teint = $('#div_id_teint > .controls > .selectize-control > .selectize-input');
+elements = $('')
+$('[id*=id_wineType_]').change(function(evt){
+	console.log('test');
 	winetype = '';
 	try{
 		winetype = String(evt.target.value);
+		console.log(winetype);
 	}
 	catch(e){
 		console.log('Exception caught:' + e);
@@ -196,18 +200,29 @@ $('#id_wineType').change(function(evt){
 	$.ajax({url: '/api/teint?type=' + winetype,
 		cache: false,
 		success:function(data){
-			arr =[];
 
-			filtered_data = data.filter(function(obj){				
-				arr.push(obj.teint);
+			arr_teint = $.map(data,function(obj){				
+				return obj.teint;
 			});
-			
-			filtered_options = teint.filter(function(index){
-				return $.inArray(teint[index].text, arr) > -1;
-			})
-			$('#id_teint').html(filtered_options);
+			console.log(arr_teint);
+			selected_teint = $(teint).text();
+			console.log('selected_teint', selected_teint);
+			if ( $.inArray(selected_teint,arr_teint ) > -1 ){
+
+				filtered_options = teint.filter(function(index){
+					return $.inArray(teint[index].text, arr_teint) > -1;
+				})
+			// $('#id_teint').html(filtered_options);
+				
+
+			}
+			else{
+				console.log('no');
+
+			}
 		}
 	});
+
 });
 
 }); //document ready

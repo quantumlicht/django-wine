@@ -25,6 +25,10 @@ def make_white(modeladmin, request, queryset):
         queryset.update(wineType='w')
 make_white.short_description = _("Mark selected as White")
 
+def make_none(modeladmin,request,queryset):
+    queryset.update(wineType='n')
+make_none.short_description = _("Mark selected as None")
+
 # ==================================================
 #  STYLING CLASSES
 # ==================================================
@@ -153,7 +157,7 @@ class TaninAdmin(TranslationAdmin):
 class TagAdmin(TranslationAdmin):
     list_display = ['tag_fr', 'tag_en', 'wineType', 'is_approved', 'last_modified', 'created']
     list_filter = ['status','wineType','last_modified']
-    actions = [make_rejected, make_approved]
+    actions = [make_rejected, make_approved, make_red, make_white,make_none]
 
 
 

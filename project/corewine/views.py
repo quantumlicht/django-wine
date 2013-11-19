@@ -14,7 +14,6 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
-
 from django.utils.translation import ugettext_lazy as _
 
 from .forms import WineForm
@@ -30,11 +29,7 @@ from .models import (
     Country,
 )
 
-from rest_framework.generics import (
-    ListAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView
-)
+from rest_framework.generics import ListAPIView
 
 log = logging.getLogger(__name__) 
 
@@ -127,6 +122,7 @@ class WineDetailView(DetailView):
 
 # READ ONLY 
 
+
 # --------------------------------------------------
 class TeintReadView(ListAPIView):
     model = Teint
@@ -183,7 +179,21 @@ class RegionReadView(ListAPIView):
 # --------------------------------------------------
 class TagReadView(ListAPIView):
     model = Tag
-    queryset = Tag.approved.all() 
-	
+    def get_queryset(self):
+        queryset = Tag.objects.all()
+        tag = self.request.QUERY_PARAMS.get('tag', None)
+        color = self.request.QUERY_PARAMS.get('type', None)
+        if color=='':
+            color = None
+        if tag=='':
+            tag = None
+            
+        if tag is not None:
+            queryset = queryset.filter(tag__icontains=tag)
+
+        if color is not None:
+            queryset = queryset.filter(wineType__iexact=color)
+
+        return queryset 
 
 

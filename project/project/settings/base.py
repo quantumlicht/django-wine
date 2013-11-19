@@ -92,7 +92,6 @@ MODELTRANSLATION_TRANSLATION_FILES = (
     'corewine.translation',
 )
 
-
 # =================================================
 #  CONTEXT PROCESSORS
 # =================================================
