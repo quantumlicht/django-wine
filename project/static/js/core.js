@@ -24,21 +24,34 @@ $('.navbar-nav>li a[' + selector + '][class!="deactivate"]').parent().addClass('
 
 
 //====================================
-// adding bootstrap classes
+// ADDING BOOTSTRAP CLASSES
 //====================================
 
 $('input,select').attr('class','form-control');
 
+//====================================
+// DATE PICKER
+//====================================
 
+
+// fetching userLang from hidden injection in base template
+userLang = $('#lang_code').text();
+
+// empty string is english locale by default
+userLang = userLang=='en'?'':userLang;
+
+$('#id_date').datepicker(
+	$.datepicker.regional[ userLang ]
+);
+$('#id_date').datepicker('option','dateFormat','yy-mm-dd');
 //====================================
 // WINE EXISTANCE CHECK
 //====================================
+
 $('#id_name,#id_code_saq').click(function(){
 	$(this).parent().find('.help-block').hide();
 	$(this).closest('.form-group').removeClass('has-error');
 });
-
-
 
 $('#id_name').focusout(function(evt){
 	name_to_check = evt.target.value;
@@ -84,8 +97,6 @@ $('#id_code_saq').focusout(function(evt){
 	});
 });
 
-
-
 //====================================
 // TypeAhead
 //====================================
@@ -98,7 +109,6 @@ $('#id_producer').selectize({
 $('#id_nose_intensity').selectize();
 $('#id_persistance').selectize();
 $('#id_mouth_intensity').selectize();
-$('#id_teint').selectize();
 
 
 $('#id_aroma').selectize();
@@ -106,25 +116,90 @@ $('#id_taste').selectize();
 $('#id_acidity').selectize();
 $('#id_tanin').selectize();
 $('#id_rating').selectize();
-$('#id_appelation').selectize({
-	create: true,
-	persist: false
+
+var $select_teint = $('#id_teint').selectize({
+	valueField: 'teint',
+	labelField: 'teint',
+	searchField: 'teint',
+	loadThrottle: 100
+});
+var select_teint = $select_teint[0].selectize;
+var xhr;
+var select_country, $select_country;
+var select_region, $select_region;
+var select_appelation, $select_appelation;
+
+$select_country = $('#id_country').selectize({
+	//value is the region
+    onChange: function(value) {
+        if (!value.length) return;
+        select_appelation.disable();
+        select_appelation.clearOptions();
+        select_appelation.load(function(callback) {
+            xhr && xhr.abort();
+            xhr = $.ajax({
+            	async: false,
+                url: '../../api/appelation/?country=' + value,
+                success: function(results) {
+                    select_appelation.enable();
+                    callback(results);
+                },
+                error: function() {
+                    callback();
+                }
+            })
+        });
+        select_region.disable();
+        select_region.clearOptions();
+        select_region.load(function(callback) {
+            xhr && xhr.abort();
+            xhr = $.ajax({
+            	async: false,
+                url: '../../api/region/?country=' + value,
+                success: function(results) {
+                    select_region.enable();
+                    callback(results);
+                },
+                error: function() {
+                    callback();
+                }
+            })
+        });
+    }
 });
 
-$('#id_region').selectize({
-	create:true,
-	persist: false
+$select_region = $('#id_region').selectize({
+    valueField: 'region',
+    labelField: 'region',
+    searchField: ['region']
 });
+
+$select_appelation = $('#id_appelation').selectize({
+	create: true,
+    valueField: 'appelation',
+    labelField: 'appelation',
+    searchField: ['appelation']
+});
+
+
+select_region  = $select_region[0].selectize;
+select_appelation  = $select_appelation[0].selectize;
+select_country = $select_country[0].selectize;
+
+select_region.disable();
+select_appelation.disable();
+
+
 
 $('#id_year').selectize();
-$('#id_country').selectize();
 
-$('#id_cepage').selectize({
+var $select_cepage = $('#id_cepage').selectize({
 	valueField: 'cepage',
 	labelField: 'cepage',
 	searchField: 'cepage',
 	create:true,
 	persist: false,
+	loadThrottle: 100,
 	plugins: ['remove_button','restore_on_backspace'],
 	maxItems:5,
 	render: {
@@ -143,6 +218,7 @@ $('#id_cepage').selectize({
 		type = $('#div.id_wineType, input[type=radio]:checked').val() || '';
         if (!query.length) return callback();
         $.ajax({
+        	cache: false,
             url: '../../api/cepage/?cepage='+ encodeURIComponent(query)+ '&type='+encodeURIComponent(type),
             type: 'GET',
             error: function() {
@@ -155,10 +231,11 @@ $('#id_cepage').selectize({
     }
 });
 
-$('#id_tag').selectize({
+var $select_tag = $('#id_tag').selectize({
 	valueField: 'tag',
 	labelField: 'tag',
 	searchField: 'tag',
+	loadThrottle: 100,
 	create:true,
 	persist: false,
 	plugins: ['remove_button','restore_on_backspace'],
@@ -179,9 +256,11 @@ $('#id_tag').selectize({
         }
     },
 	load: function(query, callback) {
+		// $(this).clearOptions();/**/
 		type = $('#div.id_wineType, input[type=radio]:checked').val() || '';
         if (!query.length) return callback();
         $.ajax({
+        	cache: false,
             url: '../../api/tag/?tag='+ encodeURIComponent(query)+ '&type='+encodeURIComponent(type),
             type: 'GET',
             error: function() {
@@ -192,7 +271,6 @@ $('#id_tag').selectize({
             }
         });
     }
-
 });
 
 //====================================
@@ -202,7 +280,7 @@ $('#id_tag').selectize({
 var teint = $('#div_id_teint > .controls > .selectize-control > .selectize-input');
 elements = $('')
 $('[id*=id_wineType_]').change(function(evt){
-	winetype = '';
+	var winetype = '';
 	try{
 		winetype = String(evt.target.value);
 		// console.log(winetype);
@@ -211,31 +289,50 @@ $('[id*=id_wineType_]').change(function(evt){
 		console.log('Exception caught:' + e);
 	}
 
-	$.ajax({url: '/api/teint?type=' + winetype,
-		cache: false,
-		success:function(data){
+	var select_tag = $select_tag[0].selectize;
+	var select_cepage =  $select_tag[0].selectize;
+	select_tag.clearOptions();
+	select_cepage.clearOptions();
+	select_teint.clearOptions();
+	select_teint.load(function(callback) {
+            xhr && xhr.abort();
+            xhr = $.ajax({
+            	async: false,
+                url: '../../api/teint/?type=' + winetype,
+                success: function(results) {
+                    callback(results);
+                },
+                error: function() {
+                    callback();
+                }
+            })
+        });
 
-			arr_teint = $.map(data,function(obj){				
-				return obj.teint;
-			});
-			// console.log(arr_teint);
-			selected_teint = $(teint).text();
-			// console.log('selected_teint', selected_teint);
-			if ( $.inArray(selected_teint,arr_teint ) > -1 ){
+	// $.ajax({url: '/api/teint?type=' + winetype,
+	// 	cache: false,
+	// 	success:function(data){
 
-				filtered_options = teint.filter(function(index){
-					return $.inArray(teint[index].text, arr_teint) > -1;
-				})
-			// $('#id_teint').html(filtered_options);
+	// 		arr_teint = $.map(data,function(obj){				
+	// 			return obj.teint;
+	// 		});
+	// 		// console.log(arr_teint);
+	// 		selected_teint = $(teint).text();
+	// 		// console.log('selected_teint', selected_teint);
+	// 		if ( $.inArray(selected_teint,arr_teint ) > -1 ){
+
+	// 			filtered_options = teint.filter(function(index){
+	// 				return $.inArray(teint[index].text, arr_teint) > -1;
+	// 			})
+	// 		// $('#id_teint').html(filtered_options);
 				
 
-			}
-			else{
-				console.log('no');
+	// 		}
+	// 		else{
+	// 			console.log('no');
 
-			}
-		}
-	});
+	// 		}
+	// 	}
+	// });
 
 });
 

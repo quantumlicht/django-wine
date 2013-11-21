@@ -53,8 +53,8 @@ class AcidityAdmin(TranslationAdmin):
 
 # -------------------------------------------
 class AppelationAdmin(TranslationAdmin):
-    fields =('appelation', 'status')
-    list_display = ['appelation_fr','appelation_en','is_approved', 'last_modified', 'created']
+    fields =('appelation', 'status','country')
+    list_display = ['appelation_fr','appelation_en', 'country', 'is_approved', 'last_modified', 'created']
     ordering = ['status']
     actions = [make_rejected, make_approved]
 
@@ -93,12 +93,13 @@ class ProducerAdmin(admin.ModelAdmin):
 
 # -------------------------------------------
 class RegionAdmin(TranslationAdmin):
-    fields =('region', 'status')
-    list_display = ('region_fr', 'region_en', 'is_approved', 'last_modified', 'created')
+    fields =('region', 'country', 'status')
+    list_display = ('region_fr', 'region_en','country', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
-    list_filter = ['status']
+    list_filter = ['status','country']
     actions = [make_rejected, make_approved]
-
+    search_fields = ['region']
+    list_per_page = 25
 
 # -------------------------------------------
 class TeintAdmin(TranslationAdmin):

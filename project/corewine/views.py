@@ -153,7 +153,13 @@ class WineReadView(ListAPIView):
 # --------------------------------------------------
 class AppelationReadView(ListAPIView):
     model = Appelation
-    queryset = Appelation.approved.all()
+    def get_queryset(self):
+        queryset = Appelation.approved.all()
+        country = self.request.QUERY_PARAMS.get('country',None)
+        if country is not None:
+            queryset = queryset.filter(country__id=country)
+
+        return queryset
 
 
 # --------------------------------------------------
@@ -189,7 +195,14 @@ class ProducerReadView(ListAPIView):
 # --------------------------------------------------
 class RegionReadView(ListAPIView):
     model = Region
-    queryset = Region.approved.all()
+
+    def get_queryset(self):
+        queryset = Region.approved.all()
+        country = self.request.QUERY_PARAMS.get('country',None)
+        if country is not None:
+            queryset = queryset.filter(country__id=country)
+
+        return queryset
 
 # --------------------------------------------------
 class TagReadView(ListAPIView):

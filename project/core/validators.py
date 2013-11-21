@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger(__name__)
 
-non_numeric = RegexValidator(regex=u'^[a-zA-ZàÀâÂçÇéÉèÈêÊëËîÎïÏôÔûÛÙùÙüÛÿŶñÑæÆœŒ -.\']*$',
+non_numeric = RegexValidator(regex=u'^[a-zA-ZãÃäÄàÀâÂçÇéÉèÈêÊëËîíÍÎïÏôóÓöÖÔûÛÙúÚùÙüÛÿŶñÑæÆœŒ -.\']*$',
                                       message=_('Expression should not contain numeric values'),
                                       code='no_numeric_expected'
                             )

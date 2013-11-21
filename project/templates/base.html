@@ -6,6 +6,9 @@
 <head>
    <meta charset="utf-8"> 
    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="{% static 'custom-theme' %}/jquery-ui-1.10.0.custom.css">
+   <link rel="stylesheet" href="{% static 'custom-theme' %}/jquery.ui.1.10.0.ie.css">
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
    <link rel="stylesheet" type="text/css" href="{% static '' %}{% less 'selectize.bootstrap3.less' %}" />
      {% block  title %}<title>{% trans "Title" %}</title>{% endblock title %}
 </head>
@@ -13,6 +16,7 @@
 <body>
 {% get_current_language as LANGUAGE_CODE %}
 <!-- Current language: {{ LANGUAGE_CODE }} -->
+   <div id="lang_code" style="display:none;">{{ LANGUAGE_CODE }}</div>
    {% include '_navigation.html' %}
 
    <div class="row">
@@ -32,6 +36,8 @@
    </div>
 
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+   <script src="//codeorigin.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="{% static 'js/jquery.ui.datepicker-fr.js' %}"></script>
    <script src="{% static  'js/selectize.min.js' %}"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
    <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>

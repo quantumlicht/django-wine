@@ -170,6 +170,22 @@ class Taste(Orderable, Timestamp):
 # ==================================================
 
 # -------------------------------------------------------------
+class Country(Approvable, Timestamp):
+
+    class Meta:
+        verbose_name_plural = _('Countries')
+        ordering = ['country']
+
+    country = models.CharField(max_length=250,
+                               unique=True,
+                               verbose_name=_('Country')
+                               )
+    
+    
+    def __unicode__(self):
+        return self.country
+
+# -------------------------------------------------------------
 class Appelation(Approvable, Timestamp):
     class Meta:
         verbose_name_plural = _('Appelations')
@@ -180,6 +196,9 @@ class Appelation(Approvable, Timestamp):
                                   blank=True,
                                   unique=True
                                  )
+
+    country = models.ForeignKey(Country)
+
     def __unicode__(self):
         return self.appelation
 
@@ -212,21 +231,7 @@ class Cepage(Approvable, WineType, Timestamp):
         return self.cepage
 
 
-# -------------------------------------------------------------
-class Country(Approvable, Timestamp):
 
-    class Meta:
-        verbose_name_plural = _('Countries')
-        ordering = ['country']
-
-    country = models.CharField(max_length=250,
-                               unique=True,
-                               verbose_name=_('Country')
-                               )
-    
-    
-    def __unicode__(self):
-        return self.country
 
 
 # -------------------------------------------------------------
@@ -239,6 +244,9 @@ class Region(Approvable, Timestamp):
                               validators=[non_numeric],
                               unique=True
                              )
+
+    country = models.ForeignKey(Country)
+
     def __unicode__(self):
         return self.region
 
