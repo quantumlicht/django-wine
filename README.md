@@ -15,12 +15,12 @@ installation
 ===
 Execution
 	
-- cd project && python manage.py runserver --settings=project.settings.<environment>
+* cd project && python manage.py runserver --settings=project.settings.<environment>
 * Environment can be dev or test
 
 
 === 
 Run tests
 
-coverage run manage.py test --settings=project.settings.test
-coverage html --include="$SITE_URL*" --omit="admin.py,*/site-packages/*"
+* coverage run manage.py test --settings=project.settings.test
+* coverage html --include="$SITE_URL*" --omit="admin.py,*/site-packages/*"
