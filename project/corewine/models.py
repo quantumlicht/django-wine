@@ -10,7 +10,6 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 from .managers import ApprovedManager
-from taggit.managers import TaggableManager
 
 log = logging.getLogger(__name__) 
 
@@ -270,6 +269,7 @@ class Producer(Approvable, Timestamp):
                                 unique=True
                                 )
 
+    country = models.ForeignKey(Country)
     def __unicode__(self):
         return self.producer
 
@@ -373,9 +373,6 @@ class Wine(WineType, Timestamp):
     cepage = models.ManyToManyField(Cepage, verbose_name=_('Cepages'))
     
     tag = models.ManyToManyField(Tag, blank=True, null=True, verbose_name=_('Tags'))
-
-    # tag_test = TaggableManager(verbose_name='Tags Test')
-    # cepage_test = TaggableManager(verbose_name='Cepages Test')
 
     # ------------------------------------
     # Managers

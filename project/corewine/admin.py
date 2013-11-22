@@ -56,6 +56,7 @@ class AppelationAdmin(TranslationAdmin):
     fields =('appelation', 'status','country')
     list_display = ['appelation_fr','appelation_en', 'country', 'is_approved', 'last_modified', 'created']
     ordering = ['status']
+    list_filter = ['status', 'country']
     actions = [make_rejected, make_approved]
 
 
@@ -85,10 +86,10 @@ class CountryAdmin(TranslationAdmin):
 
 # -------------------------------------------
 class ProducerAdmin(admin.ModelAdmin):
-    fields =('producer', 'status')
-    list_display = ('producer', 'is_approved', 'last_modified', 'created')
+    fields =('producer', 'status', 'country')
+    list_display = ('producer', 'country', 'is_approved', 'last_modified', 'created')
     ordering = ['status']
-    list_filter = ['status']
+    list_filter = ['status', 'country']
     actions = [make_rejected, make_approved]
 
 # -------------------------------------------

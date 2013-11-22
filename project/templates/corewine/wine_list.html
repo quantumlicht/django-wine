@@ -1,8 +1,49 @@
 {% extends 'base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block javascript %}
+	{{ block.super }}
+	<script src="{% static 'js/wine_search.js' %}"></script>
+{% endblock javascript %}
+
+
 
 {% block main %}
-{% for wine in wine_list %}
-	{% include "corewine/_wine_list_element.html" with wine=wine %}
-{% endfor %}
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">	
+		<form  id="wine_search" class="form-inline" role="form" action="{% url 'corewine:list' %}" method="get">
+			<div class="form-group">	
+				<input type="text" name='q' id="query" class="form-control">
+				<select name='look' class="form-control">
+					<option value="name"> {% trans 'Name' %}</option>
+					<option value="country"> {% trans 'Country' %}</option>
+					<option value="producer"> {% trans 'Producer' %}</option>
+					<option value="region"> {% trans 'Region' %}</option>
+					<option value="tag"> {% trans 'Tag' %}</option>
+					<option value="cepage"> {% trans 'Cepage' %}</option>
+					<option value="appelation"> {% trans 'Appelation' %}</option>
+				</select>
+			</div>
+		    <button type="submit" class="btn btn-default">{% trans 'Search' %} <span class="glyphicon glyphicon-search"></span></button>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+	{% if wine_list %}
+		{% for wine in wine_list %}
+			<div class="col-lg-6">
+			{% include "corewine/_wine_list_element.html" with wine=wine %}
+			</div>
+		{% endfor %}
+	{% else %}
+		<div class="col-lg-6">
+			{% trans "No results found." %}
+		</div>
+	{% endif %}
+	</div>
+</div>
 
 {% endblock main %}

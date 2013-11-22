@@ -11,7 +11,8 @@ from django.forms import (
     Select,
     MultipleChoiceField,
     ChoiceField,
-    DateField
+    DateField,
+    Form
 )
 from django.forms.widgets import SelectMultiple
 from django.utils.translation import ugettext_lazy as _
@@ -235,9 +236,9 @@ class WineForm(ModelForm):
     def __init__(self,*args,**kwargs):
         super(WineForm, self).__init__(*args,**kwargs)
         self.fields['wineType'].choices = WINE_TYPES
-        self.fields['region'].choices  =  [(x,x.region) for x in Region.approved.all()]
+        # self.fields['region'].choices  =  [(x,x.region) for x in Region.approved.all()]
         self.fields['producer'].choices = [(x,x.producer) for x in Producer.approved.all()]
-        self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
+        # self.fields['appelation'].choices = [(x,x.appelation) for x in Appelation.approved.all()]
         # self.fields['tag'].choices = [(x,x.tag) for x in Tag.approved.all()]
         # self.fields['cepage'].choices = [(x,x.cepage) for x in Cepage.approved.all()]
 
@@ -245,7 +246,7 @@ class WineForm(ModelForm):
         self.form_id = 'wine_form'
         self.label_class= 'col-lg-12'
         self.field_class= 'col-lg-12'
-        self.form_method = 'post'
+        # self.form_method = 'post'
         self.form_class = 'form_horizontal'
         self.form_action = reverse('corewine:tasting')
 
@@ -257,17 +258,17 @@ class WineForm(ModelForm):
             ),
             Fieldset(_('General Information'),
                 Div(Field('name'), css_class='col-lg-3'),
-                Div(Field('producer'), css_class='col-lg-3'),
                 Div(Field('year'), css_class='col-lg-3'),
-                Div('date', css_class='col-lg-3'),
-                Div(AppendedText('alcool', '%'),css_class="col-lg-3"),
                 Div('code_saq', css_class='col-lg-3'),
+                Div('date', css_class='col-lg-3'),
                 Div('cepage',css_class='col-lg-3'),
+                Div(AppendedText('alcool', '%'),css_class="col-lg-3"),
                 Div(AppendedText('price', '$'),css_class='col-lg-3'),
             ),
             Fieldset(_('Geography'),
-                Div(Field('appelation'),css_class='col-lg-3'),
                 Div(Field('country'),css_class='col-lg-3'),
+                Div(Field('appelation'),css_class='col-lg-3'),
+                Div(Field('producer'), css_class='col-lg-3'),
                 Div(Field('region'),css_class='col-lg-3'),
             ),
             Fieldset(_('Eye'),
@@ -290,3 +291,34 @@ class WineForm(ModelForm):
             ),
             FormActions('Sign in', css_class='btn-primary')
         )
+
+
+class WineSearchForm(WineForm):
+     def __init__(self,*args,**kwargs):
+        super(WineSearchForm, self).__init__(*args,**kwargs)
+        self.helper.form_id = 'wine_search'
+        self.helper.form_method = 'get'
+        # self.helper.form_action = reverse('api:wine')
+        self.fields['wineType'].required = False
+        self.fields['name'].required = False
+        self.fields['year'].required = False
+        self.fields['code_saq'].required = False
+        self.fields['date'].required = False
+        self.fields['cepage'].required = False
+        self.fields['alcool'].required = False
+        self.fields['price'].required = False
+        self.fields['country'].required = False
+        self.fields['producer'].required = False
+        self.fields['region'].required = False
+        self.fields['teint'].required = False
+        self.fields['aroma'].required = False
+        self.fields['nose_intensity'].required = False
+        self.fields['mouth_intensity'].required = False
+        self.fields['persistance'].required = False
+        self.fields['taste'].required = False
+        self.fields['tanin'].required = False
+        self.fields['tag'].required = False
+        self.fields['rating'].required = False
+
+    
+

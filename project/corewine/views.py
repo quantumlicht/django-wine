@@ -16,7 +16,7 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 
-from .forms import WineForm
+from .forms import WineForm, WineSearchForm
 
 from .models import (
     Wine,
@@ -34,11 +34,9 @@ from rest_framework.generics import ListAPIView
 log = logging.getLogger(__name__) 
 
 
-def index(request):
-
-    return render(request, 'corewine/index.html')
-
-
+# ==============================
+# MIXINS
+# ==============================
 class WineActionMixin(object):
 
     @property
@@ -52,46 +50,52 @@ class WineActionMixin(object):
         return super(WineActionMixin, self).form_valid(form)
 
 
+class WineSearchMixin(object):
+
+    def get_queryset(self):
+        ALLOWED_FIELDS  = [ 'wineType','name', 'year', 'code_saq', 'date', 'alcool',\
+            'price', 'nose_intensity', 'mouth_intensity', 'persistance', 'rating'
+        ]
+
+        ALLOWED_RELATED_FIELDS = ['tag', 'cepage', 'producer', 'region' ,'country',\
+            'teint', 'aroma', 'tanin', 'taste'
+        ]
+
+        queryset = Wine.objects.prefetch_related()
+        field_lookup = self.request.GET.get('look', None)
+        query = self.request.GET.get('q', None)
+
+        if not field_lookup or not query:
+            return queryset.distinct()
+        else:
+            if field_lookup in ALLOWED_FIELDS:
+                filter = field_lookup + '__icontains'
+                queryset = queryset.filter(**{filter: query})
+            elif field_lookup in ALLOWED_RELATED_FIELDS:
+                filter = field_lookup+'__'+field_lookup+'__icontains'
+                queryset = queryset.filter(**{filter: query})
+
+            return queryset.distinct()
+# ==============================
+# VIEWS
+# ==============================
+
+def index(request):
+    top = Wine.objects.all().order_by('rating').reverse()[:5]
+    return render(request, 'corewine/index.html', {'top':top})
+
+
+class WineSearchView(FormView):
+    template_name = 'corewine/wine_search.html'
+    form_class = WineSearchForm
+    http_method_names = ['get']
+    
+
 class WineCreateView(WineActionMixin, LoginRequiredMixin, CreateView):
     model = Wine
     form_class = WineForm
     action = 'created'
         
-
-    # def post(self, *args, **kwargs):
-    #     self.request.POST = self.request.POST.copy()  # makes the request mutable
-
-    #     regionForm = modelform_factory(Region, fields=('region',))
-    #     appelationForm = modelform_factory(Appelation, fields=('appelation',))
-    #     producerForm = modelform_factory(Producer, fields=('producer',))
-    #     tagForm = modelform_factory(Tag, fields=('tag',))
-
-
-    #     form_dict = {
-    #         'region': regionForm,
-    #         'appelation': appelationForm,
-    #         'producer': producerForm,
-    #         # 'tag': tagForm
-    #     }
-    #     for k, modelForm in form_dict.iteritems():
-    #         model_class = modelForm.Meta.model
-    #         # log.debug('current model_class is: %s' % model_class)
-    #         # log.debug('request is %s' % self.request.POST[k])
-    #         try:
-    #             obj = model_class.objects.get( **{k: self.request.POST[k]} )
-    #             # log.debug("object exists. %s pk from post request %s " % (model_class,obj.pk))
-    #             self.request.POST[k] = obj.id
-    #         except ObjectDoesNotExist as e:
-    #             log.error('Exception %s' % e)
-    #             return super(WineCreateView,self).post(self.request, *args, **kwargs)
-    #             f = modelForm(self.request.POST)            
-    #             # log.debug('errors %s' % f.errors)
-    #             if f.is_valid():
-    #                 model_instance = f.save()
-    #                 self.request.POST[k] = model_instance.pk
-        
-    #     return super(WineCreateView,self).post(self.request, *args, **kwargs)
-
 
 class WineUpdateView(LoginRequiredMixin, WineActionMixin, UpdateView):
     model = Wine
@@ -99,7 +103,7 @@ class WineUpdateView(LoginRequiredMixin, WineActionMixin, UpdateView):
     action = 'updated'
 
 
-class WineListView(ListView):
+class WineListView(WineSearchMixin, ListView):
     model = Wine
     context_object_name = 'wine_list'
 
@@ -135,21 +139,9 @@ class TeintReadView(ListAPIView):
         return queryset
 
 # --------------------------------------------------
-class WineReadView(ListAPIView):
+class WineReadView(WineSearchMixin, ListAPIView):
     model = Wine
-
-    def get_queryset(self):
-        queryset = Wine.objects.all()
-        name = self.request.QUERY_PARAMS.get('name', None)
-        code_saq = self.request.QUERY_PARAMS.get('code', None)
-        if name is not None:
-            queryset = queryset.filter(name__iexact=name)
-
-        if code_saq is not None:
-            queryset = queryset.filter(code_saq__iexact=code_saq)
-
-        return queryset
-
+    
 # --------------------------------------------------
 class AppelationReadView(ListAPIView):
     model = Appelation
@@ -190,7 +182,13 @@ class CountryReadView(ListAPIView):
 # --------------------------------------------------
 class ProducerReadView(ListAPIView):
     model = Producer
-    queryset = Producer.approved.all()
+    def get_queryset(self):
+        queryset = Producer.approved.all()
+        country = self.request.QUERY_PARAMS.get('country',None)
+        if country is not None:
+            queryset = queryset.filter(country__id=country)
+
+        return queryset
 
 # --------------------------------------------------
 class RegionReadView(ListAPIView):

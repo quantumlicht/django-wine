@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import index, WineCreateView, WineListView, WineDetailView
+from .views import index, WineCreateView, WineListView, WineDetailView, WineSearchView
 
 # TODO: make sure urls are locale specific
 urlpatterns = patterns('',

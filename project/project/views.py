@@ -3,10 +3,10 @@ from django.shortcuts import render
 from django.utils import translation
 from django.http import HttpResponseRedirect
 log = logging.getLogger(__name__) 
-
+from corewine.models import Wine
 def landing(request):
-	log.debug('test')
-	return render(request,'landing.html')
+    top = Wine.objects.all().order_by('rating').reverse()[:5]
+    return render(request, 'landing.html', {'top':top})
 
 
 def set_language(request):

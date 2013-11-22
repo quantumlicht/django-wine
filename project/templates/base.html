@@ -26,25 +26,19 @@
    </div>
 
    <div class="row">
-
-   	<div class="col-md-8 col-md-offset-2">
-   	{% block main %}
-   		a link to <a href="{% url 'corewine:index' %}">wine</a>
-   	{% endblock main %}
-   	</div>
-   		
+      <div class="col-lg-12">
+         {% block main %}
+            a link to <a href="{% url 'corewine:index' %}">wine</a>
+         {% endblock main %}        
+      </div>
    </div>
-
+   {% block javascript %}
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-   <script src="//codeorigin.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-    <script src="{% static 'js/jquery.ui.datepicker-fr.js' %}"></script>
-   <script src="{% static  'js/selectize.min.js' %}"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
    <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
    <script src="{% static  'js/jquery.cookie.js' %}"></script>
    <script src="{% static  'js/csrf.js' %}"></script>
-   <script src="{% static  'js/core.js' %}"></script>
-
+   {% endblock javascript %}
 </body>
 
 </html>

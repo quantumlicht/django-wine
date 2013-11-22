@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-18 19:47-0500\n"
+"POT-Creation-Date: 2013-11-21 22:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: project/static/js/core.js:56
+#: project/static/js/core.js:69
 msgid "this wine already exists."
 msgstr "Ce vin existe déjà."
 
-#: project/static/js/core.js:78
+#: project/static/js/core.js:91
 msgid "This code already exists."
 msgstr "Ce code existe déjà."
 
-#: project/static/js/core.js:155
+#: project/static/js/core.js:232 project/static/js/core.js.c:270
 msgid "White"
 msgstr "Blanc"
 
-#: project/static/js/core.js:155
+#: project/static/js/core.js:232 project/static/js/core.js.c:270
 msgid "Red"
 msgstr "Rouge"
 
-#: project/static/js/core.js:161
+#: project/static/js/core.js:277
 msgid "No description."
 msgstr "Aucune description"
 

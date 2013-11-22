@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block main %}
+{% block javascript %}
+	{{ block.super }}
+	<script src="//codeorigin.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="{% static 'js/jquery.ui.datepicker-fr.js' %}"></script>
+    <script src="{% static  'js/selectize.min.js' %}"></script>
+    <script src="{% static  'js/core.js' %}"></script>
+{% endblock javascript %}
 
-<h1>{% trans 'Tasting' %}</h1>
-{% crispy form %}
-{% comment %}
-<form action="{% url 'corewine:tasting' %}" class="form-horizontal" method="post" id="wine_form" role="form">
-	{% csrf_token %}
- 	{% for field in form %}
-  	  {% include "corewine/_form_field.html" with field=field %}
- 	{% endfor %}
-	<button type="submit" class="btn btn-default">Submit</button>
-</form>
-{% endcomment %}
+{% block main %}
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+		<h1>{% trans 'Tasting' %}</h1>
+		{% crispy form %}
+	</div>
+</div>
 {% endblock main %}
 
 

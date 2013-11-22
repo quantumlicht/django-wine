@@ -3,7 +3,20 @@
 
 
 {% block main %}
-<div class="page-header">
-  <h1>{% trans 'Welcome to the world of wines !' %} <small>{% trans 'A place to discuss and share about wine' %}</small></h1>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+		<div class="page-header">
+		  <h1>{% trans 'Welcome to the world of wines !' %} <small>{% trans 'A place to discuss and share about wine' %}</small></h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">		
+	<div class="col-lg-3 col-lg-offset-9 well">
+	<p class="lead">{% trans 'Top 5 Wines' %}</p>
+	{% for wine in top %}
+		{% include "corewine/_wine_list_element.html" with wine=wine %}
+	{% endfor %}		
+	</div>
 </div>
 {% endblock main %}

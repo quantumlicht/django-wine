@@ -79,7 +79,7 @@ $('#id_code_saq').focusout(function(evt){
 	code_to_check = evt.target.value;
 	// console.log(code_to_check);
 	$.ajax({
-		url: '../../api/wine?code='+code_to_check,
+		url: '../../api/wine?code_saq='+code_to_check,
 		cache: false,
 		success: function(data){
 			if (data.length){
@@ -101,11 +101,6 @@ $('#id_code_saq').focusout(function(evt){
 // TypeAhead
 //====================================
 
-$('#id_producer').selectize({
-	create: true,
-	persist: false
-});
-
 $('#id_nose_intensity').selectize();
 $('#id_persistance').selectize();
 $('#id_mouth_intensity').selectize();
@@ -116,7 +111,9 @@ $('#id_taste').selectize();
 $('#id_acidity').selectize();
 $('#id_tanin').selectize();
 $('#id_rating').selectize();
+$('#id_year').selectize();
 
+var xhr;
 var $select_teint = $('#id_teint').selectize({
 	valueField: 'teint',
 	labelField: 'teint',
@@ -124,10 +121,10 @@ var $select_teint = $('#id_teint').selectize({
 	loadThrottle: 100
 });
 var select_teint = $select_teint[0].selectize;
-var xhr;
 var select_country, $select_country;
 var select_region, $select_region;
 var select_appelation, $select_appelation;
+var select_producer, $select_producer;
 
 $select_country = $('#id_country').selectize({
 	//value is the region
@@ -165,33 +162,60 @@ $select_country = $('#id_country').selectize({
                 }
             })
         });
+        select_producer.disable();
+        select_producer.clearOptions();
+        select_producer.load(function(callback) {
+            xhr && xhr.abort();
+            xhr = $.ajax({
+            	async: false,
+                url: '../../api/producer/?country=' + value,
+                success: function(results) {
+                    select_producer.enable();
+                    callback(results);
+                },
+                error: function() {
+                    callback();
+                }
+            })
+        });
     }
 });
 
 $select_region = $('#id_region').selectize({
+	preload: true,
     valueField: 'region',
     labelField: 'region',
     searchField: ['region']
 });
 
 $select_appelation = $('#id_appelation').selectize({
+	preload: true,
 	create: true,
     valueField: 'appelation',
     labelField: 'appelation',
     searchField: ['appelation']
 });
 
+$select_producer = $('#id_producer').selectize({
+	preload: true,
+	create: true,
+    valueField: 'producer',
+    labelField: 'producer',
+    searchField: ['producer']
+});
+
 
 select_region  = $select_region[0].selectize;
 select_appelation  = $select_appelation[0].selectize;
 select_country = $select_country[0].selectize;
+select_producer = $select_producer[0].selectize;
 
 select_region.disable();
 select_appelation.disable();
+select_producer.disable();
 
 
 
-$('#id_year').selectize();
 
 var $select_cepage = $('#id_cepage').selectize({
 	valueField: 'cepage',
@@ -283,7 +307,6 @@ $('[id*=id_wineType_]').change(function(evt){
 	var winetype = '';
 	try{
 		winetype = String(evt.target.value);
-		// console.log(winetype);
 	}
 	catch(e){
 		console.log('Exception caught:' + e);
@@ -295,45 +318,18 @@ $('[id*=id_wineType_]').change(function(evt){
 	select_cepage.clearOptions();
 	select_teint.clearOptions();
 	select_teint.load(function(callback) {
-            xhr && xhr.abort();
-            xhr = $.ajax({
-            	async: false,
-                url: '../../api/teint/?type=' + winetype,
-                success: function(results) {
-                    callback(results);
-                },
-                error: function() {
-                    callback();
-                }
-            })
+        xhr && xhr.abort();
+        xhr = $.ajax({
+        	async: false,
+            url: '../../api/teint/?type=' + winetype,
+            success: function(results) {
+                callback(results);
+            },
+            error: function() {
+                callback();
+            }
         });
-
-	// $.ajax({url: '/api/teint?type=' + winetype,
-	// 	cache: false,
-	// 	success:function(data){
-
-	// 		arr_teint = $.map(data,function(obj){				
-	// 			return obj.teint;
-	// 		});
-	// 		// console.log(arr_teint);
-	// 		selected_teint = $(teint).text();
-	// 		// console.log('selected_teint', selected_teint);
-	// 		if ( $.inArray(selected_teint,arr_teint ) > -1 ){
-
-	// 			filtered_options = teint.filter(function(index){
-	// 				return $.inArray(teint[index].text, arr_teint) > -1;
-	// 			})
-	// 		// $('#id_teint').html(filtered_options);
-				
-
-	// 		}
-	// 		else{
-	// 			console.log('no');
-
-	// 		}
-	// 	}
-	// });
-
+    });
 });
 
 }); //document ready
